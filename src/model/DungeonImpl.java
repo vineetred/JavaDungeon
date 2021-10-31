@@ -374,10 +374,12 @@ public class DungeonImpl implements Dungeon {
 
       // Generator that chooses which cave
       RandomNumberGenerator rand =
-          new RandomNumberGenerator(0, caves.size() - 1, randomCaveChoiceSeed, 1);
+          new RandomNumberGenerator(0, caves.size() - 1,
+              randomCaveChoiceSeed, 1);
 
       // Generator that chooses which treasure
-      RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, this.seed, 1);
+      RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2,
+          randomCaveChoiceSeed, 1);
 
       TreasureImpl.TreasureFactory treasureFactory = new TreasureImpl.TreasureFactory();
 

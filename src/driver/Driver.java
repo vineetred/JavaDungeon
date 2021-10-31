@@ -32,7 +32,7 @@ public class Driver {
 
   private static void playerPickTreasureFromCave(Player testPlayer,
                                                  ArrayList<Treasure> caveTreasure) {
-    if (caveTreasure == null) {
+    if (caveTreasure == null || caveTreasure.size() == 0) {
       System.out.println("\nNo treasure in the cave");
     }
     else {
