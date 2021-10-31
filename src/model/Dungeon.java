@@ -6,6 +6,7 @@ import java.util.ArrayList;
  *
  */
 public interface Dungeon {
+
   Point2D getStartPoint();
 
   Point2D getEndPoint();

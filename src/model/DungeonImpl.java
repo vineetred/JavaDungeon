@@ -1,7 +1,10 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
+
 import random.RandomNumberGenerator;
 
 /**
@@ -101,14 +104,16 @@ public class DungeonImpl implements Dungeon {
 
   private int findStartPoint(ArrayList<Integer> caves) {
 
-    RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 0,
+    RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 1,
             1);
     return caves.get(rand.getRandomNumber());
   }
 
   private int findEndPoint(int startIndex) {
     // Conduct a DFS from the start point
-    int depthFirstSearchOutput = this.depthFirstSearchDistance(startIndex, 5);
+    Set<Integer> visited = new HashSet<>();
+
+    int depthFirstSearchOutput = this.depthFirstSearchDistance(startIndex, 5, visited);
 
     // Check if a node at least 5 units away from the start index can be reached
     if (depthFirstSearchOutput != -1) {
@@ -119,7 +124,16 @@ public class DungeonImpl implements Dungeon {
   }
 
   // Will return -1 to indicate that the searchDistance cannot be reached
-  private int depthFirstSearchDistance(int caveIndex, int searchDistance) {
+  private int depthFirstSearchDistance(int caveIndex, int searchDistance, Set<Integer> visited) {
+
+    // If we already have visited this node, disregard it
+    if (visited.contains(caveIndex)) {
+      return -1;
+    }
+
+    // Add to the visited set
+    visited.add(caveIndex);
+
     // Check for the base case
     if (searchDistance == 0) {
       return caveIndex;
@@ -136,7 +150,7 @@ public class DungeonImpl implements Dungeon {
       // in each successive call
       int depthFirstSearchAccumulator =
           depthFirstSearchDistance((Integer) caveObject.getNeighbors().get(index),
-          searchDistance - 1);
+          searchDistance - 1, visited);
 
       // Disregard if output is -1 or if index returned is not a cave
       // by returning -1
@@ -239,8 +253,8 @@ public class DungeonImpl implements Dungeon {
     if (this.treasure != 0) {
       int treasCaveNum = (int) Math.ceil((caves.size() * treasure) / 100);
       RandomNumberGenerator rand =
-          new RandomNumberGenerator(0, caves.size() - 1, 0, 1);
-      RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, 0, 1);
+          new RandomNumberGenerator(0, caves.size() - 1, 1, 1);
+      RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, 1, 1);
       TreasureImpl.TreasureFactory treasureFactory = new TreasureImpl.TreasureFactory();
       for (int t = 0; t < treasCaveNum; t++) {
         int treasureRand = rand2.getRandomNumber();
@@ -299,7 +313,7 @@ public class DungeonImpl implements Dungeon {
 
   private void runKruskalAlgorithm() {
     //start condition - every cave in own set
-    RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotentialEdges().size(), 0, 1);
+    RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotentialEdges().size(), 1, 1);
     Random randGen = new Random(rand.getRandomNumber());
     boolean exitInvariant = false;
     ArrayList<Integer> setList = new ArrayList<>();
