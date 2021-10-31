@@ -17,7 +17,7 @@ public class DungeonImpl implements Dungeon {
   private final int treasure;
   private final int startPoint;
   private final int endPoint;
-  private final Cave[][] Gameboard;
+  private final Cave[][] gameBoard;
   private ArrayList<Edge> potentialEdges;
   private ArrayList<Edge> leftOverEdges;
   private ArrayList<Edge> finalEdges;
@@ -37,13 +37,13 @@ public class DungeonImpl implements Dungeon {
    * forms the minimum threshold during treasure generation
    */
   public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure) {
-    Cave[][] Gameboard = new Cave[rows][columns];
+    Cave[][] gameBoard = new Cave[rows][columns];
     this.wraps = wraps;
     this.rows = rows;
     this.columns = columns;
     this.interconnectivity = interconnect;
     this.treasure = treasure;
-    this.Gameboard = Gameboard;
+    this.gameBoard = gameBoard;
 
     int temporaryStartPoint;
     int temporaryEndPoint;
@@ -189,7 +189,7 @@ public class DungeonImpl implements Dungeon {
         ArrayList neighborList = new ArrayList();
         ArrayList treasureList = new ArrayList();
         Cave cave = new Cave(r, c, entrances, neighborList, treasureList, index, index);
-        Gameboard[r][c] = cave;
+        gameBoard[r][c] = cave;
 
         index++;
       }
@@ -201,9 +201,9 @@ public class DungeonImpl implements Dungeon {
         for (int c = 0; c < columns; c++) {
           // CASE: NOT ON LAST EDGE
           if (c < columns - 1 && r < rows - 1) {
-            Edge edge = new Edge(Gameboard[r][c], Gameboard[r + 1][c]);
+            Edge edge = new Edge(gameBoard[r][c], gameBoard[r + 1][c]);
             potentialEdges.add(edge);
-            Edge edge2 = new Edge(Gameboard[r][c], Gameboard[r][c + 1]);
+            Edge edge2 = new Edge(gameBoard[r][c], gameBoard[r][c + 1]);
             potentialEdges.add(edge2);
           }
           // CASE: NODE ON BOTTOM RIGHT
@@ -212,12 +212,12 @@ public class DungeonImpl implements Dungeon {
           }
           // CASE : LAST COLUMN
           else if (c == columns - 1 && r <= rows - 1) {
-            Edge edge = new Edge(Gameboard[r][c], Gameboard[r + 1][c]);
+            Edge edge = new Edge(gameBoard[r][c], gameBoard[r + 1][c]);
             potentialEdges.add(edge);
           }
           // CASE : EVERYTHING ELSE
           else {
-            Edge edge = new Edge(Gameboard[r][c], Gameboard[r][c + 1]);
+            Edge edge = new Edge(gameBoard[r][c], gameBoard[r][c + 1]);
             potentialEdges.add(edge);
           }
         }
@@ -229,32 +229,32 @@ public class DungeonImpl implements Dungeon {
           // TODO: Add some more wrapping cases!
           // CASE: not an edge node so we add as usual
           if (c < columns - 1 && r < rows - 1) {
-            Edge edge = new Edge(Gameboard[r][c], Gameboard[r + 1][c]);
+            Edge edge = new Edge(gameBoard[r][c], gameBoard[r + 1][c]);
             potentialEdges.add(edge);
-            Edge edge2 = new Edge(Gameboard[r][c], Gameboard[r][c + 1]);
+            Edge edge2 = new Edge(gameBoard[r][c], gameBoard[r][c + 1]);
             potentialEdges.add(edge2);
           }
 
           // CASE: bottom right edge, wrap right, wrap down
           else if (c == columns - 1 && r == rows - 1) {
-            Edge edge = new Edge(Gameboard[r][c], Gameboard[0][c]);
+            Edge edge = new Edge(gameBoard[r][c], gameBoard[0][c]);
             potentialEdges.add(edge);
-            Edge edge2 = new Edge(Gameboard[r][c], Gameboard[r][0]);
+            Edge edge2 = new Edge(gameBoard[r][c], gameBoard[r][0]);
             potentialEdges.add(edge2);
           }
 
           // CASE: Last column where everything wraps right
           else if (c == columns - 1 && r <= rows - 1) {
-            Edge edge = new Edge(Gameboard[r][c], Gameboard[r + 1][c]);
+            Edge edge = new Edge(gameBoard[r][c], gameBoard[r + 1][c]);
             potentialEdges.add(edge);
-            Edge edge2 = new Edge(Gameboard[r][c], Gameboard[r][0]);
+            Edge edge2 = new Edge(gameBoard[r][c], gameBoard[r][0]);
             potentialEdges.add(edge2);
           }
 
           else {
-            Edge edge = new Edge(Gameboard[r][c], Gameboard[r][c + 1]);
+            Edge edge = new Edge(gameBoard[r][c], gameBoard[r][c + 1]);
             potentialEdges.add(edge);
-            Edge edge2 = new Edge(Gameboard[r][c], Gameboard[0][c]);
+            Edge edge2 = new Edge(gameBoard[r][c], gameBoard[0][c]);
             potentialEdges.add(edge2);
           }
         }
@@ -300,8 +300,8 @@ public class DungeonImpl implements Dungeon {
   private Cave findCaveByIndex(int index) {
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < columns; c++) {
-        if (Gameboard[r][c].getIndex() == index) {
-          return Gameboard[r][c];
+        if (gameBoard[r][c].getIndex() == index) {
+          return gameBoard[r][c];
         }
       }
     }
@@ -317,8 +317,8 @@ public class DungeonImpl implements Dungeon {
     //make list of caves, exclude tunnels
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < columns; c++) {
-        if (Gameboard[r][c].getNeighbors().size() != 0 && Gameboard[r][c].getNeighbors().size() != 2) {
-          caves.add(Gameboard[r][c].getIndex());
+        if (gameBoard[r][c].getNeighbors().size() != 0 && gameBoard[r][c].getNeighbors().size() != 2) {
+          caves.add(gameBoard[r][c].getIndex());
         }
 
       }
@@ -339,7 +339,7 @@ public class DungeonImpl implements Dungeon {
       setList.add(s);
     }
 
-    if (setList.size() - 1 != Gameboard[rows - 1][columns - 1].getIndex()) {
+    if (setList.size() - 1 != gameBoard[rows - 1][columns - 1].getIndex()) {
       throw new IllegalArgumentException("the set list doesn't match the number of elements");
     }
     while (!exitInvariant) {
@@ -375,9 +375,9 @@ public class DungeonImpl implements Dungeon {
         // such that they now point to the new permanent set
         for (int r = 0; r < rows; r++) {
           for (int c = 0; c < columns; c++) {
-            if (Gameboard[r][c].getSet() == temporaryRightSet) {
+            if (gameBoard[r][c].getSet() == temporaryRightSet) {
               // Adjusting the set
-              Gameboard[r][c].adjSet(permanentNewSet);
+              gameBoard[r][c].adjSet(permanentNewSet);
             }
           }
         }

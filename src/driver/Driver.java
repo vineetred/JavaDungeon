@@ -87,7 +87,6 @@ public class Driver {
       }
 
     }
-
     System.out.println("\nCurrent player treasure: " + testPlayer.getPlayerTreasure());
   }
 
