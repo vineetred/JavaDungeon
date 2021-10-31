@@ -35,6 +35,10 @@ public class DungeonImpl implements Dungeon {
    * forms the minimum threshold during treasure generation
    */
   public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure) {
+
+    // Check the dungeon invariants!
+    checkDungeonInvariants(wraps, rows, columns, interconnect, treasure);
+
     Cave[][] gameBoard = new Cave[rows][columns];
     this.wraps = wraps;
     this.rows = rows;
@@ -84,12 +88,12 @@ public class DungeonImpl implements Dungeon {
    */
   public DungeonImpl(boolean wraps) {
     Cave[][] gameBoard = new Cave[5][6];
+    this.gameBoard = gameBoard;
     this.wraps = wraps;
     this.rows = 5;
     this.columns = 6;
     this.interconnectivity = 0;
     this.treasure = 20;
-    this.gameBoard = gameBoard;
     this.seed = 1;
 
     int temporaryStartPoint;
@@ -314,14 +318,14 @@ public class DungeonImpl implements Dungeon {
     // Make sure that the treasure amount is NOT 0.
 
     if (this.treasure != 0) {
-      int treasCaveNum = (int) Math.ceil((caves.size() * treasure) / 100);
+      int numberOfCavesWithTreasure = (int) Math.ceil((caves.size() * treasure) / 100);
       RandomNumberGenerator rand =
           new RandomNumberGenerator(0, caves.size() - 1, this.seed, 1);
       RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, this.seed, 1);
 
       TreasureImpl.TreasureFactory treasureFactory = new TreasureImpl.TreasureFactory();
 
-      for (int t = 0; t < treasCaveNum; t++) {
+      for (int t = 0; t < numberOfCavesWithTreasure; t++) {
         int treasureRand = rand2.getRandomNumber();
         if (treasureRand == 0 ) {
           for(int r = 0; r <= treasureRand + 1; r++) {
@@ -566,12 +570,11 @@ public class DungeonImpl implements Dungeon {
     }
 
     try {
-      assert caveObject != null;
       return caveObject.pickCaveTreasure();
     }
 
     catch (NullPointerException e) {
-      return null;
+      return new ArrayList<>();
     }
   }
 
