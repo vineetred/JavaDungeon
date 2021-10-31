@@ -5,9 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class dungeonTest {
 
@@ -222,6 +220,41 @@ public class dungeonTest {
     assertTrue(testDungeon.gameFinished(testPlayer.getPlayerLocation()));
   }
 
-  // TODO: Finish up Point2D and Player tests
+  // Point2D testing
+  @Test
+  public void testPoint2DCreation() {
+    Point2D testPoint = new Point2D(1, 1);
+    assertNotNull(testPoint);
+  }
 
+  @Test
+  public void testPointGetRowAndGetColumn() {
+    Point2D testPoint = new Point2D(1, 9);
+    assertEquals(1, testPoint.getRow());
+    assertEquals(9, testPoint.getColumn());
+  }
+
+  // Player interface testing
+  @Test
+  public void testPlayerCreation() {
+
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+    // Same start points
+    assertEquals(testDungeon.getStartPoint(), testPlayer.getPlayerLocation());
+  }
+
+  @Test
+  public void testGetPlayerLocation() {
+
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+    // Same start points
+    assertEquals(0, testPlayer.getPlayerLocation().getRow());
+    assertEquals(3, testPlayer.getPlayerLocation().getColumn());
+  }
+
+  // TODO: Finish up the Player tests
 }

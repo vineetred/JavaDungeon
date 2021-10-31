@@ -123,6 +123,7 @@ public class Driver {
     caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
+    System.out.println("\nIs the game finished?");
     if (test.gameFinished(testPlayer.getPlayerLocation())) {
       System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
     }
@@ -148,6 +149,7 @@ public class Driver {
     caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
+    System.out.println("\nIs the game finished?");
     if (test.gameFinished(testPlayer.getPlayerLocation())) {
       System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
     }
@@ -173,6 +175,7 @@ public class Driver {
     caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
+    System.out.println("\nIs the game finished?");
     if (test.gameFinished(testPlayer.getPlayerLocation())) {
       System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
     }
@@ -197,6 +200,7 @@ public class Driver {
     caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
+    System.out.println("\nIs the game finished?");
     if (test.gameFinished(testPlayer.getPlayerLocation())) {
       System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
     }
