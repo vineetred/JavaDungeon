@@ -18,4 +18,6 @@ public interface Dungeon {
 
   boolean isMoveValid(Point2D inputCavePoint, String direction);
 
+  boolean gameFinished(Point2D inputCavePoint);
+
 }

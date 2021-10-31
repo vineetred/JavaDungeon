@@ -170,19 +170,24 @@ public class DungeonImpl implements Dungeon {
     if (!wraps) {
       for (int r = 0; r < rows; r++) {
         for (int c = 0; c < columns; c++) {
-          //case for nodes that aren't on far edge
+          // CASE: NOT ON LAST EDGE
           if (c < columns - 1 && r < rows - 1) {
             Edge edge = new Edge(Gameboard[r][c], Gameboard[r + 1][c]);
             potentialEdges.add(edge);
             Edge edge2 = new Edge(Gameboard[r][c], Gameboard[r][c + 1]);
             potentialEdges.add(edge2);
-
-            // bottom right-hand corner, opposite origin
-          } else if (c == columns - 1 && r == rows - 1) {
-          } else if (c == columns - 1 && r <= rows - 1) {
+          }
+          // CASE: NODE ON BOTTOM RIGHT
+          else if (c == columns - 1 && r == rows - 1) {
+            // WE SIMPLY IGNORE
+          }
+          // CASE : LAST COLUMN
+          else if (c == columns - 1 && r <= rows - 1) {
             Edge edge = new Edge(Gameboard[r][c], Gameboard[r + 1][c]);
             potentialEdges.add(edge);
-          } else {
+          }
+          // CASE : EVERYTHING ELSE
+          else {
             Edge edge = new Edge(Gameboard[r][c], Gameboard[r][c + 1]);
             potentialEdges.add(edge);
           }
@@ -516,6 +521,14 @@ public class DungeonImpl implements Dungeon {
       }
     }
     return false;
+  }
+
+  @Override
+  public boolean gameFinished(Point2D inputCavePoint) {
+
+    return inputCavePoint.getRow() == this.getEndPoint().getRow()
+        && inputCavePoint.getColumn() == this.getEndPoint().getColumn();
+
   }
 
 

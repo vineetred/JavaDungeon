@@ -28,7 +28,7 @@ public class Driver {
 
     System.out.print("\nWelcome to the Labyrinth!");
 
-    Dungeon test = new DungeonImpl(false, 5, 5, 0, 20);
+    Dungeon test = new DungeonImpl(false, 7, 7, 0, 60);
     System.out.println("\nStart point: " + test.getStartPoint().getRow() + "," + test.getStartPoint().getColumn());
     System.out.println("\nEnd point: " + test.getEndPoint().getRow() + "," + test.getEndPoint().getColumn());
 //    System.out.println("\nAll caves: " + test.getAllCaves());
@@ -44,19 +44,7 @@ public class Driver {
 
 
     ArrayList<Treasure> caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
-    if (caveTreasure == null) {
-      System.out.println("\nNo treasure in the cave");
-    }
-    else {
-      testPlayer.pickUpTreasure(caveTreasure);
-      System.out.println("\nPlayer just picks up: ");
-      for (Treasure treasure : testPlayer.getPlayerTreasure()) {
-        System.out.println("A " + treasure.toString());
-      }
-
-    }
-
-    System.out.println("\nCurrent player treasure: " + testPlayer.getPlayerTreasure());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
 
     System.out.println("\nPossible moves from current cave: " +
         test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
@@ -70,8 +58,37 @@ public class Driver {
       System.out.println("You cannot do that! There's a wall there.");
     }
 
+
     System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
         "," + testPlayer.getPlayerLocation().getColumn());
+
+    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+
+    System.out.println("\nIs the game finished?");
+
+    if (test.gameFinished(testPlayer.getPlayerLocation())) {
+      System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
+    }
+    else {
+      System.out.println("\nKeep playing.");
+    }
+  }
+
+  private static void playerPickTreasureFromCave(Player testPlayer, ArrayList<Treasure> caveTreasure) {
+    if (caveTreasure == null) {
+      System.out.println("\nNo treasure in the cave");
+    }
+    else {
+      testPlayer.pickUpTreasure(caveTreasure);
+      System.out.println("\nPlayer just picks up: ");
+      for (Treasure treasure : caveTreasure) {
+        System.out.println("A " + treasure.toString());
+      }
+
+    }
+
+    System.out.println("\nCurrent player treasure: " + testPlayer.getPlayerTreasure());
   }
 
 
