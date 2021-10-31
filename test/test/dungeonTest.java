@@ -12,17 +12,17 @@ import static org.junit.Assert.assertTrue;
 public class dungeonTest {
 
   // Helper methods
-
   private static void playerPickTreasureFromCave(Player testPlayer,
                                                  ArrayList<Treasure> caveTreasure) {
     if (caveTreasure == null) {
+
     }
     else {
       testPlayer.pickUpTreasure(caveTreasure);
     }
   }
 
-  // Dungeon Exceptions
+  // Dungeon exception tests
   @Test(expected = IllegalArgumentException.class)
   public void testNegativeRowsAndColumns() {
     Dungeon testDungeon = new DungeonImpl(false, -1, -1, 0, 20);
@@ -48,6 +48,7 @@ public class dungeonTest {
     Dungeon testDungeon = new DungeonImpl(false, 6, 9, -1, 40);
   }
 
+  // Dungeon Public method tests
   @Test
   public void testGetStartPointDungeon() {
     // With non-random dungeon
@@ -197,18 +198,15 @@ public class dungeonTest {
     playerPickTreasureFromCave(testPlayer, caveTreasure);
     testPlayer.moveSouth();
 
-
     // <------> Move <------>
     caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
     testPlayer.moveWest();
 
-
     // <------> Move <------>
     caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
     testPlayer.moveSouth();
-
 
     // <------> Move <------>
     caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
@@ -222,10 +220,8 @@ public class dungeonTest {
 
     // Game must be finished.
     assertTrue(testDungeon.gameFinished(testPlayer.getPlayerLocation()));
-
-
-
-
   }
+
+  // TODO: Finish up Point2D and Player tests
 
 }

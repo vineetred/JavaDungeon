@@ -2,7 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
-class Cave extends AbstractLocation {
+class Cave {
+  private final Point2D location;
   private int index;
   private int set;
   private ArrayList<Integer> neighborList;
@@ -10,7 +11,7 @@ class Cave extends AbstractLocation {
 
   protected Cave(int row, int column, ArrayList entrances, ArrayList neighborList,
                  ArrayList treasureList, int index, int set) {
-    super(new Point2D(row, column), entrances, neighborList, treasureList);
+    this.location = new Point2D(row, column);
     this.index = index;
     this.set = set;
     this.neighborList = neighborList;
