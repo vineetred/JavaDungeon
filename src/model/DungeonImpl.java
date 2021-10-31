@@ -25,10 +25,7 @@ public class DungeonImpl implements Dungeon {
   /** The dungeon constructor.
    * How many rows and columns there should be specified as integers.
    * The degree of interconnectivity(default is 0) or how many paths between nodes should there be.
-   * An interconnectivity of 0 means that there is exactly 1 path between all nodes. Each degree above that is an
-   * additional edge/connection added to the map. Finally, what percentage of caves should have treasure in it.
-   * The default is 20%. Caves are defined as having 1, 3, or 4 entrances. Tunnels only have 2 entrances and do not
-   * have treasure.
+   * An interconnectivity of 0 means that there is exactly 1 path between all nodes.
    * @param wraps boolean that is set true if you want it wrapped.
    * @param rows the number of rows
    * @param columns the number of columns
@@ -93,7 +90,8 @@ public class DungeonImpl implements Dungeon {
     }
 
     if (treasure < 20) {
-      throw new IllegalArgumentException("You must have at least 20% treasure. This is not an acceptable threshold.");
+      throw new IllegalArgumentException("You must have at least 20% treasure. " +
+          "This is not an acceptable threshold.");
     }
 
     if (interconnect < 0) {
@@ -328,7 +326,8 @@ public class DungeonImpl implements Dungeon {
 
   private void runKruskalAlgorithm() {
     // Initializing the pseudo random number generators
-    RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotentialEdges().size(), 1, 1);
+    RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotentialEdges().size(),
+        1, 1);
     Random randGen = new Random(rand.getRandomNumber());
     boolean exitInvariant = false;
     ArrayList<Integer> setList = new ArrayList<>();
@@ -466,18 +465,22 @@ public class DungeonImpl implements Dungeon {
     for (Integer caveNeighbour : caveNeighbours) {
       Cave caveNeighbourObject = this.findCaveByIndex(caveNeighbour);
 
-      if (currentRow + 1 == caveNeighbourObject.getRow() && currentCol == caveNeighbourObject.getColumn()) {
+      if (currentRow + 1 == caveNeighbourObject.getRow()
+          && currentCol == caveNeighbourObject.getColumn()) {
         possibleMoveDirections.add("South");
       }
-      else if (currentRow - 1 == caveNeighbourObject.getRow() && currentCol == caveNeighbourObject.getColumn()) {
+      else if (currentRow - 1 == caveNeighbourObject.getRow()
+          && currentCol == caveNeighbourObject.getColumn()) {
         possibleMoveDirections.add("North");
       }
 
-      else if (currentRow == caveNeighbourObject.getRow() && currentCol + 1 == caveNeighbourObject.getColumn()) {
+      else if (currentRow == caveNeighbourObject.getRow()
+          && currentCol + 1 == caveNeighbourObject.getColumn()) {
         possibleMoveDirections.add("West");
       }
 
-      else if (currentRow == caveNeighbourObject.getRow() && currentCol - 1 == caveNeighbourObject.getColumn()) {
+      else if (currentRow == caveNeighbourObject.getRow()
+          && currentCol - 1 == caveNeighbourObject.getColumn()) {
         possibleMoveDirections.add("East");
       }
   }
