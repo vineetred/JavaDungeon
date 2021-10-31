@@ -64,7 +64,7 @@ public class DungeonImpl implements Dungeon {
       // Run the algorithm
       runKruskalAlgorithm();
       // Fill the caves with treasure
-      fillCavesWithTreasure(getCavesIndexArrayList());
+      fillCavesWithTreasure(getCavesIndexArrayList(), 0);
       // Initialize the start and end points
       temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
       // Catch the illegal state exception emitted when we
@@ -112,7 +112,7 @@ public class DungeonImpl implements Dungeon {
       // Run the algorithm
       runKruskalAlgorithm();
       // Fill the caves with treasure
-      fillCavesWithTreasure(getCavesIndexArrayList());
+      fillCavesWithTreasure(getCavesIndexArrayList(), 1);
       // Initialize the start and end points
       temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
       // Catch the illegal state exception emitted when we
@@ -129,6 +129,58 @@ public class DungeonImpl implements Dungeon {
     this.startPoint = temporaryStartPoint;
     this.endPoint = temporaryEndPoint;
   }
+
+
+  /** The dungeon constructor to generate a non-random dungeon for the driver.
+   * This makes the choice of treasure random but everything else is predictable.
+   *
+   * @param wraps the boolean variable that tells the program if wrapping is needed.
+   * @param randomCaveTreasureChoiceSeed the seed which the treasure filling method chooses a cave
+   */
+  public DungeonImpl(boolean wraps, int randomCaveTreasureChoiceSeed) {
+    Cave[][] gameBoard = new Cave[5][6];
+    this.gameBoard = gameBoard;
+    this.wraps = wraps;
+    this.rows = 5;
+    this.columns = 6;
+    this.interconnectivity = 0;
+    this.treasure = 20;
+    this.seed = 1;
+
+    int temporaryStartPoint;
+    int temporaryEndPoint;
+
+    // Keep doing this till we find a suitable end-point
+    while (true) {
+      this.potentialEdges = new ArrayList<Edge>();
+      this.leftOverEdges = new ArrayList<Edge>();
+      this.finalEdges = new ArrayList<Edge>();
+
+      // Check the dungeon invariants!
+      checkDungeonInvariants(wraps, rows, columns, interconnectivity, treasure);
+      // Generate a filled graph
+      createConnectedGraph();
+      // Run the algorithm
+      runKruskalAlgorithm();
+      // Fill the caves with treasure
+      fillCavesWithTreasure(getCavesIndexArrayList(), randomCaveTreasureChoiceSeed);
+      // Initialize the start and end points
+      temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
+      // Catch the illegal state exception emitted when we
+      // cannot find a viable end point.
+      try {
+        temporaryEndPoint = findEndPoint(temporaryStartPoint);
+        break;
+      }
+      catch (IllegalStateException stateException) {
+        // Do nothing as we want this to repeat
+      }
+    }
+    // Assign it outside the loop as they are final
+    this.startPoint = temporaryStartPoint;
+    this.endPoint = temporaryEndPoint;
+  }
+
 
   private void checkDungeonInvariants(boolean wraps, int rows, int columns, int interconnect,
                                          int treasure) {
@@ -314,13 +366,17 @@ public class DungeonImpl implements Dungeon {
     }
   }
 
-  private void fillCavesWithTreasure(ArrayList<Integer> caves) {
+  private void fillCavesWithTreasure(ArrayList<Integer> caves, int randomCaveChoiceSeed) {
     // Make sure that the treasure amount is NOT 0.
 
     if (this.treasure != 0) {
       int numberOfCavesWithTreasure = (int) Math.ceil((caves.size() * treasure) / 100);
+
+      // Generator that chooses which cave
       RandomNumberGenerator rand =
-          new RandomNumberGenerator(0, caves.size() - 1, this.seed, 1);
+          new RandomNumberGenerator(0, caves.size() - 1, randomCaveChoiceSeed, 1);
+
+      // Generator that chooses which treasure
       RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, this.seed, 1);
 
       TreasureImpl.TreasureFactory treasureFactory = new TreasureImpl.TreasureFactory();
@@ -592,12 +648,12 @@ public class DungeonImpl implements Dungeon {
     }
 
     try {
-      assert caveObject != null;
       return caveObject.getCaveTreasure();
     }
 
     catch (NullPointerException e) {
-      return null;
+      return new ArrayList<>();
+
     }
   }
 

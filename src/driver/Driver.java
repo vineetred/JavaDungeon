@@ -49,7 +49,7 @@ public class Driver {
   private static void simulateFromStartToEnd() {
 
     System.out.println("\n<-------- Simulating a run from start point to end point -------->");
-    Dungeon test = new DungeonImpl(false);
+    Dungeon test = new DungeonImpl(false, 0);
     System.out.println("\nDungeon Params: ");
     System.out.println("Wrapping ---> false");
     System.out.println("Rows ---> 5");
@@ -209,7 +209,7 @@ public class Driver {
   private static void simulateCreationOfNonWrappingDungeon() {
 
       System.out.println("\n<-------- Simulating creation of a non-wrapping dungeon -------->");
-      Dungeon test = new DungeonImpl(false);
+      Dungeon test = new DungeonImpl(false, 0);
       System.out.println("\nDungeon Params: ");
       System.out.println("Wrapping ---> false");
       System.out.println("Rows ---> 5");
@@ -230,10 +230,19 @@ public class Driver {
       System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
           "," + testPlayer.getPlayerLocation().getColumn());
 
-      System.out.println("Treasure in the current room:");
-      for (Treasure treasureInRoom : test.peekCaveTreasure(testPlayer.getPlayerLocation())) {
-        System.out.println(treasureInRoom.toString());
+      ArrayList<Treasure> treasureInRoom = test.peekCaveTreasure(testPlayer.getPlayerLocation());
+
+      if (treasureInRoom != null) {
+        System.out.println("Treasure in the current room (in units): " + treasureInRoom.size());
+        for (int i = 0; i < treasureInRoom.size(); i++) {
+          System.out.println(treasureInRoom.get(i).toString());
+        }
       }
+
+      else {
+        System.out.println("No treasure in the room.");
+      }
+
 
       System.out.println("\nPossible moves from current cave: " +
           test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
