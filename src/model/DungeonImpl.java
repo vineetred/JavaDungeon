@@ -553,12 +553,8 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public boolean gameFinished(Point2D inputCavePoint) {
-
     return inputCavePoint.getRow() == this.getEndPoint().getRow()
         && inputCavePoint.getColumn() == this.getEndPoint().getColumn();
-
   }
-
-
 
 }

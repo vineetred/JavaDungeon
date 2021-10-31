@@ -17,6 +17,4 @@ public abstract class AbstractLocation implements Location {
     this.treasureList = treasureList;
   }
 
-  private void setLocation() {
-  }
 }

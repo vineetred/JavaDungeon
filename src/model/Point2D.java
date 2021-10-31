@@ -1,6 +1,5 @@
 package model;
 
-
 public class Point2D {
   private int row;
   private int column;
