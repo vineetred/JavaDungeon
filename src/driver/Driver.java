@@ -29,9 +29,14 @@ public class Driver {
     System.out.print("\nWelcome to the Labyrinth!");
 
     Dungeon test = new DungeonImpl(false, 7, 7, 0, 60);
+    System.out.println("\nDungeon Params: ");
+    System.out.println("Wrapping ---> False");
+    System.out.println("Rows ---> 7");
+    System.out.println("Columns ---> 7");
+    System.out.println("Interconnectedness ---> 0");
+    System.out.println("Treasure ---> 60%");
     System.out.println("\nStart point: " + test.getStartPoint().getRow() + "," + test.getStartPoint().getColumn());
     System.out.println("\nEnd point: " + test.getEndPoint().getRow() + "," + test.getEndPoint().getColumn());
-//    System.out.println("\nAll caves: " + test.getAllCaves());
 
     // Create a player
     System.out.println("\nCreating a player!");
