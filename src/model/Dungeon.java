@@ -38,8 +38,8 @@ public interface Dungeon {
    */
   ArrayList<Treasure> returnCaveTreasure(Point2D inputCavePoint);
 
-  /** Get all possible moves that are possible from the given
-   * point as directions.
+  /** Check if the given point and direction are a valid combination in the
+   * given dungeon.
    * @param inputCavePoint the Point2D object that we check the moves for
    * @param direction the character direction as N, S, E, W
    * @return true if possible, else false

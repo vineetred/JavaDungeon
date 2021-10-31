@@ -35,8 +35,8 @@ public class Driver {
     System.out.println("Columns ---> 7");
     System.out.println("Interconnectedness ---> 0");
     System.out.println("Treasure ---> 60%");
-    System.out.println("\nStart point: " + test.getStartPoint().getRow() + "," + test.getStartPoint().getColumn());
-    System.out.println("\nEnd point: " + test.getEndPoint().getRow() + "," + test.getEndPoint().getColumn());
+    System.out.println("Start point --->" + test.getStartPoint().getRow() + "," + test.getStartPoint().getColumn());
+    System.out.println("End point --->" + test.getEndPoint().getRow() + "," + test.getEndPoint().getColumn());
 
     // Create a player
     System.out.println("\nCreating a player!");
