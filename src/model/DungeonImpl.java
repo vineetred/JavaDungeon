@@ -34,34 +34,45 @@ public class DungeonImpl implements Dungeon {
   Returns:
   The dungeon built to specification represented as a 2 dimensional array.**/
   public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure) {
-    //possible case for the builder pattern for this constructor using the make dungeon method
-    // to abstract it
-    //Cave = cave;
-    //Location = location;
     Cave[][] Gameboard = new Cave[rows][columns];
-
     this.wraps = wraps;
     this.rows = rows;
     this.columns = columns;
     this.interconnectivity = interconnect;
     this.treasure = treasure;
     this.Gameboard = Gameboard;
-    this.potentialEdges = new ArrayList<Edge>();
-    this.leftOverEdges = new ArrayList<Edge>();;
-    this.finalEdges = new ArrayList<Edge>();;
 
-    // Check the dungeon invariants!
-    checkDungeonInvariants(wraps, rows, columns, interconnect, treasure);
-    // Generate a filled graph
-    createConnectedGraph();
-    // Run the algorithm
-    runKruskalAlgorithm();
-    // Fill the caves with treasure
-    fillCavesWithTreasure(getCavesIndexArrayList());
-    // Initialize the start and end points
-    this.startPoint = findStartPoint(getCavesIndexArrayList());
-    this.endPoint = findEndPoint(this.startPoint);
+    int temporaryStartPoint;
+    int temporaryEndPoint;
 
+    while (true) {
+      this.potentialEdges = new ArrayList<Edge>();
+      this.leftOverEdges = new ArrayList<Edge>();
+      this.finalEdges = new ArrayList<Edge>();
+
+      // Check the dungeon invariants!
+      checkDungeonInvariants(wraps, rows, columns, interconnect, treasure);
+      // Generate a filled graph
+      createConnectedGraph();
+      // Run the algorithm
+      runKruskalAlgorithm();
+      // Fill the caves with treasure
+      fillCavesWithTreasure(getCavesIndexArrayList());
+      // Initialize the start and end points
+      temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
+      // Catch the illegal state exception emitted when we
+      // cannot find a viable end point.
+      try {
+        temporaryEndPoint = findEndPoint(temporaryStartPoint);
+        break;
+      }
+      catch (IllegalStateException stateException) {
+        // Do nothing as we want this to repeat
+      }
+    }
+    // Assign it outside the loop as they are final
+    this.startPoint = temporaryStartPoint;
+    this.endPoint = temporaryEndPoint;
   }
 
   private void checkDungeonInvariants(boolean wraps, int rows, int columns, int interconnect,
@@ -324,7 +335,6 @@ public class DungeonImpl implements Dungeon {
       setList.add(s);
     }
 
-    // TODO: Handle this exception at some point.
     if (setList.size() - 1 != Gameboard[rows - 1][columns - 1].getIndex()) {
       throw new IllegalArgumentException("the set list doesn't match the number of elements");
     }
