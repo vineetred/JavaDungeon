@@ -553,7 +553,7 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public ArrayList<Treasure> returnCaveTreasure(Point2D inputCavePoint) {
+  public ArrayList<Treasure> expungeCaveTreasure(Point2D inputCavePoint) {
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
@@ -568,6 +568,29 @@ public class DungeonImpl implements Dungeon {
     try {
       assert caveObject != null;
       return caveObject.pickCaveTreasure();
+    }
+
+    catch (NullPointerException e) {
+      return null;
+    }
+  }
+
+  @Override
+  public ArrayList<Treasure> peekCaveTreasure(Point2D inputCavePoint) {
+    Cave caveObject = null;
+
+    for (Integer caveIndex : this.getAllCaves()) {
+      Cave temporaryObject = this.findCaveByIndex(caveIndex);
+      if (temporaryObject.getRow() == inputCavePoint.getRow()
+          && temporaryObject.getColumn() == inputCavePoint.getColumn()) {
+        caveObject = this.findCaveByIndex(caveIndex);
+        break;
+      }
+    }
+
+    try {
+      assert caveObject != null;
+      return caveObject.getCaveTreasure();
     }
 
     catch (NullPointerException e) {

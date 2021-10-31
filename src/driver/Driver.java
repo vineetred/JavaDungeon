@@ -27,6 +27,7 @@ public class Driver {
     System.out.print("\nWelcome to the Labyrinth!");
 
     simulateFromStartToEnd();
+    simulateCreationOfNonWrappingDungeon();
   }
 
   private static void playerPickTreasureFromCave(Player testPlayer,
@@ -47,6 +48,7 @@ public class Driver {
 
   private static void simulateFromStartToEnd() {
 
+    System.out.println("\n<-------- Simulating a run from start point to end point -------->");
     Dungeon test = new DungeonImpl(false);
     System.out.println("\nDungeon Params: ");
     System.out.println("Wrapping ---> false");
@@ -69,7 +71,7 @@ public class Driver {
     System.out.println("\nLet's pick up the treasure that might be available.");
 
 
-    ArrayList<Treasure> caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    ArrayList<Treasure> caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
 
@@ -89,7 +91,7 @@ public class Driver {
     System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
         "," + testPlayer.getPlayerLocation().getColumn());
 
-    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
     System.out.println("\nIs the game finished?");
@@ -118,7 +120,7 @@ public class Driver {
 
     System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
         "," + testPlayer.getPlayerLocation().getColumn());
-    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
     if (test.gameFinished(testPlayer.getPlayerLocation())) {
@@ -143,7 +145,7 @@ public class Driver {
 
     System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
         "," + testPlayer.getPlayerLocation().getColumn());
-    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
     if (test.gameFinished(testPlayer.getPlayerLocation())) {
@@ -168,7 +170,7 @@ public class Driver {
 
     System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
         "," + testPlayer.getPlayerLocation().getColumn());
-    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
     if (test.gameFinished(testPlayer.getPlayerLocation())) {
@@ -192,7 +194,7 @@ public class Driver {
 
     System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
         "," + testPlayer.getPlayerLocation().getColumn());
-    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
     if (test.gameFinished(testPlayer.getPlayerLocation())) {
@@ -204,4 +206,49 @@ public class Driver {
 
   }
 
-}
+  private static void simulateCreationOfNonWrappingDungeon() {
+
+      System.out.println("\n<-------- Simulating creation of a non-wrapping dungeon -------->");
+      Dungeon test = new DungeonImpl(false);
+      System.out.println("\nDungeon Params: ");
+      System.out.println("Wrapping ---> false");
+      System.out.println("Rows ---> 5");
+      System.out.println("Columns ---> 6");
+      System.out.println("Interconnectedness ---> 0");
+      System.out.println("Treasure ---> 20%");
+      System.out.println("Start point --->" + test.getStartPoint().getRow()
+          + "," + test.getStartPoint().getColumn());
+      System.out.println("End point --->" + test.getEndPoint().getRow()
+          + "," + test.getEndPoint().getColumn());
+
+      // Create a player
+      System.out.println("\nCreating a player!");
+      Player testPlayer = new PlayerImpl(test.getStartPoint(), test);
+      System.out.println("\nWelcome new Player!");
+
+      System.out.println("\nLet's get a description of the Player's location.");
+      System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+          "," + testPlayer.getPlayerLocation().getColumn());
+
+      System.out.println("Treasure in the current room:");
+      for (Treasure treasureInRoom : test.peekCaveTreasure(testPlayer.getPlayerLocation())) {
+        System.out.println(treasureInRoom.toString());
+      }
+
+      System.out.println("\nPossible moves from current cave: " +
+          test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+
+      System.out.println("\nLet's try to go up from the first row of a non-wrapping dungeon! This" +
+          " will not be possible.");
+      try {
+        testPlayer.moveNorth();
+      }
+      catch (IllegalStateException stateException) {
+        System.out.println("You cannot do that! There's a wall there. <-- Statement executed from" +
+            " catching an IllegalStateException.");
+      }
+    }
+  }
+
+

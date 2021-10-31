@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /** This represents a dungeon which is where the player navigates from a
@@ -31,7 +32,11 @@ public interface Dungeon {
    * @param inputCavePoint the Point2D object that we expunge the treasure from
    * @return ArrayList of Treasure enums
    */
-  ArrayList<Treasure> returnCaveTreasure(Point2D inputCavePoint);
+  ArrayList<Treasure> expungeCaveTreasure(Point2D inputCavePoint);
+
+  // TODO: Have a peek cave treasure method to just return the TreasureArray list without
+  // deleting anything
+  ArrayList<Treasure> peekCaveTreasure(Point2D inputCavePoint);
 
   /** Return the point 2d object of the cave or tunnel that exists
    * in the given direction.

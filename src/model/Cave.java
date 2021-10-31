@@ -67,4 +67,14 @@ class Cave extends AbstractLocation {
       return temporaryList;
     }
   }
+
+  // Check if treasure exists, if so, return the contents of the cave
+  protected ArrayList<Treasure> getCaveTreasure() {
+    if (this.treasureList.size() == 0) {
+      return null;
+    }
+    else {
+      return this.treasureList;
+    }
+  }
 }
