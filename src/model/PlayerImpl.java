@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The implementation of the player. This player when created has a location and treasure list that
@@ -33,12 +34,12 @@ public class PlayerImpl implements Player {
 
   @Override
   public Point2D getPlayerLocation() {
-    return this.playerLocation;
+    return new Point2D(this.playerLocation.getRow(), this.playerLocation.getColumn());
   }
 
   @Override
-  public ArrayList<Treasure> getPlayerTreasure() {
-    return this.playerTreasure;
+  public List<Treasure> getPlayerTreasure() {
+    return new ArrayList<>(this.playerTreasure);
   }
 
   @Override

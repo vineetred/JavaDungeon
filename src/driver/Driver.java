@@ -3,6 +3,7 @@ package driver;
 import model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Driver {
 
@@ -31,12 +32,12 @@ public class Driver {
   }
 
   private static void playerPickTreasureFromCave(Player testPlayer,
-                                                 ArrayList<Treasure> caveTreasure) {
+                                                 List<Treasure> caveTreasure) {
     if (caveTreasure == null || caveTreasure.size() == 0) {
       System.out.println("\nNo treasure in the cave");
     }
     else {
-      testPlayer.pickUpTreasure(caveTreasure);
+      testPlayer.pickUpTreasure((ArrayList<Treasure>) caveTreasure);
       System.out.println("\nPlayer just picks up: ");
       for (Treasure treasure : caveTreasure) {
         System.out.println("A " + treasure.toString());
@@ -71,7 +72,7 @@ public class Driver {
     System.out.println("\nLet's pick up the treasure that might be available.");
 
 
-    ArrayList<Treasure> caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    List<Treasure> caveTreasure = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
 
 
@@ -234,7 +235,7 @@ public class Driver {
       System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
           "," + testPlayer.getPlayerLocation().getColumn());
 
-      ArrayList<Treasure> treasureInRoom = test.peekCaveTreasure(testPlayer.getPlayerLocation());
+      List<Treasure> treasureInRoom = test.peekCaveTreasure(testPlayer.getPlayerLocation());
 
       if (treasureInRoom != null) {
         System.out.println("Treasure in the current room (in units): " + treasureInRoom.size());

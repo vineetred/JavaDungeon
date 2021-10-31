@@ -1,8 +1,8 @@
 package model;
 
 public class Point2D {
-  private int row;
-  private int column;
+  private final int row;
+  private final int column;
 
   /**
    * Represent a 2d point with the given coordinates that are the row and column of the cave.

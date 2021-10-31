@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /** This represents a dungeon which is where the player navigates from a
  * start point to an end point.
@@ -21,21 +22,21 @@ public interface Dungeon {
   /** Get all possible moves that are possible from the given
    * point as directions.
    * @param inputCavePoint the Point2D object that we check the moves for
-   * @return ArrayList of Strings
+   * @return List of Strings
    */
-  ArrayList<String> getMovesAtCaveIndex(Point2D inputCavePoint);
+  List<String> getMovesAtCaveIndex(Point2D inputCavePoint);
 
   /** Returns whatever treasure that is held at the cave at
    * the given point. This also removes it from the cave, making
    * it empty.
    * @param inputCavePoint the Point2D object that we expunge the treasure from
-   * @return ArrayList of Treasure enums
+   * @return List of Treasure enums
    */
-  ArrayList<Treasure> expungeCaveTreasure(Point2D inputCavePoint);
+  List<Treasure> expungeCaveTreasure(Point2D inputCavePoint);
 
   // TODO: Have a peek cave treasure method to just return the TreasureArray list without
   // deleting anything
-  ArrayList<Treasure> peekCaveTreasure(Point2D inputCavePoint);
+  List<Treasure> peekCaveTreasure(Point2D inputCavePoint);
 
   /** Return the point 2d object of the cave or tunnel that exists
    * in the given direction.

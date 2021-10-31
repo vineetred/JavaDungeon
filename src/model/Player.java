@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a player and all the associated actions.
@@ -17,7 +18,7 @@ public interface Player {
    * The player's treasure is returned in an arraylist.
    * @return ArrayList of treasure objects.
    */
-  public ArrayList<Treasure> getPlayerTreasure();
+  public List<Treasure> getPlayerTreasure();
 
   /**
    * The current location of the player.

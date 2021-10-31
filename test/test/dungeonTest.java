@@ -4,6 +4,7 @@ import model.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -11,12 +12,12 @@ public class dungeonTest {
 
   // Helper methods
   private static void playerPickTreasureFromCave(Player testPlayer,
-                                                 ArrayList<Treasure> caveTreasure) {
+                                                 List<Treasure> caveTreasure) {
     if (caveTreasure == null) {
 
     }
     else {
-      testPlayer.pickUpTreasure(caveTreasure);
+      testPlayer.pickUpTreasure((ArrayList<Treasure>) caveTreasure);
     }
   }
 
@@ -78,7 +79,7 @@ public class dungeonTest {
     Dungeon testDungeon = new DungeonImpl(false);
     // Create a player
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
-    ArrayList<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
     ArrayList<String> expectedOutput = new ArrayList<>();
     expectedOutput.add("South");
@@ -118,7 +119,7 @@ public class dungeonTest {
     Dungeon testDungeon = new DungeonImpl(false);
     // Create a player
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
-    ArrayList<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     // State should be deterministic at this point
     ArrayList<String> expectedOutput = new ArrayList<>();
     expectedOutput.add("Diamond");
@@ -141,7 +142,7 @@ public class dungeonTest {
     Dungeon testDungeon = new DungeonImpl(false);
     // Create a player
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
-    ArrayList<Treasure> caveTreasure = testDungeon.peekCaveTreasure(testPlayer.getPlayerLocation());
+    List<Treasure> caveTreasure = testDungeon.peekCaveTreasure(testPlayer.getPlayerLocation());
     // State should be deterministic at this point
     ArrayList<String> expectedOutput = new ArrayList<>();
     expectedOutput.add("Diamond");
@@ -161,7 +162,7 @@ public class dungeonTest {
     Dungeon testDungeon = new DungeonImpl(false);
     // Create a player
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
-    ArrayList<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
 
     // State should be deterministic at this point
     Point2D expectedOutput = testDungeon.getCaveInDirection(testPlayer.getPlayerLocation(), "S");
@@ -174,7 +175,7 @@ public class dungeonTest {
     Dungeon testDungeon = new DungeonImpl(false);
     // Create a player
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
-    ArrayList<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
 
     // State should be deterministic at this point
     // Hence, an exception is expected!
@@ -192,7 +193,7 @@ public class dungeonTest {
 
     // Let's finish the game
     // <------> Move <------>
-    ArrayList<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
     testPlayer.moveSouth();
 
@@ -242,7 +243,8 @@ public class dungeonTest {
     Dungeon testDungeon = new DungeonImpl(false);
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
     // Same start points
-    assertEquals(testDungeon.getStartPoint(), testPlayer.getPlayerLocation());
+    assertEquals(0, testPlayer.getPlayerLocation().getRow());
+    assertEquals(3, testPlayer.getPlayerLocation().getColumn());
   }
 
   @Test

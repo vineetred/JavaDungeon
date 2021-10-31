@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The implementation of the Dungeon interface.
@@ -558,16 +555,18 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public Point2D getStartPoint() {
-    return this.findCaveByIndex(this.startPoint).getLocation();
+    return new Point2D(this.findCaveByIndex(this.startPoint).getLocation().getRow(),
+        this.findCaveByIndex(this.startPoint).getLocation().getColumn());
   }
 
   @Override
   public Point2D getEndPoint() {
-    return this.findCaveByIndex(this.endPoint).getLocation();
+    return new Point2D(this.findCaveByIndex(this.endPoint).getLocation().getRow(),
+        this.findCaveByIndex(this.endPoint).getLocation().getColumn());
   }
 
   @Override
-  public ArrayList<String> getMovesAtCaveIndex(Point2D inputCavePoint) {
+  public List<String> getMovesAtCaveIndex(Point2D inputCavePoint) {
 
     Cave caveObject = null;
 
@@ -615,7 +614,7 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public ArrayList<Treasure> expungeCaveTreasure(Point2D inputCavePoint) {
+  public List<Treasure> expungeCaveTreasure(Point2D inputCavePoint) {
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
@@ -637,7 +636,7 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public ArrayList<Treasure> peekCaveTreasure(Point2D inputCavePoint) {
+  public List<Treasure> peekCaveTreasure(Point2D inputCavePoint) {
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
