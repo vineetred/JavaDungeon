@@ -10,7 +10,7 @@ class RandomNumberGenerator {
   protected RandomNumberGenerator(int min, int max, int seed, int listSize) {
     this.min = min;
     this.max = max;
-    this.seed = 0;
+    this.seed = seed;
     this.listSize = listSize;
 
     if (listSize <= 0) {
@@ -27,7 +27,7 @@ class RandomNumberGenerator {
     if (this.seed == 0) {
       returnInt = ((int) (Math.random() * ((this.max - this.min) + 1)) + this.min);
     } else {
-      returnInt = 0;
+      returnInt = 1;
     }
     return returnInt;
   }

@@ -18,12 +18,6 @@ public interface Dungeon {
    */
   Point2D getEndPoint();
 
-  /** Get the current Dungeon's designated cave nodes as indices
-   * in an ArrayList of integers.
-   * @return ArrayList of integers.
-   */
-  ArrayList<Integer> getAllCaves();
-
   /** Get all possible moves that are possible from the given
    * point as directions.
    * @param inputCavePoint the Point2D object that we check the moves for
@@ -39,13 +33,14 @@ public interface Dungeon {
    */
   ArrayList<Treasure> returnCaveTreasure(Point2D inputCavePoint);
 
-  /** Check if the given point and direction are a valid combination in the
-   * given dungeon.
+  /** Return the point 2d object of the cave or tunnel that exists
+   * in the given direction.
    * @param inputCavePoint the Point2D object that we check the moves for
    * @param direction the character direction as N, S, E, W
-   * @return true if possible, else false
+   * @return Point2D object to the direction you want
+   * @throws IllegalArgumentException if direction is not a thing or no cave exists there
    */
-  boolean isMoveValid(Point2D inputCavePoint, String direction);
+  Point2D getCaveInDirection(Point2D inputCavePoint, String direction);
 
   /** Check if the game is finished. This state is only reached when the given
    * point is also the marked end point. The check is done using

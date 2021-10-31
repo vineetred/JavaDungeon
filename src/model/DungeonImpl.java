@@ -18,6 +18,7 @@ public class DungeonImpl implements Dungeon {
   private final int startPoint;
   private final int endPoint;
   private final Cave[][] gameBoard;
+  private final int seed;
   private ArrayList<Edge> potentialEdges;
   private ArrayList<Edge> leftOverEdges;
   private ArrayList<Edge> finalEdges;
@@ -41,6 +42,7 @@ public class DungeonImpl implements Dungeon {
     this.interconnectivity = interconnect;
     this.treasure = treasure;
     this.gameBoard = gameBoard;
+    this.seed = 0;
 
     int temporaryStartPoint;
     int temporaryEndPoint;
@@ -53,6 +55,54 @@ public class DungeonImpl implements Dungeon {
 
       // Check the dungeon invariants!
       checkDungeonInvariants(wraps, rows, columns, interconnect, treasure);
+      // Generate a filled graph
+      createConnectedGraph();
+      // Run the algorithm
+      runKruskalAlgorithm();
+      // Fill the caves with treasure
+      fillCavesWithTreasure(getCavesIndexArrayList());
+      // Initialize the start and end points
+      temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
+      // Catch the illegal state exception emitted when we
+      // cannot find a viable end point.
+      try {
+        temporaryEndPoint = findEndPoint(temporaryStartPoint);
+        break;
+      }
+      catch (IllegalStateException stateException) {
+        // Do nothing as we want this to repeat
+      }
+    }
+    // Assign it outside the loop as they are final
+    this.startPoint = temporaryStartPoint;
+    this.endPoint = temporaryEndPoint;
+  }
+
+  /** The dungeon constructor to generate a non-random dungeon.
+   * Takes only the wrapping parameter to generate a 20% filled 5 x 6 dungeon.
+   * @param wraps the boolean variable that tells the program if wrapping is needed.
+   */
+  public DungeonImpl(boolean wraps) {
+    Cave[][] gameBoard = new Cave[5][6];
+    this.wraps = wraps;
+    this.rows = 5;
+    this.columns = 6;
+    this.interconnectivity = 0;
+    this.treasure = 20;
+    this.gameBoard = gameBoard;
+    this.seed = 1;
+
+    int temporaryStartPoint;
+    int temporaryEndPoint;
+
+    // Keep doing this till we find a suitable end-point
+    while (true) {
+      this.potentialEdges = new ArrayList<Edge>();
+      this.leftOverEdges = new ArrayList<Edge>();
+      this.finalEdges = new ArrayList<Edge>();
+
+      // Check the dungeon invariants!
+      checkDungeonInvariants(wraps, rows, columns, interconnectivity, treasure);
       // Generate a filled graph
       createConnectedGraph();
       // Run the algorithm
@@ -117,7 +167,7 @@ public class DungeonImpl implements Dungeon {
 
   private int findStartPoint(ArrayList<Integer> caves) {
 
-    RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, 1,
+    RandomNumberGenerator rand = new RandomNumberGenerator(0, caves.size() - 1, this.seed,
             1);
     return caves.get(rand.getRandomNumber());
   }
@@ -266,8 +316,8 @@ public class DungeonImpl implements Dungeon {
     if (this.treasure != 0) {
       int treasCaveNum = (int) Math.ceil((caves.size() * treasure) / 100);
       RandomNumberGenerator rand =
-          new RandomNumberGenerator(0, caves.size() - 1, 1, 1);
-      RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, 1, 1);
+          new RandomNumberGenerator(0, caves.size() - 1, this.seed, 1);
+      RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, this.seed, 1);
 
       TreasureImpl.TreasureFactory treasureFactory = new TreasureImpl.TreasureFactory();
 
@@ -324,10 +374,28 @@ public class DungeonImpl implements Dungeon {
     return caves;
   }
 
+  private ArrayList<Integer> getAllCaves() {
+    return this.getCavesIndexArrayList();
+  }
+
+  private ArrayList<Integer> getAllCavesAndTunnels() {
+    ArrayList<Integer> allCavesAndTunnels = new ArrayList<>();
+
+    // Get all the tunnels AND caves
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < columns; c++) {
+        if (gameBoard[r][c].getNeighbors().size() != 0) {
+          allCavesAndTunnels.add(gameBoard[r][c].getIndex());
+        }
+      }
+    }
+    return allCavesAndTunnels;
+  }
+
   private void runKruskalAlgorithm() {
     // Initializing the pseudo random number generators
     RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotentialEdges().size(),
-        1, 1);
+        this.seed, 1);
     Random randGen = new Random(rand.getRandomNumber());
     boolean exitInvariant = false;
     ArrayList<Integer> setList = new ArrayList<>();
@@ -437,16 +505,12 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public ArrayList<Integer> getAllCaves() {
-    return this.getCavesIndexArrayList();
-  }
-
-  @Override
   public ArrayList<String> getMovesAtCaveIndex(Point2D inputCavePoint) {
 
     Cave caveObject = null;
 
-    for (Integer caveIndex : this.getAllCaves()) {
+    // We go through tunnels AND caves.
+    for (Integer caveIndex : this.getAllCavesAndTunnels()) {
       Cave temporaryObject = this.findCaveByIndex(caveIndex);
       if (temporaryObject.getRow() == inputCavePoint.getRow()
           && temporaryObject.getColumn() == inputCavePoint.getColumn()) {
@@ -512,11 +576,11 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public boolean isMoveValid(Point2D inputCavePoint, String direction) {
+  public Point2D getCaveInDirection(Point2D inputCavePoint, String direction) {
 
     Cave caveObject = null;
 
-    for (Integer caveIndex : this.getAllCaves()) {
+    for (Integer caveIndex : this.getAllCavesAndTunnels()) {
       Cave temporaryObject = this.findCaveByIndex(caveIndex);
       if (temporaryObject.getRow() == inputCavePoint.getRow()
           && temporaryObject.getColumn() == inputCavePoint.getColumn()) {
@@ -535,19 +599,19 @@ public class DungeonImpl implements Dungeon {
 
       if (direction.equals("S") && inputLocationRow + 1 == caveNeighbourObject.getRow()
           && inputLocationCol == caveNeighbourObject.getColumn()) {
-        return true;
+        return caveNeighbourObject.getLocation();
       } else if (direction.equals("N") && inputLocationRow - 1 == caveNeighbourObject.getRow()
           && inputLocationCol == caveNeighbourObject.getColumn()) {
-        return true;
+        return caveNeighbourObject.getLocation();
       } else if (direction.equals("W") && inputLocationRow == caveNeighbourObject.getRow()
           && inputLocationCol + 1 == caveNeighbourObject.getColumn()) {
-        return true;
+        return caveNeighbourObject.getLocation();
       } else if (direction.equals("E") && inputLocationRow == caveNeighbourObject.getRow()
           && inputLocationCol - 1 == caveNeighbourObject.getColumn()) {
-        return true;
+        return caveNeighbourObject.getLocation();
       }
     }
-    return false;
+    throw new IllegalStateException("Wrong direction! You cannot move there.");
   }
 
   @Override

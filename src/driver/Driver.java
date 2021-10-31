@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class Driver {
 
   public static void main(String[] args) {
-
     System.out.println("___________________________________  \n" +
         "| _____ |   | ___ | ___ ___ | |   | |\n" +
         "| |   | |_| |__ | |_| __|____ | | | |\n" +
@@ -25,61 +24,9 @@ public class Driver {
     System.out.println("Version: 1.0.2");
     System.out.println("Year: 2021");
     System.out.println("GitHub: vineetred");
-
     System.out.print("\nWelcome to the Labyrinth!");
 
-    Dungeon test = new DungeonImpl(false, 7, 7, 0, 60);
-    System.out.println("\nDungeon Params: ");
-    System.out.println("Wrapping ---> False");
-    System.out.println("Rows ---> 7");
-    System.out.println("Columns ---> 7");
-    System.out.println("Interconnectedness ---> 0");
-    System.out.println("Treasure ---> 60%");
-    System.out.println("Start point --->" + test.getStartPoint().getRow()
-        + "," + test.getStartPoint().getColumn());
-    System.out.println("End point --->" + test.getEndPoint().getRow()
-        + "," + test.getEndPoint().getColumn());
-
-    // Create a player
-    System.out.println("\nCreating a player!");
-    Player testPlayer = new PlayerImpl(test.getStartPoint(), test);
-    System.out.println("\nWelcome new Player!");
-    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
-        "," + testPlayer.getPlayerLocation().getColumn());
-
-    System.out.println("\nLet's pick up the treasure that might be available.");
-
-
-    ArrayList<Treasure> caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
-    playerPickTreasureFromCave(testPlayer, caveTreasure);
-
-    System.out.println("\nPossible moves from current cave: " +
-        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
-
-    System.out.println("\nTrying to move north");
-    try {
-      testPlayer.moveNorth();
-    }
-
-    catch (IllegalStateException stateException) {
-      System.out.println("You cannot do that! There's a wall there.");
-    }
-
-
-    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
-        "," + testPlayer.getPlayerLocation().getColumn());
-
-    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
-    playerPickTreasureFromCave(testPlayer, caveTreasure);
-
-    System.out.println("\nIs the game finished?");
-
-    if (test.gameFinished(testPlayer.getPlayerLocation())) {
-      System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
-    }
-    else {
-      System.out.println("\nKeep playing.");
-    }
+    simulateFromStartToEnd();
   }
 
   private static void playerPickTreasureFromCave(Player testPlayer,
@@ -98,5 +45,163 @@ public class Driver {
     System.out.println("\nCurrent player treasure: " + testPlayer.getPlayerTreasure());
   }
 
+  private static void simulateFromStartToEnd() {
+
+    Dungeon test = new DungeonImpl(false);
+    System.out.println("\nDungeon Params: ");
+    System.out.println("Wrapping ---> false");
+    System.out.println("Rows ---> 5");
+    System.out.println("Columns ---> 6");
+    System.out.println("Interconnectedness ---> 0");
+    System.out.println("Treasure ---> 20%");
+    System.out.println("Start point --->" + test.getStartPoint().getRow()
+        + "," + test.getStartPoint().getColumn());
+    System.out.println("End point --->" + test.getEndPoint().getRow()
+        + "," + test.getEndPoint().getColumn());
+
+    // Create a player
+    System.out.println("\nCreating a player!");
+    Player testPlayer = new PlayerImpl(test.getStartPoint(), test);
+    System.out.println("\nWelcome new Player!");
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+
+    System.out.println("\nLet's pick up the treasure that might be available.");
+
+
+    ArrayList<Treasure> caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+
+
+    // <------> Move <------>
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    System.out.println("\nTrying to move South");
+    try {
+      testPlayer.moveSouth();
+    }
+
+    catch (IllegalStateException stateException) {
+      System.out.println("You cannot do that! There's a wall there.");
+    }
+
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+
+    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+
+    System.out.println("\nIs the game finished?");
+
+    if (test.gameFinished(testPlayer.getPlayerLocation())) {
+      System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
+    }
+    else {
+      System.out.println("\nKeep playing.");
+    }
+
+
+    // <------> Move <------>
+
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    System.out.println("\nTrying to move West");
+    try {
+      testPlayer.moveWest();
+    }
+
+    catch (IllegalStateException stateException) {
+      System.out.println("You cannot do that! There's a wall there.");
+    }
+
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+
+    if (test.gameFinished(testPlayer.getPlayerLocation())) {
+      System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
+    }
+    else {
+      System.out.println("\nKeep playing.");
+    }
+
+
+    // <------> Move <------>
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    System.out.println("\nTrying to move South");
+    try {
+      testPlayer.moveSouth();
+    }
+    catch (IllegalStateException stateException) {
+      System.out.println("You cannot do that! There's a wall there.");
+    }
+
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+
+    if (test.gameFinished(testPlayer.getPlayerLocation())) {
+      System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
+    }
+    else {
+      System.out.println("\nKeep playing.");
+    }
+
+
+    // <------> Move <------>
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    System.out.println("\nTrying to move South");
+    try {
+      testPlayer.moveSouth();
+    }
+    catch (IllegalStateException stateException) {
+      System.out.println("You cannot do that! There's a wall there.");
+    }
+
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+
+    if (test.gameFinished(testPlayer.getPlayerLocation())) {
+      System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
+    }
+    else {
+      System.out.println("\nKeep playing.");
+    }
+
+    // <------> Move <------>
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    System.out.println("\nTrying to move East");
+    try {
+      testPlayer.moveEast();
+    }
+    catch (IllegalStateException stateException) {
+      System.out.println("You cannot do that! There's a wall there.");
+    }
+
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+
+    if (test.gameFinished(testPlayer.getPlayerLocation())) {
+      System.out.println("\nCongratulations! You have successfully navigated the entire maze.");
+    }
+    else {
+      System.out.println("\nKeep playing.");
+    }
+
+  }
 
 }

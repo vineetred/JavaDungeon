@@ -43,49 +43,21 @@ public class PlayerImpl implements Player {
 
   @Override
   public void moveNorth() {
-
-    if (dungeon.isMoveValid(this.playerLocation, "N")) {
-      this.playerLocation = new Point2D(this.playerLocation.getRow() - 1,
-          this.playerLocation.getColumn());
-    }
-    else {
-      throw new IllegalStateException("Illegal move! There's a wall there");
-    }
-
+    this.playerLocation = dungeon.getCaveInDirection(this.playerLocation, "N");
   }
 
   @Override
   public void moveSouth() {
-    if (dungeon.isMoveValid(this.playerLocation, "S")) {
-      this.playerLocation = new Point2D(this.playerLocation.getRow() + 1,
-          this.playerLocation.getColumn());
-    }
-    else {
-      throw new IllegalStateException("Illegal move! There's a wall there");
-    }
+    this.playerLocation = dungeon.getCaveInDirection(this.playerLocation, "S");
   }
 
   @Override
   public void moveEast() {
-    if (dungeon.isMoveValid(this.playerLocation, "E")) {
-      this.playerLocation = new Point2D(this.playerLocation.getRow(),
-          this.playerLocation.getColumn() - 1);
-    }
-    else {
-      throw new IllegalStateException("Illegal move! There's a wall there");
-    }
-
+    this.playerLocation = dungeon.getCaveInDirection(this.playerLocation, "E");
   }
 
   @Override
   public void moveWest() {
-    if (dungeon.isMoveValid(this.playerLocation, "W")) {
-      this.playerLocation = new Point2D(this.playerLocation.getRow(),
-          this.playerLocation.getColumn() + 1);
-    }
-    else {
-      throw new IllegalStateException("Illegal move! There's a wall there");
-    }
-
+    this.playerLocation = dungeon.getCaveInDirection(this.playerLocation, "W");
   }
 }
