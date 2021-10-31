@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import random.RandomNumberGenerator;
-
 /**
  * The implementation of the Dungeon interface.
  */
@@ -50,6 +48,7 @@ public class DungeonImpl implements Dungeon {
     int temporaryStartPoint;
     int temporaryEndPoint;
 
+    // Keep doing this till we find a suitable end-point
     while (true) {
       this.potentialEdges = new ArrayList<Edge>();
       this.leftOverEdges = new ArrayList<Edge>();
