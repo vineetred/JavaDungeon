@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public abstract class AbstractLocation implements Location {
+public abstract class AbstractLocation {
   protected Point2D location;
   private ArrayList entrances;
   private ArrayList neighborList;

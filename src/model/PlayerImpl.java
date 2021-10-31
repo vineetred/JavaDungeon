@@ -7,17 +7,18 @@ import java.util.ArrayList;
  * will be filled as they move from cave to cave.
  */
 public class PlayerImpl implements Player {
-//  private int playerLocation;
-//  private int row;
-//  private int col;
+
   private Point2D playerLocation;
   private ArrayList<Treasure> playerTreasure;
   private final Dungeon dungeon;
 
+  /**
+   * The constructor for the player interface implementation.
+   * We assign a start 2-d point along with a dungeon.
+   * @param inputPoint the Point2D object that the player is currently starting at
+   * @param inputDungeon the dungeon a player is associated with
+   */
   public PlayerImpl(Point2D inputPoint, Dungeon inputDungeon) {
-//    this.playerLocation = startLocationIndex;
-//    this.row = row;
-//    this.col = col;
     this.playerLocation = inputPoint;
     this.dungeon = inputDungeon;
     this.playerTreasure = new ArrayList<Treasure>();

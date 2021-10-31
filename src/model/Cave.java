@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Cave extends AbstractLocation {
+class Cave extends AbstractLocation {
   private int index;
   private int set;
   private ArrayList<Integer> neighborList;
@@ -42,17 +42,17 @@ public class Cave extends AbstractLocation {
     this.set = set;
   }
 
-  void addNeighbor(int index) {
+  protected void addNeighbor(int index) {
     this.neighborList.add(index);
   }
 
-  ArrayList<Integer> getNeighbors() {
+  protected ArrayList<Integer> getNeighbors() {
     return this.neighborList;
   }
 
-  Point2D getLocation() { return this.location; }
+  protected Point2D getLocation() { return this.location; }
 
-  void addTreasure(Treasure treasure) {
+  protected void addTreasure(Treasure treasure) {
     this.treasureList.add(treasure);
   }
 

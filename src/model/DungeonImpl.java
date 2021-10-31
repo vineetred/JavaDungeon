@@ -164,7 +164,7 @@ public class DungeonImpl implements Dungeon {
       // notice that the search distance is decremented by 1
       // in each successive call
       int depthFirstSearchAccumulator =
-          depthFirstSearchDistance((Integer) caveObject.getNeighbors().get(index),
+          depthFirstSearchDistance(caveObject.getNeighbors().get(index),
           searchDistance - 1, visited);
 
       // Disregard if output is -1 or if index returned is not a cave
@@ -270,7 +270,9 @@ public class DungeonImpl implements Dungeon {
       RandomNumberGenerator rand =
           new RandomNumberGenerator(0, caves.size() - 1, 1, 1);
       RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2, 1, 1);
+
       TreasureImpl.TreasureFactory treasureFactory = new TreasureImpl.TreasureFactory();
+
       for (int t = 0; t < treasCaveNum; t++) {
         int treasureRand = rand2.getRandomNumber();
         if (treasureRand == 0 ) {
@@ -294,7 +296,6 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
-
   }
 
   private Cave findCaveByIndex(int index) {
@@ -320,14 +321,13 @@ public class DungeonImpl implements Dungeon {
         if (gameBoard[r][c].getNeighbors().size() != 0 && gameBoard[r][c].getNeighbors().size() != 2) {
           caves.add(gameBoard[r][c].getIndex());
         }
-
       }
     }
     return caves;
   }
 
   private void runKruskalAlgorithm() {
-    //start condition - every cave in own set
+    // Initializing the pseudo random number generators
     RandomNumberGenerator rand = new RandomNumberGenerator(0, this.getPotentialEdges().size(), 1, 1);
     Random randGen = new Random(rand.getRandomNumber());
     boolean exitInvariant = false;
@@ -419,12 +419,10 @@ public class DungeonImpl implements Dungeon {
               // Removing from the leftover edges list
               this.leftOverEdges.remove(randomInt);
             }
-
           }
           // Setting the exit invariant
           exitInvariant = true;
         }
-
       }
     }
   }
@@ -482,8 +480,6 @@ public class DungeonImpl implements Dungeon {
       else if (currentRow == caveNeighbourObject.getRow() && currentCol - 1 == caveNeighbourObject.getColumn()) {
         possibleMoveDirections.add("East");
       }
-
-
   }
     return possibleMoveDirections;
 
