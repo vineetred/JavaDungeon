@@ -10,6 +10,9 @@ public class TreasureImpl {
     public Treasure getTreasure() {
       return new Ruby();
     }
+
+    @Override
+    public String toString() { return "Ruby"; }
   }
 
   static class Diamond implements Treasure {
@@ -17,6 +20,9 @@ public class TreasureImpl {
     public Treasure getTreasure() {
       return new Diamond();
     }
+
+    @Override
+    public String toString() { return "Diamond"; }
   }
 
   static class Sapphire implements Treasure {
@@ -24,6 +30,9 @@ public class TreasureImpl {
     public Treasure getTreasure() {
       return new Sapphire();
     }
+
+    @Override
+    public String toString() { return "Sapphire"; }
   }
 
   static class TreasureFactory { // Simple Java Factory pattern class. This class will produce animals.

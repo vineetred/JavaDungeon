@@ -7,11 +7,19 @@ import java.util.ArrayList;
  * will be filled as they move from cave to cave.
  */
 public class PlayerImpl implements Player {
-  private int playerLocation;
+//  private int playerLocation;
+//  private int row;
+//  private int col;
+  private Point2D playerLocation;
   private ArrayList<Treasure> playerTreasure;
+  private final Dungeon dungeon;
 
-  public PlayerImpl(int startLocationIndex) {
-    this.playerLocation = startLocationIndex;
+  public PlayerImpl(Point2D inputPoint, Dungeon inputDungeon) {
+//    this.playerLocation = startLocationIndex;
+//    this.row = row;
+//    this.col = col;
+    this.playerLocation = inputPoint;
+    this.dungeon = inputDungeon;
     this.playerTreasure = new ArrayList<Treasure>();
 
   }
@@ -20,12 +28,10 @@ public class PlayerImpl implements Player {
   public void pickUpTreasure(ArrayList<Treasure> inputTreasure) {
     // Pick the treasure up
     playerTreasure.addAll(inputTreasure);
-
-
   }
 
   @Override
-  public int getPlayerLocation() {
+  public Point2D getPlayerLocation() {
     return this.playerLocation;
   }
 
@@ -34,43 +40,51 @@ public class PlayerImpl implements Player {
     return this.playerTreasure;
   }
 
-  /**
-   * The player moves north.
-   */
   @Override
   public void moveNorth() {
-    //verify player can move north
-    //reduce row by 1
 
+    if (dungeon.isMoveValid(this.playerLocation, "N")) {
+      this.playerLocation = new Point2D(this.playerLocation.getRow() - 1,
+          this.playerLocation.getColumn());
+    }
+    else {
+      throw new IllegalStateException("Illegal move! There's a wall there");
+    }
 
   }
 
-  /**
-   * The player moves south.
-   */
   @Override
   public void moveSouth() {
-    //verify player can move south
-    //increase row by 1
+    if (dungeon.isMoveValid(this.playerLocation, "S")) {
+      this.playerLocation = new Point2D(this.playerLocation.getRow() + 1,
+          this.playerLocation.getColumn());
+    }
+    else {
+      throw new IllegalStateException("Illegal move! There's a wall there");
+    }
   }
 
-  /**
-   * The player moves east.
-   */
   @Override
   public void moveEast() {
-    //verify player can move east
-    //reduce column by 1
+    if (dungeon.isMoveValid(this.playerLocation, "E")) {
+      this.playerLocation = new Point2D(this.playerLocation.getRow(),
+          this.playerLocation.getColumn() - 1);
+    }
+    else {
+      throw new IllegalStateException("Illegal move! There's a wall there");
+    }
 
   }
 
-  /**
-   * The player moves west.
-   */
   @Override
   public void moveWest() {
-    //verify player can move west
-    //increase column by 1
+    if (dungeon.isMoveValid(this.playerLocation, "W")) {
+      this.playerLocation = new Point2D(this.playerLocation.getRow(),
+          this.playerLocation.getColumn() + 1);
+    }
+    else {
+      throw new IllegalStateException("Illegal move! There's a wall there");
+    }
 
   }
 }

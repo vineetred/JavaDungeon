@@ -6,14 +6,16 @@ import java.util.ArrayList;
  *
  */
 public interface Dungeon {
-  int getStartPoint();
+  Point2D getStartPoint();
 
-  int getEndPoint();
+  Point2D getEndPoint();
 
   ArrayList<Integer> getAllCaves();
 
-  ArrayList<String> getMovesAtCaveIndex(int caveIndex);
+  ArrayList<String> getMovesAtCaveIndex(Point2D inputCavePoint);
 
-  ArrayList<Treasure> returnCaveTreasure(int caveIndex);
+  ArrayList<Treasure> returnCaveTreasure(Point2D inputCavePoint);
+
+  boolean isMoveValid(Point2D inputCavePoint, String direction);
 
 }

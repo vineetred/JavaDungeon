@@ -397,13 +397,13 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public int getStartPoint() {
-    return this.startPoint;
+  public Point2D getStartPoint() {
+    return this.findCaveByIndex(this.startPoint).getLocation();
   }
 
   @Override
-  public int getEndPoint() {
-    return this.endPoint;
+  public Point2D getEndPoint() {
+    return this.findCaveByIndex(this.endPoint).getLocation();
   }
 
   @Override
@@ -412,9 +412,20 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public ArrayList<String> getMovesAtCaveIndex(int caveIndex) {
+  public ArrayList<String> getMovesAtCaveIndex(Point2D inputCavePoint) {
 
-    Cave caveObject = this.findCaveByIndex(caveIndex);
+    Cave caveObject = null;
+
+    for (Integer caveIndex : this.getAllCaves()) {
+      Cave temporaryObject = this.findCaveByIndex(caveIndex);
+      if (temporaryObject.getRow() == inputCavePoint.getRow()
+          && temporaryObject.getColumn() == inputCavePoint.getColumn()) {
+        caveObject = this.findCaveByIndex(caveIndex);
+        break;
+      }
+    }
+
+    assert caveObject != null;
     ArrayList<Integer> caveNeighbours = caveObject.getNeighbors();
     ArrayList<String> possibleMoveDirections = new ArrayList<>();
 
@@ -446,10 +457,20 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public ArrayList<Treasure> returnCaveTreasure(int caveIndex) {
-    Cave caveObject = this.findCaveByIndex(caveIndex);
+  public ArrayList<Treasure> returnCaveTreasure(Point2D inputCavePoint) {
+    Cave caveObject = null;
+
+    for (Integer caveIndex : this.getAllCaves()) {
+      Cave temporaryObject = this.findCaveByIndex(caveIndex);
+      if (temporaryObject.getRow() == inputCavePoint.getRow()
+          && temporaryObject.getColumn() == inputCavePoint.getColumn()) {
+        caveObject = this.findCaveByIndex(caveIndex);
+        break;
+      }
+    }
 
     try {
+      assert caveObject != null;
       return caveObject.pickCaveTreasure();
     }
 
@@ -457,5 +478,46 @@ public class DungeonImpl implements Dungeon {
       return null;
     }
   }
+
+  @Override
+  public boolean isMoveValid(Point2D inputCavePoint, String direction) {
+
+    Cave caveObject = null;
+
+    for (Integer caveIndex : this.getAllCaves()) {
+      Cave temporaryObject = this.findCaveByIndex(caveIndex);
+      if (temporaryObject.getRow() == inputCavePoint.getRow()
+          && temporaryObject.getColumn() == inputCavePoint.getColumn()) {
+        caveObject = this.findCaveByIndex(caveIndex);
+        break;
+      }
+    }
+
+    assert caveObject != null;
+    int inputLocationRow = caveObject.getRow();
+    int inputLocationCol = caveObject.getColumn();
+
+    for (Integer neighborIndex : caveObject.getNeighbors()) {
+
+      Cave caveNeighbourObject = this.findCaveByIndex(neighborIndex);
+
+      if (direction.equals("S") && inputLocationRow + 1 == caveNeighbourObject.getRow()
+          && inputLocationCol == caveNeighbourObject.getColumn()) {
+        return true;
+      } else if (direction.equals("N") && inputLocationRow - 1 == caveNeighbourObject.getRow()
+          && inputLocationCol == caveNeighbourObject.getColumn()) {
+        return true;
+      } else if (direction.equals("W") && inputLocationRow == caveNeighbourObject.getRow()
+          && inputLocationCol + 1 == caveNeighbourObject.getColumn()) {
+        return true;
+      } else if (direction.equals("E") && inputLocationRow == caveNeighbourObject.getRow()
+          && inputLocationCol - 1 == caveNeighbourObject.getColumn()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
 
 }

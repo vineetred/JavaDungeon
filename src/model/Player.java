@@ -11,7 +11,7 @@ public interface Player {
 
   public ArrayList<Treasure> getPlayerTreasure();
 
-  public int getPlayerLocation();
+  public Point2D getPlayerLocation();
 
   /**
    * The player moves north.
