@@ -29,13 +29,18 @@ public interface Dungeon {
   /** Returns whatever treasure that is held at the cave at
    * the given point. This also removes it from the cave, making
    * it empty.
+   *
    * @param inputCavePoint the Point2D object that we expunge the treasure from
    * @return List of Treasure enums
    */
   List<Treasure> expungeCaveTreasure(Point2D inputCavePoint);
 
-  // TODO: Have a peek cave treasure method to just return the TreasureArray list without
-  // deleting anything
+  /** Returns whatever treasure that is held at the cave at
+   * the given point. A new List is created leaving the actual cave treasure untouched.
+   *
+   * @param inputCavePoint the Point2D object that we expunge the treasure from
+   * @return List of Treasure enums
+   */
   List<Treasure> peekCaveTreasure(Point2D inputCavePoint);
 
   /** Return the point 2d object of the cave or tunnel that exists

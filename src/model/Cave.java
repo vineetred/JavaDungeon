@@ -75,7 +75,7 @@ class Cave {
       return null;
     }
     else {
-      return this.treasureList;
+      return new ArrayList<>(this.treasureList);
     }
   }
 }

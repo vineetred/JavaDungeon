@@ -627,6 +627,7 @@ public class DungeonImpl implements Dungeon {
     }
 
     try {
+      // No need for copy as we want to reassign same object to the player's list
       return caveObject.pickCaveTreasure();
     }
 
@@ -649,6 +650,7 @@ public class DungeonImpl implements Dungeon {
     }
 
     try {
+      // Underlying method already returns a deep copy
       return caveObject.getCaveTreasure();
     }
 
