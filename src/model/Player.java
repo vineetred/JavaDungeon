@@ -1,9 +1,17 @@
 package model;
 
+import java.util.ArrayList;
+
 /**
  * Represents a player and all the associated actions.
  */
 public interface Player {
+
+  public void pickUpTreasure(ArrayList<Treasure> inputTreasure);
+
+  public ArrayList<Treasure> getPlayerTreasure();
+
+  public int getPlayerLocation();
 
   /**
    * The player moves north.

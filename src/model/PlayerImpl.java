@@ -7,12 +7,31 @@ import java.util.ArrayList;
  * will be filled as they move from cave to cave.
  */
 public class PlayerImpl implements Player {
-  private Location playerLocation;
-  private ArrayList treasureList;
+  private int playerLocation;
+  private ArrayList<Treasure> playerTreasure;
 
-  public PlayerImpl(Location playerLocation, ArrayList treasureList) {
-    this.playerLocation = playerLocation;
-    this.treasureList = treasureList;
+  public PlayerImpl(int startLocationIndex) {
+    this.playerLocation = startLocationIndex;
+    this.playerTreasure = new ArrayList<Treasure>();
+
+  }
+
+  @Override
+  public void pickUpTreasure(ArrayList<Treasure> inputTreasure) {
+    // Pick the treasure up
+    playerTreasure.addAll(inputTreasure);
+
+
+  }
+
+  @Override
+  public int getPlayerLocation() {
+    return this.playerLocation;
+  }
+
+  @Override
+  public ArrayList<Treasure> getPlayerTreasure() {
+    return this.playerTreasure;
   }
 
   /**

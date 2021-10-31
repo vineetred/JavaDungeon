@@ -410,4 +410,23 @@ public class DungeonImpl implements Dungeon {
   public ArrayList<Integer> getAllCaves() {
     return this.getCavesIndexArrayList();
   }
+
+  @Override
+  public ArrayList<Integer> getMovesAtCaveIndex(int caveIndex) {
+    return findCaveByIndex(caveIndex).getNeighbors();
+  }
+
+  @Override
+  public ArrayList<Treasure> returnCaveTreasure(int caveIndex) {
+    Cave caveObject = this.findCaveByIndex(caveIndex);
+
+    try {
+      return caveObject.pickCaveTreasure();
+    }
+
+    catch (NullPointerException e) {
+      return null;
+    }
+  }
+
 }

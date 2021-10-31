@@ -50,7 +50,21 @@ public class Cave extends AbstractLocation {
     return this.neighborList;
   }
 
+  Point2D getLocation() { return this.location; }
+
   void addTreasure(Treasure treasure) {
     this.treasureList.add(treasure);
+  }
+
+  // Check if treasure exits, if so return it and set to empty.
+  protected ArrayList<Treasure> pickCaveTreasure() {
+    if (this.treasureList.size() == 0) {
+      return null;
+    }
+    else {
+      ArrayList<Treasure> temporaryList = this.treasureList;
+      this.treasureList = new ArrayList<>();
+      return temporaryList;
+    }
   }
 }
