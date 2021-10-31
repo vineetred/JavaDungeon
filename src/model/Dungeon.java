@@ -12,7 +12,7 @@ public interface Dungeon {
 
   ArrayList<Integer> getAllCaves();
 
-  ArrayList<Integer> getMovesAtCaveIndex(int caveIndex);
+  ArrayList<String> getMovesAtCaveIndex(int caveIndex);
 
   ArrayList<Treasure> returnCaveTreasure(int caveIndex);
 

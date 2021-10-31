@@ -18,8 +18,10 @@ public class Driver {
     Player testPlayer = new PlayerImpl(test.getStartPoint());
     System.out.println("Current player location: " + testPlayer.getPlayerLocation());
     System.out.println("Current player treasure: " + testPlayer.getPlayerTreasure());
-    System.out.println("Current indices that the player can move to: "
-        + test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    System.out.println("Possible moves from current pos: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
 
     ArrayList<Treasure> caveTreasure = test.returnCaveTreasure(testPlayer.getPlayerLocation());
     if (caveTreasure == null) {

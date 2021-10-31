@@ -412,8 +412,37 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public ArrayList<Integer> getMovesAtCaveIndex(int caveIndex) {
-    return findCaveByIndex(caveIndex).getNeighbors();
+  public ArrayList<String> getMovesAtCaveIndex(int caveIndex) {
+
+    Cave caveObject = this.findCaveByIndex(caveIndex);
+    ArrayList<Integer> caveNeighbours = caveObject.getNeighbors();
+    ArrayList<String> possibleMoveDirections = new ArrayList<>();
+
+    int currentRow = caveObject.getRow();
+    int currentCol = caveObject.getColumn();
+
+    for (Integer caveNeighbour : caveNeighbours) {
+      Cave caveNeighbourObject = this.findCaveByIndex(caveNeighbour);
+
+      if (currentRow + 1 == caveNeighbourObject.getRow() && currentCol == caveNeighbourObject.getColumn()) {
+        possibleMoveDirections.add("South");
+      }
+      else if (currentRow - 1 == caveNeighbourObject.getRow() && currentCol == caveNeighbourObject.getColumn()) {
+        possibleMoveDirections.add("North");
+      }
+
+      else if (currentRow == caveNeighbourObject.getRow() && currentCol + 1 == caveNeighbourObject.getColumn()) {
+        possibleMoveDirections.add("West");
+      }
+
+      else if (currentRow == caveNeighbourObject.getRow() && currentCol - 1 == caveNeighbourObject.getColumn()) {
+        possibleMoveDirections.add("East");
+      }
+
+
+  }
+    return possibleMoveDirections;
+
   }
 
   @Override
