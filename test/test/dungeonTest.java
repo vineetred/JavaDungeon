@@ -267,6 +267,23 @@ public class dungeonTest {
         "13<->19, 8<->14, 12<->18, 12<->13, 8<->9, 16<->22, 15<->21, 24<->25, 0<->6, 14<->20, " +
         "0<->1, 15<->16, 14<->15, 10<->11, 11<->6, 25<->26, 16<->17, 7<->13, 5<->11, 27<->28, " +
         "28<->29]", testDungeon.toString());
+
+
+    // Wrapping but checking with truly random seed
+    testDungeon = new DungeonImpl(true, 7, 7, 5, 20);
+    String dungeonString = testDungeon.toString();
+    String arrow = "<->";
+
+    assertEquals(53, dungeonString.split(arrow, -1).length-1);
+
+    // Non - Wrapping but checking with truly random seed
+    testDungeon = new DungeonImpl(false, 7, 7, 5, 20);
+    dungeonString = testDungeon.toString();
+    arrow = "<->";
+
+    assertEquals(53, dungeonString.split(arrow, -1).length-1);
+
+
   }
 
   // Point2D class testing
