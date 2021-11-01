@@ -1,10 +1,14 @@
 File: ExampleRun1.txt
 
-Summary: We create a 5 x 6 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
+SUMMARY: We create a 5 x 6 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
 of 20%. Since the graph used is a predetermined non-random graph generated using a seed, we know the shortest path
 that the user can take, which is what we simulate. We also check if there is treasure at every place and try to pick it
 up if it exists. We also print the possible moves, player treasure that they have hoarded at every move. We also reach
 the very end of this maze, checking if the game has ended after every move.
+
+NOTE: The treasure generated in the driver run is pseudo-random without specifying any seed. Hence, it most likely
+will not match the treasure that you see in the example run text file. Please note that this is a parameter that can
+be specified to the default constructors.
 
 _________________________________________________________________________________________________________
 ___________________________________

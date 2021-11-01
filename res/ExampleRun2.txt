@@ -1,11 +1,15 @@
-File: ExampleRun1.txt
+File: ExampleRun2.txt
 
-Summary: We create a 5 x 6 (row x column) a wrapping and non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
+SUMMARY: We create a 5 x 6 (row x column) a wrapping and non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
 of 20%. Since the graph used is a predetermined non-random graph generated using a seed, we know the shortest path
 that the user can take. We simply have this test run to see if a user can create a non-wrapping as well as wrapping
 dungeon.
 
-Edits: I have a welcome message at the start of the driver code, which gets chopped of otherwise. I simply appended it
+NOTE: The treasure generated in the driver run is pseudo-random without specifying any seed. Hence, it most likely
+will not match the treasure that you see in the example run text file. Please note that this is a parameter that can
+be specified to the default constructors.
+
+EDIT: I have a welcome message at the start of the driver code, which gets chopped of otherwise. I simply appended it
 here.
 _________________________________________________________________________________________________________
 ___________________________________

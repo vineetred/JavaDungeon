@@ -1,6 +1,12 @@
 package test;
 
-import model.*;
+import model.Dungeon;
+import model.DungeonImpl;
+import model.Player;
+import model.PlayerImpl;
+import model.Point2D;
+import model.Point2DImpl;
+import model.Treasure;
 import org.junit.Test;
 
 import java.util.ArrayList;
