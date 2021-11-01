@@ -12,19 +12,19 @@ public interface Player {
    * The player pickups up the given treasure.
    * @param inputTreasure an ArrayList of Treasure type.
    */
-  public void pickUpTreasure(List<Treasure> inputTreasure);
+  void pickUpTreasure(List<Treasure> inputTreasure);
 
   /**
    * The player's treasure is returned in an arraylist.
    * @return ArrayList of treasure objects.
    */
-  public List<Treasure> getPlayerTreasure();
+  List<Treasure> getPlayerTreasure();
 
   /**
    * The current location of the player.
    * @return a Point2D object of the current player location.
    */
-  public Point2D getPlayerLocation();
+  Point2D getPlayerLocation();
 
   /**
    * The player moves north.

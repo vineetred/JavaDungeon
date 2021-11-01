@@ -67,6 +67,7 @@ public class dungeonTest {
     testDungeon = new DungeonImpl(true);
 
     // Check if the paths are connecting every node
+    // Paths such as 0<->6 would not be possible without wrapping
     assertEquals("[22<->23, 27<->3, 3<->4, 11<->17, 3<->9, 13<->14, 18<->24, 1<->2, " +
         "13<->19, 8<->14, 12<->18, 12<->13, 8<->9, 16<->22, 15<->21, 24<->25, 0<->6, 14<->20, " +
         "0<->1, 15<->16, 14<->15, 10<->11, 11<->6, 25<->26, 16<->17, 7<->13, 5<->11, 27<->28, " +
