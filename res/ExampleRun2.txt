@@ -1,0 +1,82 @@
+File: ExampleRun1.txt
+
+Summary: We create a 5 x 6 (row x column) a wrapping and non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
+of 20%. Since the graph used is a predetermined non-random graph generated using a seed, we know the shortest path
+that the user can take. We simply have this test run to see if a user can create a non-wrapping as well as wrapping
+dungeon.
+
+Edits: I have a welcome message at the start of the driver code, which gets chopped of otherwise. I simply appended it
+here.
+_________________________________________________________________________________________________________
+___________________________________
+| _____ |   | ___ | ___ ___ | |   | |
+| |   | |_| |__ | |_| __|____ | | | |
+| | | |_________|__ |______ |___|_| |
+| |_|   | _______ |______ |   | ____|
+| ___ | |____ | |______ | |_| |____ |
+|___|_|____ | |   ___ | |________ | |
+|   ________| | |__ | |______ | | | |
+| | | ________| | __|____ | | | __| |
+|_| |__ |   | __|__ | ____| | |_| __|
+|   ____| | |____ | |__ |   |__ |__ |
+| |_______|_______|___|___|___|_____|
+
+Author: Vineet Reddy
+Version: 1.0.2
+Year: 2021
+
+Welcome to the Labyrinth!
+<-------- Simulating creation of a non-wrapping dungeon -------->
+
+Dungeon Params:
+Wrapping ---> false
+Rows ---> 5
+Columns ---> 6
+Interconnectedness ---> 0
+Treasure ---> 20%
+Start point --->0,3
+End point --->3,3
+
+Creating a player!
+
+Welcome new Player!
+
+Let's get a description of the Player's location.
+
+Current player location: 0,3
+No treasure in the room.
+
+Possible moves from current cave: [South]
+
+Let's try to go up from the first row of a non-wrapping dungeon! This will not be possible.
+You cannot do that! There's a wall there. <-- Statement executed from catching an IllegalStateException.
+
+<-------- Simulating creation of a wrapping dungeon -------->
+
+Dungeon Params:
+Wrapping ---> true
+Rows ---> 5
+Columns ---> 6
+Interconnectedness ---> 0
+Treasure ---> 20%
+Start point --->0,3
+End point --->3,1
+
+Creating a player!
+
+Welcome new Player!
+
+Let's get a description of the Player's location.
+
+Current player location: 0,3
+No treasure in the room.
+
+Possible moves from current cave: [West, South]
+
+Trying to move West
+
+Current player location: 0,4
+
+Possible moves from current cave: [East]
+
+Process finished with exit code 0

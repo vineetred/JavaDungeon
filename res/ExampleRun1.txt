@@ -1,0 +1,123 @@
+File: ExampleRun1.txt
+
+Summary: We create a 5 x 6 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
+of 20%. Since the graph used is a predetermined non-random graph generated using a seed, we know the shortest path
+that the user can take, which is what we simulate. We also check if there is treasure at every place and try to pick it
+up if it exists. We also print the possible moves, player treasure that they have hoarded at every move. We also reach
+the very end of this maze, checking if the game has ended after every move.
+
+_________________________________________________________________________________________________________
+___________________________________
+| _____ |   | ___ | ___ ___ | |   | |
+| |   | |_| |__ | |_| __|____ | | | |
+| | | |_________|__ |______ |___|_| |
+| |_|   | _______ |______ |   | ____|
+| ___ | |____ | |______ | |_| |____ |
+|___|_|____ | |   ___ | |________ | |
+|   ________| | |__ | |______ | | | |
+| | | ________| | __|____ | | | __| |
+|_| |__ |   | __|__ | ____| | |_| __|
+|   ____| | |____ | |__ |   |__ |__ |
+| |_______|_______|___|___|___|_____|
+
+Author: Vineet Reddy
+Version: 1.0.2
+Year: 2021
+
+Welcome to the Labyrinth!
+<-------- Simulating a run from start point to end point -------->
+
+<-------- along with printing details statistics along every step -------->
+
+Dungeon Params:
+Wrapping ---> false
+Rows ---> 5
+Columns ---> 6
+Interconnectedness ---> 0
+Treasure ---> 20%
+Start point --->0,3
+End point --->3,3
+
+Creating a player!
+
+Welcome new Player!
+
+Current player location: 0,3
+
+Let's pick up the treasure that might be available.
+
+No treasure in the cave
+
+Current player treasure: []
+
+Possible moves from current cave: [South]
+
+Trying to move South
+
+Current player location: 1,3
+
+No treasure in the cave
+
+Current player treasure: []
+
+Is the game finished?
+
+Keep playing.
+
+Possible moves from current cave: [North, West]
+
+Trying to move West
+
+Current player location: 1,4
+
+No treasure in the cave
+
+Current player treasure: []
+
+Is the game finished?
+
+Keep playing.
+
+Possible moves from current cave: [North, South, East]
+
+Trying to move South
+
+Current player location: 2,4
+
+Player just picks up:
+A Ruby
+
+Current player treasure: [Ruby]
+
+Is the game finished?
+
+Keep playing.
+
+Possible moves from current cave: [South, West, North]
+
+Trying to move South
+
+Current player location: 3,4
+
+No treasure in the cave
+
+Current player treasure: [Ruby]
+
+Is the game finished?
+
+Keep playing.
+
+Possible moves from current cave: [North, East]
+
+Trying to move East
+
+Current player location: 3,3
+
+Player just picks up:
+A Diamond
+
+Current player treasure: [Ruby, Diamond]
+
+Is the game finished?
+
+Congratulations! You have successfully navigated the entire maze.
