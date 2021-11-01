@@ -19,7 +19,7 @@ public class DungeonImpl implements Dungeon {
   private final int rows;
   private final int columns;
   private final int interconnectivity;
-  private final int treasure;
+  private final int treasurePercentage;
   private final int startPoint;
   private final int endPoint;
   private final Cave[][] gameBoard;
@@ -28,28 +28,28 @@ public class DungeonImpl implements Dungeon {
   private ArrayList<Edge> leftOverEdges;
   private ArrayList<Edge> finalEdges;
 
-  /** The dungeon constructor.
-   * How many rows and columns there should be specified as integers.
-   * The degree of interconnectivity(default is 0) or how many paths between nodes should there be.
-   * An interconnectivity of 0 means that there is exactly 1 path between all nodes.
+  /** The dungeon constructor that takes in the rows, the columns, if it is wrapping or not, the
+   * degree of interconnectivity that is required by the user, and the treasure percentage in
+   * increments of 1.
+   *
    * @param wraps boolean that is set true if you want it wrapped.
    * @param rows the number of rows
    * @param columns the number of columns
    * @param interconnect the degree of interconnectivity you want the maze to be generated with
-   * @param treasure the percentage denominated out of 100 of treasure filled caves
+   * @param treasurePercentage the percentage denominated out of 100 of treasure filled caves
    *
    */
-  public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure) {
+  public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasurePercentage) {
 
     // Check the dungeon invariants!
-    checkDungeonInvariants(wraps, rows, columns, interconnect, treasure);
+    checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage);
 
     Cave[][] gameBoard = new Cave[rows][columns];
     this.wraps = wraps;
     this.rows = rows;
     this.columns = columns;
     this.interconnectivity = interconnect;
-    this.treasure = treasure;
+    this.treasurePercentage = treasurePercentage;
     this.gameBoard = gameBoard;
     this.seed = 0;
 
@@ -63,7 +63,7 @@ public class DungeonImpl implements Dungeon {
       this.finalEdges = new ArrayList<Edge>();
 
       // Check the dungeon invariants!
-      checkDungeonInvariants(wraps, rows, columns, interconnect, treasure);
+      checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage);
       // Generate a filled graph
       createConnectedGraph();
       // Run the algorithm
@@ -98,7 +98,7 @@ public class DungeonImpl implements Dungeon {
     this.rows = 5;
     this.columns = 6;
     this.interconnectivity = 0;
-    this.treasure = 20;
+    this.treasurePercentage = 20;
     this.seed = 1;
 
     int temporaryStartPoint;
@@ -111,7 +111,7 @@ public class DungeonImpl implements Dungeon {
       this.finalEdges = new ArrayList<Edge>();
 
       // Check the dungeon invariants!
-      checkDungeonInvariants(wraps, rows, columns, interconnectivity, treasure);
+      checkDungeonInvariants(wraps, rows, columns, interconnectivity, treasurePercentage);
       // Generate a filled graph
       createConnectedGraph();
       // Run the algorithm
@@ -148,7 +148,7 @@ public class DungeonImpl implements Dungeon {
     this.rows = rows;
     this.columns = columns;
     this.interconnectivity = 0;
-    this.treasure = 20;
+    this.treasurePercentage = 20;
     this.seed = 1;
 
     int temporaryStartPoint;
@@ -161,7 +161,7 @@ public class DungeonImpl implements Dungeon {
       this.finalEdges = new ArrayList<Edge>();
 
       // Check the dungeon invariants!
-      checkDungeonInvariants(wraps, rows, columns, interconnectivity, treasure);
+      checkDungeonInvariants(wraps, rows, columns, interconnectivity, treasurePercentage);
       // Generate a filled graph
       createConnectedGraph();
       // Run the algorithm
@@ -190,12 +190,12 @@ public class DungeonImpl implements Dungeon {
     // A lot of exception handling to ensure that the dungeon is never
     // created with invalid params
     if (rows < 1 || columns < 1) {
-      throw new IllegalArgumentException("Rows or Columns cannot be less than 1.");
+      throw new IllegalArgumentException("Cannot have 0 rows or columns!");
     } else if (rows == 1 && columns < 6 || rows < 6 && columns == 1) {
-      throw new IllegalArgumentException("You must have at least 6 rows or columns if the other "
-          + "is 1.");
+      throw new IllegalArgumentException("Need to have minimum of 6 rows/columns.");
     } else if (rows == 2 && columns < 3) {
-      throw new IllegalArgumentException("You must have at least 6 nodes in the graph.");
+      throw new IllegalArgumentException("You don't seem to have enough places for at least six " +
+          "nodes");
     }
 
     if (treasure < 20) {
@@ -204,22 +204,22 @@ public class DungeonImpl implements Dungeon {
     }
 
     if (interconnect < 0) {
-      throw new IllegalArgumentException("The interconnectivity cannot be less than 0");
+      throw new IllegalArgumentException("The interconnectivity cannot be negative!");
     }
 
     if (interconnect > 0 && !wraps) {
 
       int maxEdges = 2 * rows * columns - rows - columns;
       if (interconnect > maxEdges -  (rows  * columns - 1)) {
-        throw new IllegalArgumentException("Interconnectivity too high, beyond number of edges in"
-            + " graph.");
+        throw new IllegalArgumentException("The interconnectivity is too high based on the number" +
+            " of rows and columns!");
       }
     } else if (interconnect > 0 && wraps) {
 
       int maxEdges = 2 * rows * columns;
       if (interconnect > maxEdges) {
-        throw new IllegalArgumentException("Interconnectivity too high, beyond number of edges in"
-            + " graph.");
+        throw new IllegalArgumentException("The interconnectivity is too high based on the number" +
+            " of rows and columns!");
       }
     }
   }
@@ -310,37 +310,12 @@ public class DungeonImpl implements Dungeon {
     }
 
     // Build the edges based on the wraps command!
-    if (!wraps) {
-      for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < columns; c++) {
-          // CASE: NOT ON LAST EDGE
-          if (c < columns - 1 && r < rows - 1) {
-            Edge edge = new Edge(gameBoard[r][c], gameBoard[r + 1][c]);
-            potentialEdges.add(edge);
-            Edge edge2 = new Edge(gameBoard[r][c], gameBoard[r][c + 1]);
-            potentialEdges.add(edge2);
-          }
-          // CASE: NODE ON BOTTOM RIGHT
-          else if (c == columns - 1 && r == rows - 1) {
-            // WE SIMPLY IGNORE
-          }
-          // CASE : LAST COLUMN
-          else if (c == columns - 1 && r <= rows - 1) {
-            Edge edge = new Edge(gameBoard[r][c], gameBoard[r + 1][c]);
-            potentialEdges.add(edge);
-          }
-          // CASE : EVERYTHING ELSE
-          else {
-            Edge edge = new Edge(gameBoard[r][c], gameBoard[r][c + 1]);
-            potentialEdges.add(edge);
-          }
-        }
-      }
-    } else {
+
+    // If wraps is true
+    if (wraps) {
       for (int r = 0; r < rows; r++) {
         for (int c = 0; c < columns; c++) {
 
-          // TODO: Add some more wrapping cases!
           // CASE: not an edge node so we add as usual
           if (c < columns - 1 && r < rows - 1) {
             Edge edge = new Edge(gameBoard[r][c], gameBoard[r + 1][c]);
@@ -374,13 +349,43 @@ public class DungeonImpl implements Dungeon {
         }
       }
     }
+
+    // If wraps is not true
+    else {
+      for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < columns; c++) {
+          // CASE: NOT ON LAST EDGE
+          if (c < columns - 1 && r < rows - 1) {
+            Edge edge = new Edge(gameBoard[r][c], gameBoard[r + 1][c]);
+            potentialEdges.add(edge);
+            Edge edge2 = new Edge(gameBoard[r][c], gameBoard[r][c + 1]);
+            potentialEdges.add(edge2);
+          }
+          // CASE: NODE ON BOTTOM RIGHT
+          else if (c == columns - 1 && r == rows - 1) {
+            // WE NEED THIS TO ENSURE THAT IT DOES NOT TRIGGER
+            // ANY OTHER CONTROL FLOWS.
+          }
+          // CASE : LAST COLUMN
+          else if (c == columns - 1 && r <= rows - 1) {
+            Edge edge = new Edge(gameBoard[r][c], gameBoard[r + 1][c]);
+            potentialEdges.add(edge);
+          }
+          // CASE : EVERYTHING ELSE
+          else {
+            Edge edge = new Edge(gameBoard[r][c], gameBoard[r][c + 1]);
+            potentialEdges.add(edge);
+          }
+        }
+      }
+    }
   }
 
   private void fillCavesWithTreasure(ArrayList<Integer> caves, int randomCaveChoiceSeed) {
     // Make sure that the treasure amount is NOT 0.
 
-    if (this.treasure != 0) {
-      int numberOfCavesWithTreasure = (int) Math.ceil((caves.size() * treasure) / 100);
+    if (this.treasurePercentage != 0) {
+      int numberOfCavesWithTreasure = (int) Math.ceil((caves.size() * treasurePercentage) / 100);
 
       // Generator that chooses which cave
       RandomNumberGenerator rand =

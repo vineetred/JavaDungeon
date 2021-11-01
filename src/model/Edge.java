@@ -1,8 +1,8 @@
 package model;
 
 class Edge {
-  private Cave cave1;
-  private Cave cave2;
+  private final Cave cave1;
+  private final Cave cave2;
 
 
   Edge(Cave cave1, Cave cave2) {
@@ -34,7 +34,6 @@ class Edge {
     this.cave1.addNeighbor(this.getRightIndex());
     this.cave2.addNeighbor(this.getLeftIndex());
   }
-
 
   @Override
   public String toString() {
