@@ -57,7 +57,7 @@ public class dungeonTest {
 
   // Dungeon Public method tests
   @Test
-  public void testDungeonGeneration() {
+  public void testBothDungeonCreation() {
 
     // Non-wrapping
     Dungeon testDungeon = new DungeonImpl(false);
@@ -273,7 +273,7 @@ public class dungeonTest {
         "28<->29]", testDungeon.toString());
   }
 
-  // Point2D testing
+  // Point2D class testing
   @Test
   public void testPoint2DCreation() {
     Point2D testPoint = new Point2D(1, 1);
