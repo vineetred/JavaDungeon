@@ -74,6 +74,7 @@ public class dungeonTest {
 
     // Check if the paths are connecting every node
     // Paths such as 0<->6 would not be possible without wrapping
+    // We know the paths as these are generated non-deterministic dungeons
     assertEquals("[22<->23, 27<->3, 3<->4, 11<->17, 3<->9, 13<->14, 18<->24, 1<->2, " +
         "13<->19, 8<->14, 12<->18, 12<->13, 8<->9, 16<->22, 15<->21, 24<->25, 0<->6, 14<->20, " +
         "0<->1, 15<->16, 14<->15, 10<->11, 11<->6, 25<->26, 16<->17, 7<->13, 5<->11, 27<->28, " +
@@ -121,7 +122,7 @@ public class dungeonTest {
     testPlayer.moveSouth();
     expectedOutput = new ArrayList<>();
     expectedOutput.add("North");
-    expectedOutput.add("West");
+    expectedOutput.add("East");
     // State should be deterministic at this point
     assertEquals(expectedOutput ,testDungeon.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
 
@@ -132,7 +133,7 @@ public class dungeonTest {
     caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
     expectedOutput = new ArrayList<>();
-    expectedOutput.add("West");
+    expectedOutput.add("East");
     expectedOutput.add("South");
     // State should be deterministic at this point
     assertEquals(expectedOutput ,testDungeon.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
@@ -140,7 +141,7 @@ public class dungeonTest {
     testPlayer.moveSouth();
     expectedOutput = new ArrayList<>();
     expectedOutput.add("North");
-    expectedOutput.add("East");
+    expectedOutput.add("West");
     // State should be deterministic at this point
     assertEquals(expectedOutput ,testDungeon.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
 
@@ -232,22 +233,22 @@ public class dungeonTest {
     // <------> Move <------>
     caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
-    testPlayer.moveWest();
-
-    // <------> Move <------>
-    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
-    playerPickTreasureFromCave(testPlayer, caveTreasure);
-    testPlayer.moveSouth();
-
-    // <------> Move <------>
-    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
-    playerPickTreasureFromCave(testPlayer, caveTreasure);
-    testPlayer.moveSouth();
-
-    // <------> Move <------>
-    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
-    playerPickTreasureFromCave(testPlayer, caveTreasure);
     testPlayer.moveEast();
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveWest();
 
     // Game must be finished.
     assertTrue(testDungeon.gameFinished(testPlayer.getPlayerLocation()));
@@ -347,7 +348,7 @@ public class dungeonTest {
   @Test
   public void testPlayerPickUpTreasure() {
     // With a random non-wrapping dungeon!
-    Dungeon testDungeon = new DungeonImpl(false, 1);
+    Dungeon testDungeon = new DungeonImpl(false, 1, 5, 6);
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
     List<Treasure> expectedOutput = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     testPlayer.pickUpTreasure(expectedOutput);
@@ -357,7 +358,7 @@ public class dungeonTest {
     assertEquals(expectedOutput, testPlayer.getPlayerTreasure());
 
     // With a random non-wrapping dungeon!
-    testDungeon = new DungeonImpl(true, 1);
+    testDungeon = new DungeonImpl(true, 1, 5, 6);
     testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
     expectedOutput = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     testPlayer.pickUpTreasure(expectedOutput);
@@ -412,12 +413,12 @@ public class dungeonTest {
 
     // This sequence should not throw any exception!
     testPlayer.moveSouth();
-    testPlayer.moveWest();
+    testPlayer.moveEast();
     // Game should still be running!
     assertFalse(testDungeon.gameFinished(testPlayer.getPlayerLocation()));
     testPlayer.moveSouth();
     testPlayer.moveSouth();
-    testPlayer.moveEast();
+    testPlayer.moveWest();
     // We should have reached the end!
     assertTrue(testDungeon.gameFinished(testPlayer.getPlayerLocation()));
 

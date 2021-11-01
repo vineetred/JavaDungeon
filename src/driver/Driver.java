@@ -31,9 +31,10 @@ public class Driver {
     System.out.println("GitHub: vineetred");
     System.out.print("\nWelcome to the Labyrinth!");
 
-    simulateFromStartToEnd();
-    simulateCreationOfNonWrappingDungeon();
+//    simulateFromStartToEnd();
+//    simulateCreationOfNonWrappingDungeon();
     simulateCreationOfWrappingDungeon();
+//    simulateVisitingEveryNodeInDungeon();
   }
 
   private static void playerPickTreasureFromCave(Player testPlayer,
@@ -58,16 +59,16 @@ public class Driver {
     System.out.println("\n<-------- along with printing details statistics along every step " +
         "-------->");
 
-    Dungeon test = new DungeonImpl(false, 0);
+    Dungeon test = new DungeonImpl(false, 0, 5, 6);
     System.out.println("\nDungeon Params: ");
     System.out.println("Wrapping ---> false");
     System.out.println("Rows ---> 5");
     System.out.println("Columns ---> 6");
     System.out.println("Interconnectedness ---> 0");
     System.out.println("Treasure ---> 20%");
-    System.out.println("Start point --->" + test.getStartPoint().getRow()
+    System.out.println("Start point ---> " + test.getStartPoint().getRow()
         + "," + test.getStartPoint().getColumn());
-    System.out.println("End point --->" + test.getEndPoint().getRow()
+    System.out.println("End point ---> " + test.getEndPoint().getRow()
         + "," + test.getEndPoint().getColumn());
 
     // Create a player
@@ -120,7 +121,7 @@ public class Driver {
 
     System.out.println("\nTrying to move West");
     try {
-      testPlayer.moveWest();
+      testPlayer.moveEast();
     }
 
     catch (IllegalStateException stateException) {
@@ -198,7 +199,7 @@ public class Driver {
 
     System.out.println("\nTrying to move East");
     try {
-      testPlayer.moveEast();
+      testPlayer.moveWest();
     }
     catch (IllegalStateException stateException) {
       System.out.println("You cannot do that! There's a wall there.");
@@ -222,7 +223,7 @@ public class Driver {
   private static void simulateCreationOfNonWrappingDungeon() {
 
       System.out.println("\n<-------- Simulating creation of a non-wrapping dungeon -------->");
-      Dungeon test = new DungeonImpl(false, 0);
+      Dungeon test = new DungeonImpl(false, 0, 5, 6);
       System.out.println("\nDungeon Params: ");
       System.out.println("Wrapping ---> false");
       System.out.println("Rows ---> 5");
@@ -275,16 +276,16 @@ public class Driver {
   private static void simulateCreationOfWrappingDungeon() {
 
     System.out.println("\n<-------- Simulating creation of a wrapping dungeon -------->");
-    Dungeon test = new DungeonImpl(true, 0);
+    Dungeon test = new DungeonImpl(true, 0, 5, 6);
     System.out.println("\nDungeon Params: ");
     System.out.println("Wrapping ---> true");
     System.out.println("Rows ---> 5");
     System.out.println("Columns ---> 6");
     System.out.println("Interconnectedness ---> 0");
     System.out.println("Treasure ---> 20%");
-    System.out.println("Start point --->" + test.getStartPoint().getRow()
+    System.out.println("Start point ---> " + test.getStartPoint().getRow()
         + "," + test.getStartPoint().getColumn());
-    System.out.println("End point --->" + test.getEndPoint().getRow()
+    System.out.println("End point ---> " + test.getEndPoint().getRow()
         + "," + test.getEndPoint().getColumn());
 
     // Create a player
@@ -314,11 +315,126 @@ public class Driver {
         test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
 
     System.out.println("\nTrying to move West");
+    testPlayer.moveEast();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+  }
+
+  private static void simulateVisitingEveryNodeInDungeon() {
+    System.out.println("\n<-------- Visiting every single node -------->");
+
+    Dungeon test = new DungeonImpl(false, 1, 4, 3);
+    System.out.println("\nDungeon Params: ");
+    System.out.println("Wrapping ---> false");
+    System.out.println("Rows ---> 4");
+    System.out.println("Columns ---> 3");
+    System.out.println("Interconnectedness ---> 0");
+    System.out.println("Treasure ---> 20%");
+    System.out.println("Start point ---> " + test.getStartPoint().getRow()
+        + "," + test.getStartPoint().getColumn());
+    System.out.println("End point ---> " + test.getEndPoint().getRow()
+        + "," + test.getEndPoint().getColumn());
+
+    // Create a player
+    System.out.println("\nCreating a player!");
+    Player testPlayer = new PlayerImpl(test.getStartPoint(), test);
+    System.out.println("\nWelcome new Player!");
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
     testPlayer.moveWest();
     System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
         "," + testPlayer.getPlayerLocation().getColumn());
     System.out.println("\nPossible moves from current cave: " +
         test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+    System.out.println("\nGoing back to the previous cave");
+
+    testPlayer.moveEast();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    testPlayer.moveEast();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+    System.out.println("\nGoing back to the previous cave");
+
+    testPlayer.moveWest();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    testPlayer.moveSouth();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    testPlayer.moveEast();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    testPlayer.moveSouth();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    testPlayer.moveWest();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    testPlayer.moveWest();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+    System.out.println("This cave is actually the end point, but we will continue exploring!");
+
+    testPlayer.moveNorth();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+    System.out.println("\nGoing back to the previous cave");
+
+    testPlayer.moveSouth();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    testPlayer.moveSouth();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    testPlayer.moveEast();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    testPlayer.moveEast();
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    System.out.println("\nWe just visited every single location!");
   }
   }
 

@@ -137,12 +137,12 @@ public class DungeonImpl implements Dungeon {
    * @param wraps the boolean variable that tells the program if wrapping is needed.
    * @param randomCaveTreasureChoiceSeed the seed which the treasure filling method chooses a cave
    */
-  public DungeonImpl(boolean wraps, int randomCaveTreasureChoiceSeed) {
+  public DungeonImpl(boolean wraps, int randomCaveTreasureChoiceSeed, int rows, int columns) {
     Cave[][] gameBoard = new Cave[5][6];
     this.gameBoard = gameBoard;
     this.wraps = wraps;
-    this.rows = 5;
-    this.columns = 6;
+    this.rows = rows;
+    this.columns = columns;
     this.interconnectivity = 0;
     this.treasure = 20;
     this.seed = 1;
@@ -603,12 +603,12 @@ public class DungeonImpl implements Dungeon {
 
       else if (currentRow == caveNeighbourObject.getRow()
           && currentCol + 1 == caveNeighbourObject.getColumn()) {
-        possibleMoveDirections.add("West");
+        possibleMoveDirections.add("East");
       }
 
       else if (currentRow == caveNeighbourObject.getRow()
           && currentCol - 1 == caveNeighbourObject.getColumn()) {
-        possibleMoveDirections.add("East");
+        possibleMoveDirections.add("West");
       }
   }
     return possibleMoveDirections;
@@ -690,10 +690,10 @@ public class DungeonImpl implements Dungeon {
       } else if (direction.equals("N") && inputLocationRow - 1 == caveNeighbourObject.getRow()
           && inputLocationCol == caveNeighbourObject.getColumn()) {
         return caveNeighbourObject.getLocation();
-      } else if (direction.equals("W") && inputLocationRow == caveNeighbourObject.getRow()
+      } else if (direction.equals("E") && inputLocationRow == caveNeighbourObject.getRow()
           && inputLocationCol + 1 == caveNeighbourObject.getColumn()) {
         return caveNeighbourObject.getLocation();
-      } else if (direction.equals("E") && inputLocationRow == caveNeighbourObject.getRow()
+      } else if (direction.equals("W") && inputLocationRow == caveNeighbourObject.getRow()
           && inputLocationCol - 1 == caveNeighbourObject.getColumn()) {
         return caveNeighbourObject.getLocation();
       }
