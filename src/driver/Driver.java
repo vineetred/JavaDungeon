@@ -1,13 +1,10 @@
 package driver;
 
-import model.Dungeon;
-import model.DungeonImpl;
-import model.Player;
-import model.PlayerImpl;
-import model.Treasure;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Driver {
 
@@ -31,10 +28,11 @@ public class Driver {
     System.out.println("GitHub: vineetred");
     System.out.print("\nWelcome to the Labyrinth!");
 
-//    simulateFromStartToEnd();
-//    simulateCreationOfNonWrappingDungeon();
-//    simulateCreationOfWrappingDungeon();
+    simulateFromStartToEnd();
+    simulateCreationOfNonWrappingDungeon();
+    simulateCreationOfWrappingDungeon();
     simulateVisitingEveryNodeInDungeon();
+    simulateUserInput();
   }
 
   private static void playerPickTreasureFromCave(Player testPlayer,
@@ -44,6 +42,7 @@ public class Driver {
     }
     else {
       testPlayer.pickUpTreasure((ArrayList<Treasure>) caveTreasure);
+      System.out.println("There is treasure in the room!");
       System.out.println("\nPlayer just picks up: ");
       for (Treasure treasure : caveTreasure) {
         System.out.println("A " + treasure.toString());
@@ -218,6 +217,8 @@ public class Driver {
       System.out.println("\nKeep playing.");
     }
 
+    System.out.println("\n<---- Simulation Done ----->");
+
   }
 
   private static void simulateCreationOfNonWrappingDungeon() {
@@ -268,9 +269,10 @@ public class Driver {
         testPlayer.moveNorth();
       }
       catch (IllegalStateException stateException) {
-        System.out.println("You cannot do that! There's a wall there. <-- Statement executed from" +
-            " catching an IllegalStateException.");
+        System.out.println("You cannot do that! There's a wall there!");
       }
+
+    System.out.println("\n<---- Simulation Done ----->");
     }
 
   private static void simulateCreationOfWrappingDungeon() {
@@ -297,7 +299,7 @@ public class Driver {
     System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
         "," + testPlayer.getPlayerLocation().getColumn());
 
-    List<Treasure> treasureInRoom = test.peekCaveTreasure(testPlayer.getPlayerLocation());
+    List<Treasure> treasureInRoom = test.expungeCaveTreasure(testPlayer.getPlayerLocation());
 
     if (treasureInRoom != null) {
       System.out.println("Treasure in the current room (in units): " + treasureInRoom.size());
@@ -314,12 +316,17 @@ public class Driver {
     System.out.println("\nPossible moves from current cave: " +
         test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
 
-    System.out.println("\nTrying to move West");
-    testPlayer.moveEast();
+    System.out.println("\nSince the dungeon is wrapping, we can move from the top most row to go " +
+        "further North (to the last row in reality).");
+
+    testPlayer.moveNorth();
     System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
         "," + testPlayer.getPlayerLocation().getColumn());
     System.out.println("\nPossible moves from current cave: " +
         test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+    System.out.println("\n<---- Simulation Done ----->");
+
   }
 
   private static void simulateVisitingEveryNodeInDungeon() {
@@ -435,7 +442,75 @@ public class Driver {
         test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
 
     System.out.println("\nWe just visited every single location!");
+
+    System.out.println("\n<---- Simulation Done ----->");
   }
+
+  private static void simulateUserInput() {
+
+    System.out.println("\n<-------- Simulating a real random game. User must give command line " +
+        "inputs " +
+        "-------->");
+
+    Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+    System.out.println("Wrapping (Y/N)?");
+    boolean wrap =  myObj.nextLine().equals("Y");
+
+    System.out.println("Interconnectivity (numbers only): ? ");
+    int degree =  Integer.parseInt(myObj.nextLine());
+
+    System.out.println("Rows (numbers only): ? ");
+    int rows =  Integer.parseInt(myObj.nextLine());
+
+    System.out.println("Columns (numbers only): ? ");
+    int columns =  Integer.parseInt(myObj.nextLine());
+
+    System.out.println("Treasure in percentage (out of 100): ? ");
+    int treasurePercentage =  Integer.parseInt(myObj.nextLine());
+
+    Dungeon test = new DungeonImpl(wrap, rows, columns, degree, treasurePercentage);
+    System.out.println("\nDungeon Params: ");
+    System.out.println("Wrapping ---> " + wrap);
+    System.out.println("Rows ---> " + rows);
+    System.out.println("Columns ---> " + columns);
+    System.out.println("Interconnectedness ---> " + degree);
+    System.out.println("Treasure ---> " + treasurePercentage + "%");
+    System.out.println("Start point --->" + test.getStartPoint().getRow()
+        + "," + test.getStartPoint().getColumn());
+    System.out.println("End point --->" + test.getEndPoint().getRow()
+        + "," + test.getEndPoint().getColumn());
+
+    // Create a player
+    System.out.println("\nCreating a player!");
+    Player testPlayer = new PlayerImpl(test.getStartPoint(), test);
+    System.out.println("\nWelcome new Player!");
+
+    System.out.println("\nLet's get a description of the Player's location.");
+    System.out.println("\nCurrent player location: " + testPlayer.getPlayerLocation().getRow() +
+        "," + testPlayer.getPlayerLocation().getColumn());
+
+    List<Treasure> treasureInRoom = test.peekCaveTreasure(testPlayer.getPlayerLocation());
+
+    playerPickTreasureFromCave(testPlayer, treasureInRoom);
+
+
+    System.out.println("\nPossible moves from current cave: " +
+        test.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
+
+
+    System.out.println("\nLet's try to go North and see if it is possible!.");
+    try {
+      testPlayer.moveNorth();
+      System.out.println("Nice, you just moved North.");
+    }
+    catch (IllegalStateException stateException) {
+      System.out.println("You cannot do that! There's a wall there! Try some other direction");
+    }
+
+    System.out.println("\n<---- Simulation Done ----->");
+  }
+
+
   }
 
 

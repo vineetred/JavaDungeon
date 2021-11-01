@@ -180,15 +180,17 @@ public class dungeonTest {
     caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
     expectedOutput = new ArrayList<>();
+    expectedOutput.add("North");
     expectedOutput.add("East");
     expectedOutput.add("South");
     // State should be deterministic at this point
     assertEquals(expectedOutput ,testDungeon.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
 
-    testPlayer.moveSouth();
+    // Going UP the wrapping dungeon from the top most row
+    testPlayer.moveNorth();
     expectedOutput = new ArrayList<>();
-    expectedOutput.add("North");
-    expectedOutput.add("West");
+    expectedOutput.add("South");
+    expectedOutput.add("East");
     // State should be deterministic at this point
     assertEquals(expectedOutput ,testDungeon.getMovesAtCaveIndex(testPlayer.getPlayerLocation()));
 

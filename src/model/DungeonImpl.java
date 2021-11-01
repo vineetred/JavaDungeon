@@ -138,7 +138,7 @@ public class DungeonImpl implements Dungeon {
    * @param randomCaveTreasureChoiceSeed the seed which the treasure filling method chooses a cave
    */
   public DungeonImpl(boolean wraps, int randomCaveTreasureChoiceSeed, int rows, int columns) {
-    Cave[][] gameBoard = new Cave[5][6];
+    Cave[][] gameBoard = new Cave[rows][columns];
     this.gameBoard = gameBoard;
     this.wraps = wraps;
     this.rows = rows;
@@ -610,6 +610,27 @@ public class DungeonImpl implements Dungeon {
           && currentCol - 1 == caveNeighbourObject.getColumn()) {
         possibleMoveDirections.add("West");
       }
+
+      if (wraps) {
+
+        if (currentRow == 0 && caveNeighbourObject.getRow() == this.rows - 1) {
+          possibleMoveDirections.add("North");
+        }
+
+        else if (currentRow == this.rows - 1 && caveNeighbourObject.getRow() == 0) {
+          possibleMoveDirections.add("South");
+        }
+
+        else if (currentCol == 0 && caveNeighbourObject.getColumn() == this.columns - 1) {
+          possibleMoveDirections.add("West");
+        }
+
+        else if (currentCol == this.columns - 1 && caveNeighbourObject.getColumn() == 0) {
+          possibleMoveDirections.add("East");
+        }
+
+
+      }
   }
     return possibleMoveDirections;
 
@@ -696,6 +717,27 @@ public class DungeonImpl implements Dungeon {
       } else if (direction.equals("W") && inputLocationRow == caveNeighbourObject.getRow()
           && inputLocationCol - 1 == caveNeighbourObject.getColumn()) {
         return caveNeighbourObject.getLocation();
+      }
+
+      if (wraps) {
+
+        if (direction.equals("N") && inputLocationRow == 0 && caveNeighbourObject.getRow() == this.rows - 1) {
+          return caveNeighbourObject.getLocation();
+        }
+
+        else if (direction.equals("S") && inputLocationRow == this.rows - 1 && caveNeighbourObject.getRow() == 0) {
+          return caveNeighbourObject.getLocation();
+        }
+
+        else if (direction.equals("W") && inputLocationCol == 0 && caveNeighbourObject.getColumn() == this.columns - 1) {
+          return caveNeighbourObject.getLocation();
+        }
+
+        else if (direction.equals("E") && inputLocationCol == this.columns - 1 && caveNeighbourObject.getColumn() == 0) {
+          return caveNeighbourObject.getLocation();
+        }
+
+
       }
     }
     throw new IllegalStateException("Wrong direction! You cannot move there.");
