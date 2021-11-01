@@ -30,4 +30,7 @@ public class Point2DImpl implements Point2D {
   public int getColumn() {
     return column;
   }
+
+  @Override
+  public String toString() { return this.row + "," + this.column; }
 }

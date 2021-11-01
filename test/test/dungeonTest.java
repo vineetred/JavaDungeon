@@ -1,5 +1,6 @@
 package test;
 
+import javafx.util.Pair;
 import model.Dungeon;
 import model.DungeonImpl;
 import model.Player;
@@ -9,8 +10,7 @@ import model.Point2DImpl;
 import model.Treasure;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -79,6 +79,54 @@ public class dungeonTest {
         "13<->19, 8<->14, 12<->18, 12<->13, 8<->9, 16<->22, 15<->21, 24<->25, 0<->6, 14<->20, " +
         "0<->1, 15<->16, 14<->15, 10<->11, 11<->6, 25<->26, 16<->17, 7<->13, 5<->11, 27<->28, " +
         "28<->29]", testDungeon.toString());
+  }
+
+  @Test
+  public void testCaveReachability() {
+
+    Dungeon test = new DungeonImpl(false, 1, 4, 3);
+    // Check if all nodes can be reached!
+    assertEquals("[9<->10, 0<->1, 4<->5, 5<->8, 10<->11, 3<->6, 6<->9, 6<->7, 1<->4, 7<->8, 1<->2]",
+        test.toString());
+
+    // Create a player
+    Player testPlayer = new PlayerImpl(test.getStartPoint(), test);
+
+    Set<String> allNodes = new HashSet<>();
+
+    testPlayer.moveWest();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveEast();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveEast();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveWest();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveSouth();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveEast();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveSouth();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveWest();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveWest();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveNorth();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveSouth();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveSouth();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveEast();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    testPlayer.moveEast();
+    allNodes.add(testPlayer.getPlayerLocation().toString());
+    assertEquals(3, testPlayer.getPlayerLocation().getRow());
+    assertEquals(2, testPlayer.getPlayerLocation().getColumn());
+    // Check if the nodes are 2 * 3 unique
+    assertEquals(12, allNodes.size());
+
   }
 
   @Test
