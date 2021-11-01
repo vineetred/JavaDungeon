@@ -557,13 +557,13 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public Point2D getStartPoint() {
-    return new Point2D(this.findCaveByIndex(this.startPoint).getLocation().getRow(),
+    return new Point2DImpl(this.findCaveByIndex(this.startPoint).getLocation().getRow(),
         this.findCaveByIndex(this.startPoint).getLocation().getColumn());
   }
 
   @Override
   public Point2D getEndPoint() {
-    return new Point2D(this.findCaveByIndex(this.endPoint).getLocation().getRow(),
+    return new Point2DImpl(this.findCaveByIndex(this.endPoint).getLocation().getRow(),
         this.findCaveByIndex(this.endPoint).getLocation().getColumn());
   }
 

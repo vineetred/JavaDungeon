@@ -42,7 +42,7 @@ public class PlayerImpl implements Player {
 
   @Override
   public Point2D getPlayerLocation() {
-    return new Point2D(this.playerLocation.getRow(), this.playerLocation.getColumn());
+    return new Point2DImpl(this.playerLocation.getRow(), this.playerLocation.getColumn());
   }
 
   @Override

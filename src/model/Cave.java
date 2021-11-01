@@ -11,7 +11,7 @@ class Cave {
 
   protected Cave(int row, int column, ArrayList entrances, ArrayList neighborList,
                  ArrayList treasureList, int index, int set) {
-    this.location = new Point2D(row, column);
+    this.location = new Point2DImpl(row, column);
     this.index = index;
     this.set = set;
     this.neighborList = neighborList;

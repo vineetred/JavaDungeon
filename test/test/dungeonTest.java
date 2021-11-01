@@ -1,11 +1,6 @@
 package test;
 
-import model.Dungeon;
-import model.DungeonImpl;
-import model.Player;
-import model.PlayerImpl;
-import model.Point2D;
-import model.Treasure;
+import model.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -276,13 +271,14 @@ public class dungeonTest {
   // Point2D class testing
   @Test
   public void testPoint2DCreation() {
-    Point2D testPoint = new Point2D(1, 1);
+    Point2D testPoint = new Point2DImpl(1, 1) {
+    };
     assertNotNull(testPoint);
   }
 
   @Test
   public void testPointGetRowAndGetColumn() {
-    Point2D testPoint = new Point2D(1, 9);
+    Point2D testPoint = new Point2DImpl(1, 9);
     assertEquals(1, testPoint.getRow());
     assertEquals(9, testPoint.getColumn());
   }
