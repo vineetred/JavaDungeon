@@ -287,13 +287,12 @@ public class dungeonTest {
     assertEquals(9, testPoint.getColumn());
   }
 
-
+  // Player interface exception testing
   @Test(expected = IllegalArgumentException.class)
   public void testIllegalPlayerCreation() {
     Player testPlayer = new PlayerImpl(null, null);
   }
 
-  // Player interface exception testing
   @Test(expected = IllegalArgumentException.class)
   public void testIllegalTreasurePickPlayer() {
     // With non-random dungeon
@@ -325,5 +324,85 @@ public class dungeonTest {
     assertEquals(3, testPlayer.getPlayerLocation().getColumn());
   }
 
-  // TODO: Finish up the Player tests
+  @Test
+  public void testPlayerPickUpTreasure() {
+    // With a random non-wrapping dungeon!
+    Dungeon testDungeon = new DungeonImpl(false, 1);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+    List<Treasure> expectedOutput = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    testPlayer.pickUpTreasure(expectedOutput);
+    // State should be deterministic at this point
+    // Since the same object is assigned, this should always be true regardless
+    // of the contents. Hence, we use a random treasure seed!
+    assertEquals(expectedOutput, testPlayer.getPlayerTreasure());
+
+    // With a random non-wrapping dungeon!
+    testDungeon = new DungeonImpl(true, 1);
+    testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+    expectedOutput = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    testPlayer.pickUpTreasure(expectedOutput);
+    // State should be deterministic at this point
+    // Since the same object is assigned, this should always be true regardless
+    // of the contents. Hence, we use a random treasure seed!
+    assertEquals(expectedOutput, testPlayer.getPlayerTreasure());
+  }
+
+  @Test
+  public void testGetPlayerTreasure() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+    testPlayer.pickUpTreasure(testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation()));
+
+    // State should be deterministic at this point
+    // Note that we use the non-random treasure seed for this test
+    List<String> expectedOutput = new ArrayList<>();
+    expectedOutput.add("Diamond");
+    expectedOutput.add("Diamond");
+    expectedOutput.add("Diamond");
+    expectedOutput.add("Diamond");
+    expectedOutput.add("Diamond");
+    expectedOutput.add("Diamond");
+
+    for (int i = 0; i < expectedOutput.size(); i++) {
+      // Assert every single object
+      assertEquals(expectedOutput.get(i), testPlayer.getPlayerTreasure().get(i).toString());
+    }
+  }
+
+  // Player movement exceptions
+  @Test(expected = IllegalStateException.class)
+  public void testIllegalMovement() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    // All walls!
+    testPlayer.moveNorth();
+    testPlayer.moveEast();
+    testPlayer.moveWest();
+
+  }
+
+  @Test
+  public void testPlayerMovement() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    // This sequence should not throw any exception!
+    testPlayer.moveSouth();
+    testPlayer.moveWest();
+    // Game should still be running!
+    assertFalse(testDungeon.gameFinished(testPlayer.getPlayerLocation()));
+    testPlayer.moveSouth();
+    testPlayer.moveSouth();
+    testPlayer.moveEast();
+    // We should have reached the end!
+    assertTrue(testDungeon.gameFinished(testPlayer.getPlayerLocation()));
+
+  }
+
+  // TODO: Test wrapping edge-cases!
+
 }

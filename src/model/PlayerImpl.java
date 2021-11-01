@@ -27,7 +27,7 @@ public class PlayerImpl implements Player {
 
     this.playerLocation = inputPoint;
     this.dungeon = inputDungeon;
-    this.playerTreasure = new ArrayList<Treasure>();
+    this.playerTreasure = new ArrayList<>();
 
   }
 

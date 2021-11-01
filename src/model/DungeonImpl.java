@@ -1,6 +1,10 @@
 package model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * The implementation of the Dungeon interface.
@@ -126,7 +130,6 @@ public class DungeonImpl implements Dungeon {
     this.startPoint = temporaryStartPoint;
     this.endPoint = temporaryEndPoint;
   }
-
 
   /** The dungeon constructor to generate a non-random dungeon for the driver.
    * This makes the choice of treasure random but everything else is predictable.
