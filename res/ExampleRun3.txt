@@ -1,0 +1,115 @@
+File: ExampleRun1.txt
+
+SUMMARY: We create a 4 x 3 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a
+treasure threshold of 20%. Since the graph used is a predetermined non-random graph generated using a seed,
+we know the shortest path that the user can take, but, our goal is to navigate all the locations. Hence, we visit every
+node within this run.
+
+NOTE: The treasure generated in the driver run is pseudo-random without specifying any seed. Hence, it most likely
+will not match the treasure that you see in the example run text file. Please note that this is a parameter that can
+be specified to the default constructors.
+_________________________________________________________________________________________________________
+___________________________________
+| _____ |   | ___ | ___ ___ | |   | |
+| |   | |_| |__ | |_| __|____ | | | |
+| | | |_________|__ |______ |___|_| |
+| |_|   | _______ |______ |   | ____|
+| ___ | |____ | |______ | |_| |____ |
+|___|_|____ | |   ___ | |________ | |
+|   ________| | |__ | |______ | | | |
+| | | ________| | __|____ | | | __| |
+|_| |__ |   | __|__ | ____| | |_| __|
+|   ____| | |____ | |__ |   |__ |__ |
+| |_______|_______|___|___|___|_____|
+
+Author: Vineet Reddy
+Version: 1.0.2
+Year: 2021
+GitHub: vineetred
+
+Welcome to the Labyrinth!
+<-------- Visiting every single node -------->
+
+Dungeon Params:
+Wrapping ---> false
+Rows ---> 4
+Columns ---> 3
+Interconnectedness ---> 0
+Treasure ---> 20%
+Start point ---> 0,1
+End point ---> 2,0
+
+Creating a player!
+
+Welcome new Player!
+
+Current player location: 0,1
+
+Possible moves from current cave: [West, South, East]
+
+Current player location: 0,0
+
+Possible moves from current cave: [East]
+
+Going back to the previous cave
+
+Current player location: 0,1
+
+Possible moves from current cave: [West, South, East]
+
+Current player location: 0,2
+
+Possible moves from current cave: [West]
+
+Going back to the previous cave
+
+Current player location: 0,1
+
+Possible moves from current cave: [West, South, East]
+
+Current player location: 1,1
+
+Possible moves from current cave: [East, North]
+
+Current player location: 1,2
+
+Possible moves from current cave: [West, South]
+
+Current player location: 2,2
+
+Possible moves from current cave: [North, West]
+
+Current player location: 2,1
+
+Possible moves from current cave: [West, East]
+
+Current player location: 2,0
+
+Possible moves from current cave: [North, South, East]
+This cave is actually the end point, but we will continue exploring!
+
+Current player location: 1,0
+
+Possible moves from current cave: [South]
+
+Going back to the previous cave
+
+Current player location: 2,0
+
+Possible moves from current cave: [North, South, East]
+
+Current player location: 3,0
+
+Possible moves from current cave: [East, North]
+
+Current player location: 3,1
+
+Possible moves from current cave: [West, East]
+
+Current player location: 3,2
+
+Possible moves from current cave: [West]
+
+We just visited every single location!
+
+Process finished with exit code 0

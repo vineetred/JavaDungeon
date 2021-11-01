@@ -33,8 +33,8 @@ public class Driver {
 
 //    simulateFromStartToEnd();
 //    simulateCreationOfNonWrappingDungeon();
-    simulateCreationOfWrappingDungeon();
-//    simulateVisitingEveryNodeInDungeon();
+//    simulateCreationOfWrappingDungeon();
+    simulateVisitingEveryNodeInDungeon();
   }
 
   private static void playerPickTreasureFromCave(Player testPlayer,
