@@ -38,7 +38,6 @@ class Edge {
 
   @Override
   public String toString() {
-    String returnString = cave1.getIndex() + "<========>" + cave2.getIndex();
-    return returnString;
+    return cave1.getIndex() + "<->" + cave2.getIndex();
   }
 }

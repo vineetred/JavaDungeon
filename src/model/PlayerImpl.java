@@ -20,6 +20,11 @@ public class PlayerImpl implements Player {
    * @param inputDungeon the dungeon a player is associated with
    */
   public PlayerImpl(Point2D inputPoint, Dungeon inputDungeon) {
+
+    if (inputPoint == null || inputDungeon == null) {
+      throw new IllegalArgumentException("Wrong arguments!");
+    }
+
     this.playerLocation = inputPoint;
     this.dungeon = inputDungeon;
     this.playerTreasure = new ArrayList<Treasure>();
@@ -27,7 +32,10 @@ public class PlayerImpl implements Player {
   }
 
   @Override
-  public void pickUpTreasure(ArrayList<Treasure> inputTreasure) {
+  public void pickUpTreasure(List<Treasure> inputTreasure) {
+    if (inputTreasure == null) {
+      throw new IllegalArgumentException("Illegal null treasure");
+    }
     // Pick the treasure up
     playerTreasure.addAll(inputTreasure);
   }

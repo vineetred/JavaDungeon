@@ -178,7 +178,6 @@ public class DungeonImpl implements Dungeon {
     this.endPoint = temporaryEndPoint;
   }
 
-
   private void checkDungeonInvariants(boolean wraps, int rows, int columns, int interconnect,
                                          int treasure) {
     // A lot of exception handling to ensure that the dungeon is never
@@ -705,4 +704,8 @@ public class DungeonImpl implements Dungeon {
         && inputCavePoint.getColumn() == this.getEndPoint().getColumn();
   }
 
+  @Override
+  public String toString() {
+    return this.finalEdges.toString();
+  }
 }

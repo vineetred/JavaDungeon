@@ -12,7 +12,7 @@ public interface Player {
    * The player pickups up the given treasure.
    * @param inputTreasure an ArrayList of Treasure type.
    */
-  public void pickUpTreasure(ArrayList<Treasure> inputTreasure);
+  public void pickUpTreasure(List<Treasure> inputTreasure);
 
   /**
    * The player's treasure is returned in an arraylist.

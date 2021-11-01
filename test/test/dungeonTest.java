@@ -1,12 +1,20 @@
 package test;
 
-import model.*;
+import model.Dungeon;
+import model.DungeonImpl;
+import model.Player;
+import model.PlayerImpl;
+import model.Point2D;
+import model.Treasure;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class dungeonTest {
 
@@ -48,6 +56,28 @@ public class dungeonTest {
   }
 
   // Dungeon Public method tests
+  @Test
+  public void testDungeonGeneration() {
+
+    // Non-wrapping
+    Dungeon testDungeon = new DungeonImpl(false);
+
+    // Check if the paths are connecting every node
+    assertEquals("[26<->27, 15<->21, 14<->15, 20<->26, 28<->29, 13<->19, 4<->10, " +
+        "12<->13, 25<->26, 18<->24, 2<->8, 19<->20, 1<->2, 1<->7, 16<->22, 8<->14, 23<->29," +
+        " 0<->6, 27<->28, 21<->22, 16<->17, 20<->21, 11<->17, 24<->25, 10<->16, 5<->11, 3<->9," +
+        " 6<->12, 9<->10]", testDungeon.toString());
+
+    // Wrapping
+    testDungeon = new DungeonImpl(true);
+
+    // Check if the paths are connecting every node
+    assertEquals("[22<->23, 27<->3, 3<->4, 11<->17, 3<->9, 13<->14, 18<->24, 1<->2, " +
+        "13<->19, 8<->14, 12<->18, 12<->13, 8<->9, 16<->22, 15<->21, 24<->25, 0<->6, 14<->20, " +
+        "0<->1, 15<->16, 14<->15, 10<->11, 11<->6, 25<->26, 16<->17, 7<->13, 5<->11, 27<->28, " +
+        "28<->29]", testDungeon.toString());
+  }
+
   @Test
   public void testGetStartPointDungeon() {
     // With non-random dungeon
@@ -221,6 +251,28 @@ public class dungeonTest {
     assertTrue(testDungeon.gameFinished(testPlayer.getPlayerLocation()));
   }
 
+  @Test
+  public void testInterconnectivityByCounting() {
+
+    // Non-wrapping
+    Dungeon testDungeon = new DungeonImpl(false);
+
+    // Check if there is an edge for every node
+    assertEquals("[26<->27, 15<->21, 14<->15, 20<->26, 28<->29, 13<->19, 4<->10, " +
+        "12<->13, 25<->26, 18<->24, 2<->8, 19<->20, 1<->2, 1<->7, 16<->22, 8<->14, 23<->29," +
+        " 0<->6, 27<->28, 21<->22, 16<->17, 20<->21, 11<->17, 24<->25, 10<->16, 5<->11, 3<->9," +
+        " 6<->12, 9<->10]", testDungeon.toString());
+
+    // Wrapping
+    testDungeon = new DungeonImpl(true);
+
+    // Check if there is an edge for every node
+    assertEquals("[22<->23, 27<->3, 3<->4, 11<->17, 3<->9, 13<->14, 18<->24, 1<->2, " +
+        "13<->19, 8<->14, 12<->18, 12<->13, 8<->9, 16<->22, 15<->21, 24<->25, 0<->6, 14<->20, " +
+        "0<->1, 15<->16, 14<->15, 10<->11, 11<->6, 25<->26, 16<->17, 7<->13, 5<->11, 27<->28, " +
+        "28<->29]", testDungeon.toString());
+  }
+
   // Point2D testing
   @Test
   public void testPoint2DCreation() {
@@ -233,6 +285,21 @@ public class dungeonTest {
     Point2D testPoint = new Point2D(1, 9);
     assertEquals(1, testPoint.getRow());
     assertEquals(9, testPoint.getColumn());
+  }
+
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testIllegalPlayerCreation() {
+    Player testPlayer = new PlayerImpl(null, null);
+  }
+
+  // Player interface exception testing
+  @Test(expected = IllegalArgumentException.class)
+  public void testIllegalTreasurePickPlayer() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+    testPlayer.pickUpTreasure(null);
   }
 
   // Player interface testing
