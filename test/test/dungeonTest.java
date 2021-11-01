@@ -355,6 +355,20 @@ public class dungeonTest {
     assertEquals(51, dungeonString.split(arrow, -1).length-1);
   }
 
+  @Test
+  public void testStartPointEndPointMinimumDistanceInvariant() {
+    // Check if the treasure threshold is being obeyed!
+    Dungeon testDungeon = new DungeonImpl(false);
+    // Create a player
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    assertEquals("0,3", testDungeon.getStartPoint().toString());
+
+    assertNotEquals("1,3", testDungeon.getEndPoint().toString());
+    // The end point in the deterministic graph MUST BE >= 5
+    assertEquals("3,3", testDungeon.getEndPoint().toString());
+  }
+
   // Point2D class testing
   @Test
   public void testPoint2DCreation() {

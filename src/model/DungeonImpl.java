@@ -244,6 +244,7 @@ public class DungeonImpl implements Dungeon {
   // Will return -1 to indicate that the searchDistance cannot be reached
   private int depthFirstSearchDistance(int caveIndex, int searchDistance, Set<Integer> visited) {
 
+
     // If we already have visited this node, disregard it
     if (visited.contains(caveIndex)) {
       return -1;
@@ -255,6 +256,12 @@ public class DungeonImpl implements Dungeon {
     // Check for the base case
     if (searchDistance == 0) {
       return caveIndex;
+    }
+
+    // If all nodes have been visited and the search distance control flow for when it is 0 still
+    // has not executed, then return -1
+    if (visited.size() == this.rows * this.columns) {
+      return -1;
     }
 
     // Find the cave using the caveIndex
