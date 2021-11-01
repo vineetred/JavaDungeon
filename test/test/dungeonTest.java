@@ -1,20 +1,14 @@
 package test;
 
-import model.Dungeon;
-import model.DungeonImpl;
-import model.Player;
-import model.PlayerImpl;
-import model.Point2D;
-import model.Point2DImpl;
-import model.Treasure;
+import model.*;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class dungeonTest {
 
@@ -215,8 +209,6 @@ public class dungeonTest {
       assertEquals(expectedOutput.get(i), caveTreasure.get(i).toString());
     }
 
-
-
   }
 
   @Test
@@ -237,6 +229,19 @@ public class dungeonTest {
     for (int i = 0; i < expectedOutput.size(); i++) {
       assertEquals(expectedOutput.get(i), caveTreasure.get(i).toString());
     }
+  }
+
+  @Test
+  public void testMinimumTreasureThresholdInvariant() {
+
+    // Check if the treasure threshold is being obeyed!
+    Dungeon testDungeon = new DungeonImpl(false, 7, 7, 0, 100);
+    // Create a player
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+    List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    assertNotEquals(0, caveTreasure.size());
+
+
   }
 
   @Test
@@ -330,6 +335,7 @@ public class dungeonTest {
     String dungeonString = testDungeon.toString();
     String arrow = "<->";
 
+    // Counting the number of edges
     assertEquals(53, dungeonString.split(arrow, -1).length-1);
 
     // Non - Wrapping but checking with truly random seed
@@ -337,9 +343,8 @@ public class dungeonTest {
     dungeonString = testDungeon.toString();
     arrow = "<->";
 
+    // Counting the number of edges
     assertEquals(53, dungeonString.split(arrow, -1).length-1);
-
-
   }
 
   // Point2D class testing
@@ -369,6 +374,20 @@ public class dungeonTest {
     Dungeon testDungeon = new DungeonImpl(false);
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
     testPlayer.pickUpTreasure(null);
+  }
+
+  // Player movement exceptions
+  @Test(expected = IllegalStateException.class)
+  public void testIllegalMovement() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    // All walls!
+    testPlayer.moveNorth();
+    testPlayer.moveEast();
+    testPlayer.moveWest();
+
   }
 
   // Player interface testing
@@ -440,20 +459,6 @@ public class dungeonTest {
     }
   }
 
-  // Player movement exceptions
-  @Test(expected = IllegalStateException.class)
-  public void testIllegalMovement() {
-    // With non-random dungeon
-    Dungeon testDungeon = new DungeonImpl(false);
-    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
-
-    // All walls!
-    testPlayer.moveNorth();
-    testPlayer.moveEast();
-    testPlayer.moveWest();
-
-  }
-
   @Test
   public void testPlayerMovement() {
     // With non-random dungeon
@@ -473,6 +478,61 @@ public class dungeonTest {
 
   }
 
-  // TODO: Test wrapping edge-cases!
+  @Test
+  public void testPlayerMoveNorth() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(true);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    testPlayer.moveNorth();
+    assertEquals(4, testPlayer.getPlayerLocation().getRow());
+    assertEquals(3, testPlayer.getPlayerLocation().getColumn());
+  }
+
+  @Test
+  public void testPlayerMoveSouth() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(true);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    testPlayer.moveSouth();
+    assertEquals(1, testPlayer.getPlayerLocation().getRow());
+    assertEquals(3, testPlayer.getPlayerLocation().getColumn());
+  }
+
+  @Test
+  public void testPlayerMoveEast() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(true);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    testPlayer.moveEast();
+    assertEquals(0, testPlayer.getPlayerLocation().getRow());
+    assertEquals(4, testPlayer.getPlayerLocation().getColumn());
+  }
+
+  @Test
+  public void testPlayerMoveWest() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    // This sequence should not throw any exception!
+    testPlayer.moveSouth();
+    testPlayer.moveEast();
+    testPlayer.moveSouth();
+    testPlayer.moveSouth();
+    testPlayer.moveWest();
+
+    assertEquals(3, testPlayer.getPlayerLocation().getRow());
+    assertEquals(3, testPlayer.getPlayerLocation().getColumn());
+
+  }
+
+  // Treasure testing
+  @Test
+  public void testTreasurePublicMethod() {
+    // There are no public methods in the Treasure interface.
+  }
 
 }

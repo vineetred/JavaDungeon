@@ -10,30 +10,18 @@ public class TreasureImpl {
   }
 
   static class Ruby implements Treasure {
-    @Override
-    public Treasure getTreasure() {
-      return new Ruby();
-    }
 
     @Override
     public String toString() { return "Ruby"; }
   }
 
   static class Diamond implements Treasure {
-    @Override
-    public Treasure getTreasure() {
-      return new Diamond();
-    }
 
     @Override
     public String toString() { return "Diamond"; }
   }
 
   static class Sapphire implements Treasure {
-    @Override
-    public Treasure getTreasure() {
-      return new Sapphire();
-    }
 
     @Override
     public String toString() { return "Sapphire"; }
