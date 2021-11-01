@@ -1,17 +1,15 @@
 package model;
 
 class RandomNumberGenerator {
-  private int min;
-  private int max;
-  private int seed;
-  private int listSize;
+  private final int min;
+  private final int max;
+  private final int seed;
 
 
   protected RandomNumberGenerator(int min, int max, int seed, int listSize) {
     this.min = min;
     this.max = max;
     this.seed = seed;
-    this.listSize = listSize;
 
     if (listSize <= 0) {
       throw new IllegalArgumentException("Not allowed.");
