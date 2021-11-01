@@ -1,4 +1,4 @@
-File: ExampleRun1.txt
+File: ExampleRun3.txt
 
 SUMMARY: We create a 4 x 3 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a
 treasure threshold of 20%. Since the graph used is a predetermined non-random graph generated using a seed,
