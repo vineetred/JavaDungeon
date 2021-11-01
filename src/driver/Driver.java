@@ -1,8 +1,11 @@
 package driver;
 
-import model.*;
+import model.Dungeon;
+import model.DungeonImpl;
+import model.Player;
+import model.PlayerImpl;
+import model.Treasure;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,7 +44,7 @@ public class Driver {
       System.out.println("\nNo treasure in the cave");
     }
     else {
-      testPlayer.pickUpTreasure((ArrayList<Treasure>) caveTreasure);
+      testPlayer.pickUpTreasure( caveTreasure);
       System.out.println("There is treasure in the room!");
       System.out.println("\nPlayer just picks up: ");
       for (Treasure treasure : caveTreasure) {

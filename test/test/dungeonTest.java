@@ -345,6 +345,14 @@ public class dungeonTest {
 
     // Counting the number of edges
     assertEquals(53, dungeonString.split(arrow, -1).length-1);
+
+    // Non - Wrapping but checking with truly random seed
+    testDungeon = new DungeonImpl(false, 7, 7, 3, 20);
+    dungeonString = testDungeon.toString();
+    arrow = "<->";
+
+    // Counting the number of edges
+    assertEquals(51, dungeonString.split(arrow, -1).length-1);
   }
 
   // Point2D class testing
