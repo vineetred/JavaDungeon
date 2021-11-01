@@ -7,7 +7,11 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * The implementation of the Dungeon interface.
+ * The implementation of the Dungeon interface. This interface has some private methods that help
+ * it achieve the tasks outlined in the Dungeon interface. This implementation also does not talk
+ * to the player class objects at any point; this job is that of the driver class.
+ * We have various constructors to achieve differing randomness with the aim of ease of use and
+ * debugging.
  */
 public class DungeonImpl implements Dungeon {
 
@@ -32,8 +36,8 @@ public class DungeonImpl implements Dungeon {
    * @param rows the number of rows
    * @param columns the number of columns
    * @param interconnect the degree of interconnectivity you want the maze to be generated with
-   * @param treasure the percentage denominated out of 100 which
-   * forms the minimum threshold during treasure generation
+   * @param treasure the percentage denominated out of 100 of treasure filled caves
+   *
    */
   public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasure) {
 
@@ -235,8 +239,8 @@ public class DungeonImpl implements Dungeon {
 
     // Check if a node at least 5 units away from the start index can be reached
     if (depthFirstSearchOutput != -1) {
-        return depthFirstSearchOutput;
-      }
+      return depthFirstSearchOutput;
+    }
     // Else, throw an exception
     throw new IllegalStateException("Cannot find any viable endpoint!");
   }
@@ -386,27 +390,26 @@ public class DungeonImpl implements Dungeon {
       // Generator that chooses which treasure
       RandomNumberGenerator rand2 = new RandomNumberGenerator(0, 2,
           randomCaveChoiceSeed, 1);
-
-      TreasureImpl.TreasureFactory treasureFactory = new TreasureImpl.TreasureFactory();
-
+      // Checking the random number we get
+      // to assign it a single type of treasure
       for (int t = 0; t < numberOfCavesWithTreasure; t++) {
-        int treasureRand = rand2.getRandomNumber();
-        if (treasureRand == 0 ) {
-          for(int r = 0; r <= treasureRand + 1; r++) {
+        int treasureRandomChoice = rand2.getRandomNumber();
+        if (treasureRandomChoice == 0 ) {
+          for (int r = 0; r <= treasureRandomChoice + 1; r++) {
             findCaveByIndex(caves.get(rand.getRandomNumber()))
-                .addTreasure(TreasureImpl.TreasureFactory
+                .addTreasure(TreasureImpl.TreasureGeneratorHelperClass
                     .getTreasureFromEnum(TreasureImpl.TreasureType.RUBY));
           }
-        } else if (treasureRand == 1 ) {
-          for (int r = 0; r <= treasureRand + 1; r++) {
+        } else if (treasureRandomChoice == 1 ) {
+          for (int r = 0; r <= treasureRandomChoice + 1; r++) {
             findCaveByIndex(caves.get(rand.getRandomNumber()))
-                .addTreasure(TreasureImpl.TreasureFactory
+                .addTreasure(TreasureImpl.TreasureGeneratorHelperClass
                     .getTreasureFromEnum(TreasureImpl.TreasureType.DIAMOND));
           }
         } else {
-          for (int r = 0; r <= treasureRand + 1; r++) {
+          for (int r = 0; r <= treasureRandomChoice + 1; r++) {
             findCaveByIndex(caves.get(rand.getRandomNumber()))
-                .addTreasure(TreasureImpl.TreasureFactory
+                .addTreasure(TreasureImpl.TreasureGeneratorHelperClass
                     .getTreasureFromEnum(TreasureImpl.TreasureType.SAPPHIRE));
           }
         }
@@ -434,7 +437,8 @@ public class DungeonImpl implements Dungeon {
     //make list of caves, exclude tunnels
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < columns; c++) {
-        if (gameBoard[r][c].getNeighbors().size() != 0 && gameBoard[r][c].getNeighbors().size() != 2) {
+        if (gameBoard[r][c].getNeighbors().size() != 0
+            && gameBoard[r][c].getNeighbors().size() != 2) {
           caves.add(gameBoard[r][c].getIndex());
         }
       }
@@ -512,14 +516,14 @@ public class DungeonImpl implements Dungeon {
           for (int c = 0; c < columns; c++) {
             if (gameBoard[r][c].getSet() == temporaryRightSet) {
               // Adjusting the set
-              gameBoard[r][c].adjSet(permanentNewSet);
+              gameBoard[r][c].changeSet(permanentNewSet);
             }
           }
         }
 
         // Check if the current set list we have contained the temporary set that was just removed
         // If so, delete it
-          setList.remove(setList.indexOf(temporaryRightSet));
+        setList.remove(setList.indexOf(temporaryRightSet));
 
         // Our base case
         // When the interconnectedness is 0, the set list must only contain 1 unique set
@@ -543,7 +547,7 @@ public class DungeonImpl implements Dungeon {
           for (int index = 0; index < interconnectivity; ++index) {
             // There must be at least one edge left over
             if (leftOverEdges.size() <= 0) {
-                throw new IllegalStateException("Left over edge list is already empty");
+              throw new IllegalStateException("Left over edge list is already empty");
             } else {
               // The meat of taking a random edge from the leftover edges list
               int randomInt = randGen.nextInt(this.leftOverEdges.size());
@@ -638,7 +642,7 @@ public class DungeonImpl implements Dungeon {
 
 
       }
-  }
+    }
     return possibleMoveDirections;
 
   }
@@ -728,19 +732,23 @@ public class DungeonImpl implements Dungeon {
 
       if (wraps) {
 
-        if (direction.equals("N") && inputLocationRow == 0 && caveNeighbourObject.getRow() == this.rows - 1) {
+        if (direction.equals("N") && inputLocationRow == 0
+            && caveNeighbourObject.getRow() == this.rows - 1) {
           return caveNeighbourObject.getLocation();
         }
 
-        else if (direction.equals("S") && inputLocationRow == this.rows - 1 && caveNeighbourObject.getRow() == 0) {
+        else if (direction.equals("S") && inputLocationRow == this.rows - 1
+            && caveNeighbourObject.getRow() == 0) {
           return caveNeighbourObject.getLocation();
         }
 
-        else if (direction.equals("W") && inputLocationCol == 0 && caveNeighbourObject.getColumn() == this.columns - 1) {
+        else if (direction.equals("W") && inputLocationCol == 0
+            && caveNeighbourObject.getColumn() == this.columns - 1) {
           return caveNeighbourObject.getLocation();
         }
 
-        else if (direction.equals("E") && inputLocationCol == this.columns - 1 && caveNeighbourObject.getColumn() == 0) {
+        else if (direction.equals("E") && inputLocationCol == this.columns - 1
+            && caveNeighbourObject.getColumn() == 0) {
           return caveNeighbourObject.getLocation();
         }
 

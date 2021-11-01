@@ -39,7 +39,7 @@ class Cave {
     return this.set;
   }
 
-  protected void adjSet(int set) {
+  protected void changeSet(int set) {
     this.set = set;
   }
 
@@ -51,7 +51,9 @@ class Cave {
     return this.neighborList;
   }
 
-  protected Point2D getLocation() { return this.location; }
+  protected Point2D getLocation() {
+    return this.location;
+  }
 
   protected void addTreasure(Treasure treasure) {
     this.treasureList.add(treasure);

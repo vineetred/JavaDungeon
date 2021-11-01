@@ -9,30 +9,34 @@ public class TreasureImpl {
     RUBY, DIAMOND, SAPPHIRE
   }
 
-  static class Ruby implements Treasure {
+  static class Sapphire implements Treasure {
 
     @Override
-    public String toString() { return "Ruby"; }
+    public String toString() {
+      return "Sapphire";
+    }
   }
 
   static class Diamond implements Treasure {
 
     @Override
-    public String toString() { return "Diamond"; }
+    public String toString() {
+      return "Diamond";
+    }
   }
 
-  static class Sapphire implements Treasure {
+  static class Ruby implements Treasure {
 
     @Override
-    public String toString() { return "Sapphire"; }
+    public String toString() {
+      return "Ruby";
+    }
   }
 
-  static class TreasureFactory {
 
 
-    /** Helper method to return the treasure via it's enum
-     * @param treasureType the treasure type that we check for
-     */
+  static class TreasureGeneratorHelperClass {
+
     public static Treasure getTreasureFromEnum(TreasureType treasureType) {
 
       Treasure treasure = null;

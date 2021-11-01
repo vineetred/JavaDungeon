@@ -1,10 +1,12 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a player and all the associated actions.
+ * Represents a player and all the associated actions. This interface has methods that let the
+ * driver, or any other class that needs to use them a way to interact with a player object. Keep
+ * in mind that the player interface usually has a Dungeon object associated with it. This helps
+ * functionality as the Dungeon object has no real state; using instead for querying.
  */
 public interface Player {
 

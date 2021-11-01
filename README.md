@@ -30,7 +30,7 @@ that connect them.
 
 # Execution
 ## JAR
-* Just run the JAR file like so ```java -jar DungeonDriver.jar``` and the program should several 
+* Just run the JAR file like so ```java -jar Dungeon.jar``` and the program should several 
   demo runs that show the different styles of this game.
 *  It ends with a run where the user must provide it with dungeon parameters to generate a new 
    dungeon. It tries to make a move North and sees what happens, before the simulation ends.
@@ -107,6 +107,8 @@ Run 4 -- ExampleRun4.txt:
   invariant is the ability to hold treasure!
 * I also abstracted the coordinates from within the cave and edge objects into a new class of 
   their own, along with their interface.
+* Treasure is now an ENUM with an interface. This allows us to have unlimited number of treasure 
+  things without having to worry about types.
 
 # Testing Plan
 * Please refer to the testing source folder for more details.

@@ -1,6 +1,12 @@
 package test;
 
-import model.*;
+import model.Dungeon;
+import model.DungeonImpl;
+import model.Player;
+import model.PlayerImpl;
+import model.Point2D;
+import model.Point2DImpl;
+import model.Treasure;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -8,19 +14,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-public class dungeonTest {
+
+/** The helper dungeon test class that lets us test the various functionality of the model. It
+ * only can test public methods as the test class is in its own package, separate from the model
+ * and the driver.
+ */
+public class DungeonTest {
 
   // Helper methods
   private static void playerPickTreasureFromCave(Player testPlayer,
                                                  List<Treasure> caveTreasure) {
-    if (caveTreasure == null) {
 
-    }
-    else {
+    if (caveTreasure != null) {
       testPlayer.pickUpTreasure((ArrayList<Treasure>) caveTreasure);
     }
+
   }
 
   // Dungeon exception tests
@@ -336,7 +350,7 @@ public class dungeonTest {
     String arrow = "<->";
 
     // Counting the number of edges
-    assertEquals(53, dungeonString.split(arrow, -1).length-1);
+    assertEquals(53, dungeonString.split(arrow, -1).length - 1);
 
     // Non - Wrapping but checking with truly random seed
     testDungeon = new DungeonImpl(false, 7, 7, 5, 20);
@@ -344,7 +358,7 @@ public class dungeonTest {
     arrow = "<->";
 
     // Counting the number of edges
-    assertEquals(53, dungeonString.split(arrow, -1).length-1);
+    assertEquals(53, dungeonString.split(arrow, -1).length - 1);
 
     // Non - Wrapping but checking with truly random seed
     testDungeon = new DungeonImpl(false, 7, 7, 3, 20);
@@ -352,7 +366,7 @@ public class dungeonTest {
     arrow = "<->";
 
     // Counting the number of edges
-    assertEquals(51, dungeonString.split(arrow, -1).length-1);
+    assertEquals(51, dungeonString.split(arrow, -1).length - 1);
   }
 
   @Test
@@ -552,9 +566,6 @@ public class dungeonTest {
   }
 
   // Treasure testing
-  @Test
-  public void testTreasurePublicMethod() {
-    // There are no public methods in the Treasure interface.
-  }
+  // There are no public methods in the Treasure interface.
 
 }
