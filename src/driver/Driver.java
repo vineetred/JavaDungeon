@@ -1,6 +1,10 @@
 package driver;
 
-import model.*;
+import model.Dungeon;
+import model.DungeonImpl;
+import model.Player;
+import model.PlayerImpl;
+import model.Treasure;
 
 import java.util.ArrayList;
 import java.util.List;
