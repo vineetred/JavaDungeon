@@ -1,0 +1,72 @@
+File: ExampleRun3.txt
+
+SUMMARY: We create a 9 * 9 dungeon with some parameters. This run just demonstrates that a user can
+create a dungeon via user input.
+
+NOTE: The treasure generated in the driver run is pseudo-random without specifying any seed. Hence, it most likely
+will not match the treasure that you see in the example run text file. Please note that this is a parameter that can
+be specified to the default constructors.
+
+_________________________________________________________________________________________________________
+___________________________________
+| _____ |   | ___ | ___ ___ | |   | |
+| |   | |_| |__ | |_| __|____ | | | |
+| | | |_________|__ |______ |___|_| |
+| |_|   | _______ |______ |   | ____|
+| ___ | |____ | |______ | |_| |____ |
+|___|_|____ | |   ___ | |________ | |
+|   ________| | |__ | |______ | | | |
+| | | ________| | __|____ | | | __| |
+|_| |__ |   | __|__ | ____| | |_| __|
+|   ____| | |____ | |__ |   |__ |__ |
+| |_______|_______|___|___|___|_____|
+
+Author: Vineet Reddy
+Version: 1.0.2
+Year: 2021
+GitHub: vineetred
+
+Welcome to the Labyrinth!
+<-------- Simulating a real random game. User must give command line inputs -------->
+Wrapping (Y/N)?
+Y
+Interconnectivity (numbers only): ?
+0
+Rows (numbers only): ?
+9
+Columns (numbers only): ?
+9
+Treasure in percentage (out of 100): ?
+50
+
+Dungeon Params:
+Wrapping ---> true
+Rows ---> 9
+Columns ---> 9
+Interconnectedness ---> 0
+Treasure ---> 50%
+Start point --->5,0
+End point --->0,8
+
+Creating a player!
+
+Welcome new Player!
+
+Let's get a description of the Player's location.
+
+Current player location: 5,0
+There is treasure in the room!
+
+Player just picks up:
+A Ruby
+
+Current player treasure: [Ruby]
+
+Possible moves from current cave: [East, West, South]
+
+Let's try to go North and see if it is possible!.
+You cannot do that! There's a wall there! Try some other direction
+
+<---- Simulation Done ----->
+
+Process finished with exit code 0

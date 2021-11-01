@@ -112,4 +112,6 @@ Possible moves from current cave: [West]
 
 We just visited every single location!
 
+<---- Simulation Done ----->
+
 Process finished with exit code 0

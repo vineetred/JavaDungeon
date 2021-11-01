@@ -28,6 +28,7 @@ ___________________________________
 Author: Vineet Reddy
 Version: 1.0.2
 Year: 2021
+GitHub: vineetred
 
 Welcome to the Labyrinth!
 <-------- Simulating a run from start point to end point -------->
@@ -40,8 +41,8 @@ Rows ---> 5
 Columns ---> 6
 Interconnectedness ---> 0
 Treasure ---> 20%
-Start point --->0,3
-End point --->3,3
+Start point ---> 0,3
+End point ---> 3,3
 
 Creating a player!
 
@@ -69,7 +70,7 @@ Is the game finished?
 
 Keep playing.
 
-Possible moves from current cave: [North, West]
+Possible moves from current cave: [North, East]
 
 Trying to move West
 
@@ -83,11 +84,12 @@ Is the game finished?
 
 Keep playing.
 
-Possible moves from current cave: [North, South, East]
+Possible moves from current cave: [North, South, West]
 
 Trying to move South
 
 Current player location: 2,4
+There is treasure in the room!
 
 Player just picks up:
 A Ruby
@@ -98,7 +100,7 @@ Is the game finished?
 
 Keep playing.
 
-Possible moves from current cave: [South, West, North]
+Possible moves from current cave: [South, East, North]
 
 Trying to move South
 
@@ -112,11 +114,12 @@ Is the game finished?
 
 Keep playing.
 
-Possible moves from current cave: [North, East]
+Possible moves from current cave: [North, West]
 
 Trying to move East
 
 Current player location: 3,3
+There is treasure in the room!
 
 Player just picks up:
 A Diamond
@@ -126,3 +129,7 @@ Current player treasure: [Ruby, Diamond]
 Is the game finished?
 
 Congratulations! You have successfully navigated the entire maze.
+
+<---- Simulation Done ----->
+
+Process finished with exit code 0

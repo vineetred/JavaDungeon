@@ -28,6 +28,7 @@ ___________________________________
 Author: Vineet Reddy
 Version: 1.0.2
 Year: 2021
+GitHub: vineetred
 
 Welcome to the Labyrinth!
 <-------- Simulating creation of a non-wrapping dungeon -------->
@@ -48,12 +49,15 @@ Welcome new Player!
 Let's get a description of the Player's location.
 
 Current player location: 0,3
-No treasure in the room.
+Treasure in the current room (in units): 1
+Sapphire
 
 Possible moves from current cave: [South]
 
 Let's try to go up from the first row of a non-wrapping dungeon! This will not be possible.
-You cannot do that! There's a wall there. <-- Statement executed from catching an IllegalStateException.
+You cannot do that! There's a wall there!
+
+<---- Simulation Done ----->
 
 <-------- Simulating creation of a wrapping dungeon -------->
 
@@ -63,8 +67,8 @@ Rows ---> 5
 Columns ---> 6
 Interconnectedness ---> 0
 Treasure ---> 20%
-Start point --->0,3
-End point --->3,1
+Start point ---> 0,3
+End point ---> 3,1
 
 Creating a player!
 
@@ -73,14 +77,17 @@ Welcome new Player!
 Let's get a description of the Player's location.
 
 Current player location: 0,3
-No treasure in the room.
+Treasure in the current room (in units): 1
+Sapphire
 
-Possible moves from current cave: [West, South]
+Possible moves from current cave: [North, East, South]
 
-Trying to move West
+Since the dungeon is wrapping, we can move from the top most row to go further North (to the last row in reality).
 
-Current player location: 0,4
+Current player location: 4,3
 
-Possible moves from current cave: [East]
+Possible moves from current cave: [South, East]
+
+<---- Simulation Done ----->
 
 Process finished with exit code 0
