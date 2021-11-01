@@ -1,6 +1,5 @@
 package test;
 
-import javafx.util.Pair;
 import model.Dungeon;
 import model.DungeonImpl;
 import model.Player;
