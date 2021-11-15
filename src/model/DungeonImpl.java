@@ -874,6 +874,7 @@ public class DungeonImpl implements Dungeon {
   public void stats() {
     System.out.println("Minor smells " + this.minorSmell.toString());
     System.out.println("Major smells " + this.majorSmell.toString());
-    System.out.println("Monster at end point " + findCaveByIndex(1).getMonsterList());
+    System.out.println("Monster at point " + findCaveByIndex(endPoint).getMonsterList());
+    System.out.println("Start and End" + startPoint + endPoint);
   }
 }
