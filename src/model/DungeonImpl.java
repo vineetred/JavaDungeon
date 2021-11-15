@@ -1,10 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The implementation of the Dungeon interface. This interface has some private methods that help
@@ -294,6 +290,40 @@ public class DungeonImpl implements Dungeon {
     return -1;
   }
 
+  private Set<Cave> breadthFirstSearchByLevel(int caveIndex, int level) {
+
+    int levelAccumulator = 0;
+    Queue<Cave> queue = new LinkedList<>();
+    Set<Cave> visited = new HashSet<>();
+
+    // Find the cave using the caveIndex
+    Cave caveObject = this.findCaveByIndex(caveIndex);
+    // Mark Cave as visited
+    queue.add(caveObject);
+    // Mark source as visited
+    // TODO: Check if indices make it easier?
+    visited.add(caveObject);
+
+    while(!queue.isEmpty()) {
+      Cave temporaryCaveObject = queue.poll();
+      // Process all neighbours of temporaryCaveObject
+      // Iterate through the neighbours
+      for (int index = 0; index < temporaryCaveObject.getNeighbors().size(); index++) {
+        if (!(visited.contains(findCaveByIndex(index)))) {
+          queue.add(findCaveByIndex(index));
+          visited.add(findCaveByIndex(index));
+        }
+      }
+
+      levelAccumulator++;
+      if (levelAccumulator == level) {
+        break;
+      }
+    }
+
+    return visited;
+  }
+
   private void createConnectedGraph() {
     // Construct the actual cave nodes
     int index = 0;
@@ -434,9 +464,6 @@ public class DungeonImpl implements Dungeon {
         new RandomNumberGenerator(0, caves.size() - 1,
             randomCaveChoiceSeed, 1);
 
-
-    // Checking the random number we get
-    // to assign it a single type of treasure
     for (int t = 0; t < numberOfCavesWithMonsters; t++) {
 
       int randomCaveIndex = caves.get(rand.getRandomNumber());
@@ -452,6 +479,8 @@ public class DungeonImpl implements Dungeon {
     }
 
   }
+
+  // TODO: Add smell filling here.
 
 
   private Cave findCaveByIndex(int index) {
