@@ -8,6 +8,8 @@ class Cave {
   private int set;
   private ArrayList<Integer> neighborList;
   private ArrayList<Treasure> treasureList;
+  // TODO: Add the array list that can store Otyughs!
+
 
   protected Cave(int row, int column, ArrayList entrances, ArrayList neighborList,
                  ArrayList treasureList, int index, int set) {
