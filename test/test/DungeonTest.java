@@ -571,7 +571,7 @@ public class DungeonTest {
   @Test
   public void testDungeonMonsterAddition() {
     // With non-random dungeon
-    Dungeon testDungeon = new DungeonImpl(false);
+    Dungeon testDungeon = new DungeonImpl(true);
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
     testDungeon.stats();
 

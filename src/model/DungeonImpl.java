@@ -120,13 +120,6 @@ public class DungeonImpl implements Dungeon {
       // Fill the caves with treasure
       fillCavesWithTreasure(getCavesIndexArrayList(), 1);
 
-      // Fill the caves with Monsters
-      fillCavesWithMonsters(getCavesIndexArrayList(), 1);
-
-      // Fill the caves with Smells!
-      // Note, we pass the tunnels too.
-      fillCavesWithSmells(getAllCavesAndTunnels());
-
       // Initialize the start and end points
       temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
       // Catch the illegal state exception emitted when we
@@ -142,6 +135,13 @@ public class DungeonImpl implements Dungeon {
     // Assign it outside the loop as they are final
     this.startPoint = temporaryStartPoint;
     this.endPoint = temporaryEndPoint;
+
+    // Fill the caves with Monsters
+    fillCavesWithMonsters(getCavesIndexArrayList(), 1);
+
+    // Fill the caves with Smells!
+    // Note, we pass the tunnels too.
+    fillCavesWithSmells(getAllCavesAndTunnels());
   }
 
   /** The dungeon constructor to generate a non-random dungeon for the driver.
@@ -320,9 +320,11 @@ public class DungeonImpl implements Dungeon {
       // Process all neighbours of temporaryCaveObject
       // Iterate through the neighbours
       for (int index = 0; index < temporaryCaveObject.getNeighbors().size(); index++) {
-        if (!(visited.contains(findCaveByIndex(index)))) {
-          queue.add(findCaveByIndex(index));
-          visited.add(findCaveByIndex(index));
+        if (!visited.contains(findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)))) {
+          queue.add(findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)));
+          if (findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)).getMonsterList().size() >= 1) {
+            visited.add(findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)));
+          }
         }
       }
 
@@ -472,20 +474,21 @@ public class DungeonImpl implements Dungeon {
 
     // Generator that chooses which cave
     RandomNumberGenerator rand =
-        new RandomNumberGenerator(0, caves.size() - 1,
-            randomCaveChoiceSeed, 1);
+        new RandomNumberGenerator(0, caves.size() - 2,
+            0, 1);
 
-    for (int t = 0; t < numberOfCavesWithMonsters; t++) {
+    while (numberOfCavesWithMonsters != 0) {
 
       int randomCaveIndex = caves.get(rand.getRandomNumber());
       Cave temporaryCave = findCaveByIndex(randomCaveIndex);
-      if (randomCaveIndex != this.startPoint) {
+      if (randomCaveIndex != this.startPoint && randomCaveIndex != this.endPoint) {
         temporaryCave.addMonster(new Otyugh());
+        numberOfCavesWithMonsters--;
       }
     }
 
     // Adding to the end point!
-    if (numberOfCavesWithMonsters >= 0) {
+    if (numberOfCavesWithMonsters == 0) {
       findCaveByIndex(this.endPoint).addMonster(new Otyugh());
     }
 
@@ -498,25 +501,21 @@ public class DungeonImpl implements Dungeon {
       if (breadthFirstSearchByLevel(cavesAndTunnels.get(index), 1).size() > 1) {
         majorSmell.add(cavesAndTunnels.get(index));
       }
-      else if (breadthFirstSearchByLevel(cavesAndTunnels.get(index), 1).size() == 1) {
-        minorSmell.add(cavesAndTunnels.get(index));
-      }
-
-      // Extra logic for 2nd level from current node if major smell was not invoked
-      if (!majorSmell.contains(cavesAndTunnels.get(index))) {
-        int caveIndicesForSmellFilling = breadthFirstSearchByLevel(cavesAndTunnels.get(index), 2).size();
+      else {
+        // Extra logic for 2nd level from current node if major smell was not invoked
+        int caveIndicesForSmellFilling = breadthFirstSearchByLevel(cavesAndTunnels.get(index), 2).size() - 1;
 
         // If returned array size == 1, then we add it to minor smell
         if (caveIndicesForSmellFilling == 1 && !minorSmell.contains(cavesAndTunnels.get(index))) {
           minorSmell.add(cavesAndTunnels.get(index));
         }
-        else if (caveIndicesForSmellFilling > 1) {
+        else if (caveIndicesForSmellFilling > 1 && !majorSmell.contains(cavesAndTunnels.get(index))) {
           majorSmell.add(cavesAndTunnels.get(index));
         }
-        }
+      }
+
     }
   }
-
 
   private Cave findCaveByIndex(int index) {
     for (int r = 0; r < rows; r++) {
@@ -874,7 +873,12 @@ public class DungeonImpl implements Dungeon {
   public void stats() {
     System.out.println("Minor smells " + this.minorSmell.toString());
     System.out.println("Major smells " + this.majorSmell.toString());
-    System.out.println("Monster at point " + findCaveByIndex(endPoint).getMonsterList());
-    System.out.println("Start and End" + startPoint + endPoint);
+    for (int index = 0; index < getCavesIndexArrayList().size(); index++) {
+      if (findCaveByIndex(getCavesIndexArrayList().get(index)).getMonsterList().size() > 0) {
+        System.out.println(findCaveByIndex(getCavesIndexArrayList().get(index)).getLocation());
+        System.out.println(findCaveByIndex(getCavesIndexArrayList().get(index)).getMonsterList().toString());
+      }
+
+    }
   }
 }
