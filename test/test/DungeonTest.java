@@ -568,4 +568,13 @@ public class DungeonTest {
   // Treasure testing
   // There are no public methods in the Treasure interface.
 
+  @Test
+  public void testDungeonMonsterAddition() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+    testDungeon.stats();
+
+  }
+
 }

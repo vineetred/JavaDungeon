@@ -59,4 +59,6 @@ public interface Dungeon {
    */
   boolean gameFinished(Point2D inputCavePoint);
 
+  void stats();
+
 }

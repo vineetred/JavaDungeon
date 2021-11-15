@@ -17,7 +17,10 @@ public class DungeonImpl implements Dungeon {
   private final int interconnectivity;
   private final int treasurePercentage;
   // TODO: Change this!
-  private final int numberOfMonsters = 0;
+  private final int numberOfMonsters = 2;
+  private final ArrayList<Integer> minorSmell = new ArrayList<>();
+  private final ArrayList<Integer> majorSmell = new ArrayList<>();
+
   private final int startPoint;
   private final int endPoint;
   private final Cave[][] gameBoard;
@@ -116,6 +119,14 @@ public class DungeonImpl implements Dungeon {
       runKruskalAlgorithm();
       // Fill the caves with treasure
       fillCavesWithTreasure(getCavesIndexArrayList(), 1);
+
+      // Fill the caves with Monsters
+      fillCavesWithMonsters(getCavesIndexArrayList(), 1);
+
+      // Fill the caves with Smells!
+      // Note, we pass the tunnels too.
+      fillCavesWithSmells(getAllCavesAndTunnels());
+
       // Initialize the start and end points
       temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
       // Catch the illegal state exception emitted when we
@@ -481,6 +492,30 @@ public class DungeonImpl implements Dungeon {
   }
 
   // TODO: Add smell filling here.
+  private void fillCavesWithSmells(ArrayList<Integer> cavesAndTunnels) {
+    for (int index = 0; index < cavesAndTunnels.size(); index++) {
+      // DO BFS from this place
+      if (breadthFirstSearchByLevel(cavesAndTunnels.get(index), 1).size() > 1) {
+        majorSmell.add(cavesAndTunnels.get(index));
+      }
+      else if (breadthFirstSearchByLevel(cavesAndTunnels.get(index), 1).size() == 1) {
+        minorSmell.add(cavesAndTunnels.get(index));
+      }
+
+      // Extra logic for 2nd level from current node if major smell was not invoked
+      if (!majorSmell.contains(cavesAndTunnels.get(index))) {
+        int caveIndicesForSmellFilling = breadthFirstSearchByLevel(cavesAndTunnels.get(index), 2).size();
+
+        // If returned array size == 1, then we add it to minor smell
+        if (caveIndicesForSmellFilling == 1 && !minorSmell.contains(cavesAndTunnels.get(index))) {
+          minorSmell.add(cavesAndTunnels.get(index));
+        }
+        else if (caveIndicesForSmellFilling > 1) {
+          majorSmell.add(cavesAndTunnels.get(index));
+        }
+        }
+    }
+  }
 
 
   private Cave findCaveByIndex(int index) {
@@ -833,5 +868,12 @@ public class DungeonImpl implements Dungeon {
   @Override
   public String toString() {
     return this.finalEdges.toString();
+  }
+
+  @Override
+  public void stats() {
+    System.out.println("Minor smells " + this.minorSmell.toString());
+    System.out.println("Major smells " + this.majorSmell.toString());
+    System.out.println("Monster at end point " + findCaveByIndex(1).getMonsterList());
   }
 }

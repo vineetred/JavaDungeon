@@ -19,7 +19,7 @@ class Cave {
     this.set = set;
     this.neighborList = neighborList;
     this.treasureList = treasureList;
-    this.monsterList = null;
+    this.monsterList = new ArrayList<>();
 
     if (entrances.size() == 2 && !treasureList.isEmpty()) {
       throw new IllegalStateException("Tunnels can not have treasure");
@@ -93,13 +93,6 @@ class Cave {
   // Returns the cave's monster list.
   // null if no monsters!
   protected ArrayList<Monster> getMonsterList() {
-    if (this.treasureList.size() == 0) {
-      return null;
-    }
-    else {
-      return new ArrayList<>(this.monsterList);
-    }
+    return new ArrayList<>(this.monsterList);
   }
-
-
 }
