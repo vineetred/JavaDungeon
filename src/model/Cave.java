@@ -8,7 +8,8 @@ class Cave {
   private int set;
   private ArrayList<Integer> neighborList;
   private ArrayList<Treasure> treasureList;
-  // TODO: Add the array list that can store Otyughs!
+  // TODO: Add the array list that can store Monsters!
+  private ArrayList<Monster> monsterList;
 
 
   protected Cave(int row, int column, ArrayList entrances, ArrayList neighborList,
@@ -18,6 +19,7 @@ class Cave {
     this.set = set;
     this.neighborList = neighborList;
     this.treasureList = treasureList;
+    this.monsterList = null;
 
     if (entrances.size() == 2 && !treasureList.isEmpty()) {
       throw new IllegalStateException("Tunnels can not have treasure");
@@ -82,4 +84,22 @@ class Cave {
       return new ArrayList<>(this.treasureList);
     }
   }
+
+  // Takes a monster interface object and adds it to this cave!
+  protected void addMonster(Monster monster) {
+    this.monsterList.add(monster);
+  }
+
+  // Returns the cave's monster list.
+  // null if no monsters!
+  protected ArrayList<Monster> getMonsterList() {
+    if (this.treasureList.size() == 0) {
+      return null;
+    }
+    else {
+      return new ArrayList<>(this.monsterList);
+    }
+  }
+
+
 }

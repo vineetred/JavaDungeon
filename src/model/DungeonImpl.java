@@ -20,6 +20,8 @@ public class DungeonImpl implements Dungeon {
   private final int columns;
   private final int interconnectivity;
   private final int treasurePercentage;
+  // TODO: Change this!
+  private final int numberOfMonsters = 0;
   private final int startPoint;
   private final int endPoint;
   private final Cave[][] gameBoard;
@@ -421,6 +423,36 @@ public class DungeonImpl implements Dungeon {
       }
     }
   }
+
+  private void fillCavesWithMonsters(ArrayList<Integer> caves, int randomCaveChoiceSeed) {
+
+    // Minus 1 because we must always have one at the end point
+    int numberOfCavesWithMonsters = numberOfMonsters - 1;
+
+    // Generator that chooses which cave
+    RandomNumberGenerator rand =
+        new RandomNumberGenerator(0, caves.size() - 1,
+            randomCaveChoiceSeed, 1);
+
+
+    // Checking the random number we get
+    // to assign it a single type of treasure
+    for (int t = 0; t < numberOfCavesWithMonsters; t++) {
+
+      int randomCaveIndex = caves.get(rand.getRandomNumber());
+      Cave temporaryCave = findCaveByIndex(randomCaveIndex);
+      if (randomCaveIndex != this.startPoint) {
+        temporaryCave.addMonster(new Otyugh());
+      }
+    }
+
+    // Adding to the end point!
+    if (numberOfCavesWithMonsters >= 0) {
+      findCaveByIndex(this.endPoint).addMonster(new Otyugh());
+    }
+
+  }
+
 
   private Cave findCaveByIndex(int index) {
     for (int r = 0; r < rows; r++) {
