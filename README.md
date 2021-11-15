@@ -1,6 +1,13 @@
 # JavaDungeon
 
 ## Todo
+1. Add Otyugh
+   1. Might want to create a class and maybe an interface too
+   2. Pop one at the start
+   3. See how we do random treasure, do same as that since both require caves as the only place where stuff can be held
+   4. BFS situation - Drop smell units in the caves away from where step 3 happens. 
+   5. Maintain health also of the Otyugh!
+2. Add arrow functionality!
 
 # Overview
 JavaDungeon is a game that consists of a maze dungeon and a player who tries to navigate through 
