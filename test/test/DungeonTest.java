@@ -628,4 +628,57 @@ public class DungeonTest {
         "W", 1));
 
   }
+
+  @Test
+  public void testPlayerIsAlive() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    // Create a player
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    assertTrue(testPlayer.isAlive());
+  }
+
+  @Test
+  public void testPlayerDead() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    // Create a player
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    // Let's finish the game
+    // <------> Move <------>
+    List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+    // Should be 0 as there must a wall in this direction
+    assertEquals(0, testDungeon.shootCrookedArrow(testPlayer.getPlayerLocation(),
+        "W", 1));
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveEast();
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveWest();
+
+    // Player should die as we fight a healthy monster head on
+    testPlayer.fightMonster(testDungeon.peekCaveMonsters(testPlayer.getPlayerLocation()).get(0));
+
+    assertFalse(testPlayer.isAlive());
+
+  }
 }
