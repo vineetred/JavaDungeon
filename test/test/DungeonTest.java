@@ -587,4 +587,47 @@ public class DungeonTest {
     assertEquals(2, numberOfMonsters);
 
   }
+
+  @Test
+  public void testCrookedArrowShoot() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    // Create a player
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    // First test
+    assertFalse(testDungeon.gameFinished(testPlayer.getPlayerLocation()));
+
+    // Let's finish the game
+    // <------> Move <------>
+    List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+    assertEquals(0, testDungeon.shootCrookedArrow(testPlayer.getPlayerLocation(),
+        "W", 1));
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveEast();
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+
+    assertEquals(1, testDungeon.shootCrookedArrow(testPlayer.getPlayerLocation(),
+        "W", 1));
+
+    assertEquals(2, testDungeon.shootCrookedArrow(testPlayer.getPlayerLocation(),
+        "W", 1));
+
+  }
 }

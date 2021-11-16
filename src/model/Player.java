@@ -17,10 +17,22 @@ public interface Player {
   void pickUpTreasure(List<Treasure> inputTreasure);
 
   /**
+   * The player pickups up the given chest of arrows.
+   * @param inputCrookedArrows an ArrayList of CrookedArray type.
+   */
+  void pickUpCrookedArrows(List<CrookedArrow> inputCrookedArrows);
+
+  /**
    * The player's treasure is returned in an arraylist.
    * @return ArrayList of treasure objects.
    */
   List<Treasure> getPlayerTreasure();
+
+  /**
+   * The player's arrows are returned in an arraylist.
+   * @return ArrayList of CrookedArrow objects.
+   */
+  List<CrookedArrow> getPlayerCrookedArrows();
 
   /**
    * The current location of the player.
@@ -47,6 +59,18 @@ public interface Player {
    * The player moves west.
    */
   void moveWest();
+
+  /**
+   * The boolean that is true if player is alive; false if dead.
+   */
+  boolean isAlive();
+
+  /**
+   * The player shoots an arrow from their quiver!
+   * @param inputDistance an integer distance.
+   * @param inputDirection string direction!
+   */
+  void shoot(int inputDistance, String inputDirection);
 
 
 }

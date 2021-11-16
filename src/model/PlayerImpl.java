@@ -12,6 +12,8 @@ public class PlayerImpl implements Player {
   private Point2D playerLocation;
   private ArrayList<Treasure> playerTreasure;
   private final Dungeon dungeon;
+  private final ArrayList<CrookedArrow> playerCrookedArrows;
+  private boolean alive;
 
   /**
    * The constructor for the player interface implementation.
@@ -28,7 +30,18 @@ public class PlayerImpl implements Player {
     this.playerLocation = inputPoint;
     this.dungeon = inputDungeon;
     this.playerTreasure = new ArrayList<>();
+    this.playerCrookedArrows = new ArrayList<>();
+    this.alive = true;
 
+    initializeQuiver();
+
+  }
+
+  private void initializeQuiver() {
+    // Adding three arrows to start!
+    this.playerCrookedArrows.add(new CrookedArrow());
+    this.playerCrookedArrows.add(new CrookedArrow());
+    this.playerCrookedArrows.add(new CrookedArrow());
   }
 
   @Override
@@ -41,6 +54,25 @@ public class PlayerImpl implements Player {
   }
 
   @Override
+  public void pickUpCrookedArrows(List<CrookedArrow> inputCrookedArrows) {
+    if (inputCrookedArrows == null) {
+      throw new IllegalArgumentException("Illegal input to pick up arrows!");
+    }
+    // Pick the arrows up
+    playerCrookedArrows.addAll(inputCrookedArrows);
+  }
+
+  @Override
+  public boolean isAlive() {
+    if (alive) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  @Override
   public Point2D getPlayerLocation() {
     return new Point2DImpl(this.playerLocation.getRow(), this.playerLocation.getColumn());
   }
@@ -48,6 +80,11 @@ public class PlayerImpl implements Player {
   @Override
   public List<Treasure> getPlayerTreasure() {
     return new ArrayList<>(this.playerTreasure);
+  }
+
+  @Override
+  public List<CrookedArrow> getPlayerCrookedArrows() {
+    return new ArrayList<>(this.playerCrookedArrows);
   }
 
   @Override
@@ -69,4 +106,26 @@ public class PlayerImpl implements Player {
   public void moveWest() {
     this.playerLocation = dungeon.getCaveInDirection(this.playerLocation, "W");
   }
+
+  @Override
+  public void shoot(int inputDistance, String inputDirection) {
+
+    if (inputDistance < 0) {
+      throw new IllegalArgumentException("Cannot shoot less than 0");
+    }
+
+    if (inputDirection == null) {
+      throw new IllegalArgumentException("Must have a direction to shoot");
+    }
+
+    if (this.playerCrookedArrows.size() == 0) {
+      throw new IllegalArgumentException("Player does not have arrows to shoot!");
+    }
+
+    // All checks passed; deduct arrows by 1
+    // and invoke the shootArrow method with the passed params
+//   this.playerCrookedArrows.remove(0).shootArrow(inputDistance, inputDirection);
+    this.playerCrookedArrows.remove(0);
+  }
+
 }

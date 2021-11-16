@@ -8,5 +8,7 @@ public interface Monster {
 
   // Get's the number of hits that an Otyugh has suffered.
   // Two means it ded.
-  int getHealth();
+  int getHits();
+
+  void takeHit();
 }

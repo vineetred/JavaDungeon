@@ -67,6 +67,16 @@ public interface Dungeon {
    */
   List<Monster> peekCaveMonsters(Point2D inputCavePoint);
 
+  /** Return the point 2d object of the cave or tunnel that exists
+   * in the given direction.
+   * @param inputCavePoint the Point2D object that we check the moves for
+   * @param direction the character direction as N, S, E, W
+   * @param distance the distance that the arrow is to be shot!
+   * @return Point2D object to the direction you want
+   * @throws IllegalArgumentException if direction is not a thing or no cave exists there
+   */
+  int shootCrookedArrow(Point2D inputCavePoint, String direction, int distance);
+
   void stats();
 
 }

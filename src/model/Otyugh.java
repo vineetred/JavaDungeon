@@ -1,6 +1,6 @@
 package model;
 
-public class Otyugh implements Monster {
+class Otyugh implements Monster {
 
   // TODO: Make sure a cave can hold this object
   private int hits;
@@ -11,14 +11,15 @@ public class Otyugh implements Monster {
   }
 
 
-  void takeHit() {
+  @Override
+  public void takeHit() {
     if (this.hits < 2) {
       this.hits ++;
     }
   }
 
   @Override
-  public int getHealth() {
+  public int getHits() {
     int temp;
     temp = this.hits;
     return temp;
