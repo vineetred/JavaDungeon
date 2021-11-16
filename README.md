@@ -8,6 +8,8 @@
    4. BFS situation - Drop smell units in the caves away from where step 3 happens. 
    5. Maintain health also of the Otyugh!
 2. Add arrow functionality!
+   1. Randomly spread arrows throughout the maze; read monster and treasure addition for this
+3. Need to take number of monster as a parameter!
 
 # Overview
 JavaDungeon is a game that consists of a maze dungeon and a player who tries to navigate through 
