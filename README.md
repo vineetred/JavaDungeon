@@ -11,6 +11,8 @@
    1. Randomly spread arrows throughout the maze; read monster and treasure addition for this
 3. Need to take number of monster as a parameter!
 4. Tests for smell :(.
+5. Need to figure out how to return the cave monsters such that underlying objects also reflect 
+   battle changes!
 
 # Overview
 JavaDungeon is a game that consists of a maze dungeon and a player who tries to navigate through 
