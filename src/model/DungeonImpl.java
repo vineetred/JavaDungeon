@@ -74,6 +74,7 @@ public class DungeonImpl implements Dungeon {
       runKruskalAlgorithm();
       // Fill the caves with treasure
       fillCavesWithTreasure(getCavesIndexArrayList(), 0);
+      fillCavesWithArrows(getCavesIndexArrayList(), 0);
       // Initialize the start and end points
       temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
       // Catch the illegal state exception emitted when we
@@ -89,6 +90,7 @@ public class DungeonImpl implements Dungeon {
     // Assign it outside the loop as they are final
     this.startPoint = temporaryStartPoint;
     this.endPoint = temporaryEndPoint;
+
   }
 
   /** The dungeon constructor to generate a non-random dungeon.
@@ -125,6 +127,7 @@ public class DungeonImpl implements Dungeon {
       runKruskalAlgorithm();
       // Fill the caves with treasure
       fillCavesWithTreasure(getCavesIndexArrayList(), 1);
+      fillCavesWithArrows(getCavesIndexArrayList(), 1);
 
       // Initialize the start and end points
       temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
@@ -186,6 +189,7 @@ public class DungeonImpl implements Dungeon {
       runKruskalAlgorithm();
       // Fill the caves with treasure
       fillCavesWithTreasure(getCavesIndexArrayList(), randomCaveTreasureChoiceSeed);
+      fillCavesWithArrows(getCavesIndexArrayList(), 0);
       // Initialize the start and end points
       temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
       // Catch the illegal state exception emitted when we
@@ -503,7 +507,6 @@ public class DungeonImpl implements Dungeon {
 
   }
 
-  // TODO: Add smell filling here.
   private void fillCavesWithSmells(ArrayList<Integer> cavesAndTunnels) {
     for (int index = 0; index < cavesAndTunnels.size(); index++) {
       // DO BFS from this place
@@ -525,6 +528,24 @@ public class DungeonImpl implements Dungeon {
 
     }
   }
+
+  private void fillCavesWithArrows(ArrayList<Integer> caves, int randomCaveChoiceSeed) {
+
+    if (this.treasurePercentage != 0) {
+      int numberOfCavesWithTreasure = (int) Math.ceil((caves.size() * treasurePercentage) / 100);
+
+      // Generator that chooses which cave
+      RandomNumberGenerator rand =
+          new RandomNumberGenerator(0, caves.size() - 1,
+              randomCaveChoiceSeed, 1);
+
+      for (int t = 0; t < numberOfCavesWithTreasure; t++) {
+        findCaveByIndex(caves.get(rand.getRandomNumber())).addCrookedArrow(new CrookedArrow());
+      }
+    }
+
+  }
+
 
   private Cave findCaveByIndex(int index) {
     for (int r = 0; r < rows; r++) {
@@ -899,6 +920,30 @@ public class DungeonImpl implements Dungeon {
     try {
       // Underlying method already returns a deep copy
       return caveObject.getCaveMonsters();
+    }
+
+    catch (NullPointerException e) {
+      return new ArrayList<>();
+    }
+
+  }
+
+  @Override
+  public List<CrookedArrow> peekCaveCrookedArrows(Point2D inputCavePoint) {
+    Cave caveObject = null;
+
+    for (Integer caveIndex : this.getAllCaves()) {
+      Cave temporaryObject = this.findCaveByIndex(caveIndex);
+      if (temporaryObject.getRow() == inputCavePoint.getRow()
+          && temporaryObject.getColumn() == inputCavePoint.getColumn()) {
+        caveObject = this.findCaveByIndex(caveIndex);
+        break;
+      }
+    }
+
+    try {
+      // Underlying method already returns a deep copy
+      return caveObject.getCaveCrookedArrows();
     }
 
     catch (NullPointerException e) {

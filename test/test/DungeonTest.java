@@ -681,4 +681,19 @@ public class DungeonTest {
     assertFalse(testPlayer.isAlive());
 
   }
+
+  @Test
+  public void testDungeonArrowInitialization() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+    testPlayer.pickUpCrookedArrows(testDungeon.peekCaveCrookedArrows(
+        testPlayer.getPlayerLocation()));
+
+    // State should be deterministic at this point
+    // Note that we use the non-random treasure seed for this test
+    // as this makes the number of arrows deterministic as well
+    assertEquals(5, testPlayer.getPlayerCrookedArrows().size());
+
+  }
 }
