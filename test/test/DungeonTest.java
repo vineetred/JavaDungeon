@@ -40,27 +40,27 @@ public class DungeonTest {
   // Dungeon exception tests
   @Test(expected = IllegalArgumentException.class)
   public void testNegativeRowsAndColumns() {
-    Dungeon testDungeon = new DungeonImpl(false, -1, -1, 0, 20);
+    Dungeon testDungeon = new DungeonImpl(false, -1, -1, 0, 20, 2);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testFewerThanSixNodes() {
-    Dungeon testDungeon = new DungeonImpl(false, 1, 4, 0, 20);
+    Dungeon testDungeon = new DungeonImpl(false, 1, 4, 0, 20, 2);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testFewerThanThreeColumns() {
-    Dungeon testDungeon = new DungeonImpl(false, 2, 2, 0, 20);
+    Dungeon testDungeon = new DungeonImpl(false, 2, 2, 0, 20, 2);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testLessThanTwentyTreasure() {
-    Dungeon testDungeon = new DungeonImpl(false, 6, 9, 0, 10);
+    Dungeon testDungeon = new DungeonImpl(false, 6, 9, 0, 10, 2);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testNegativeInterconnectivity() {
-    Dungeon testDungeon = new DungeonImpl(false, 6, 9, -1, 40);
+    Dungeon testDungeon = new DungeonImpl(false, 6, 9, -1, 40, 2);
   }
 
   // Dungeon Public method tests
@@ -249,7 +249,7 @@ public class DungeonTest {
   public void testMinimumTreasureThresholdInvariant() {
 
     // Check if the treasure threshold is being obeyed!
-    Dungeon testDungeon = new DungeonImpl(false, 7, 7, 0, 100);
+    Dungeon testDungeon = new DungeonImpl(false, 7, 7, 0, 100, 4);
     // Create a player
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
     List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
@@ -345,7 +345,7 @@ public class DungeonTest {
 
 
     // Wrapping but checking with truly random seed
-    testDungeon = new DungeonImpl(true, 7, 7, 5, 20);
+    testDungeon = new DungeonImpl(true, 7, 7, 5, 20, 4);
     String dungeonString = testDungeon.toString();
     String arrow = "<->";
 
@@ -353,7 +353,7 @@ public class DungeonTest {
     assertEquals(53, dungeonString.split(arrow, -1).length - 1);
 
     // Non - Wrapping but checking with truly random seed
-    testDungeon = new DungeonImpl(false, 7, 7, 5, 20);
+    testDungeon = new DungeonImpl(false, 7, 7, 5, 20, 4);
     dungeonString = testDungeon.toString();
     arrow = "<->";
 
@@ -361,7 +361,7 @@ public class DungeonTest {
     assertEquals(53, dungeonString.split(arrow, -1).length - 1);
 
     // Non - Wrapping but checking with truly random seed
-    testDungeon = new DungeonImpl(false, 7, 7, 3, 20);
+    testDungeon = new DungeonImpl(false, 7, 7, 3, 20, 4);
     dungeonString = testDungeon.toString();
     arrow = "<->";
 

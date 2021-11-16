@@ -40,7 +40,7 @@ public class DungeonImpl implements Dungeon {
    *
    */
   public DungeonImpl(boolean wraps, int rows, int columns, int interconnect,
-                     int treasurePercentage) {
+                     int treasurePercentage, int numberOfMonsters) {
 
     // Check the dungeon invariants!
     checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage);
@@ -55,7 +55,7 @@ public class DungeonImpl implements Dungeon {
     this.seed = 0;
     this.minorSmell = new ArrayList<>();
     this.majorSmell = new ArrayList<>();
-    this.numberOfMonsters = 2;
+    this.numberOfMonsters = numberOfMonsters;
 
     int temporaryStartPoint;
     int temporaryEndPoint;

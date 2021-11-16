@@ -484,7 +484,7 @@ public class Driver {
     System.out.println("Treasure in percentage (out of 100): ? ");
     int treasurePercentage =  Integer.parseInt(myObj.nextLine());
 
-    Dungeon test = new DungeonImpl(wrap, rows, columns, degree, treasurePercentage);
+    Dungeon test = new DungeonImpl(wrap, rows, columns, degree, treasurePercentage, 2);
     System.out.println("\nDungeon Params: ");
     System.out.println("Wrapping ---> " + wrap);
     System.out.println("Rows ---> " + rows);
