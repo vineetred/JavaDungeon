@@ -72,7 +72,7 @@ public interface Dungeon {
    * @param inputCavePoint the Point2D object that we check the moves for
    * @param direction the character direction as N, S, E, W
    * @param distance the distance that the arrow is to be shot!
-   * @return Point2D object to the direction you want
+   * @return integer that is 0 if a wall/monster not found, 1 if hit, 2 if hit and kill
    * @throws IllegalArgumentException if direction is not a thing or no cave exists there
    */
   int shootCrookedArrow(Point2D inputCavePoint, String direction, int distance);
