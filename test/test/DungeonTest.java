@@ -573,8 +573,18 @@ public class DungeonTest {
     // With non-random dungeon
     Dungeon testDungeon = new DungeonImpl(true);
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
-    testDungeon.stats();
+//    testDungeon.stats();
+
+    int numberOfMonsters = 0;
+    for (int row = 0; row < 5; row++) {
+      for (int col = 0; col < 6; col++) {
+        if (testDungeon.peekCaveMonsters(new Point2DImpl(row, col)).size() > 0) {
+          numberOfMonsters++;
+        }
+      }
+    }
+
+    assertEquals(2, numberOfMonsters);
 
   }
-
 }

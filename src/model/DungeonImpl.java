@@ -17,10 +17,9 @@ public class DungeonImpl implements Dungeon {
   private final int interconnectivity;
   private final int treasurePercentage;
   // TODO: Change this!
-  private final int numberOfMonsters = 2;
-  private final ArrayList<Integer> minorSmell = new ArrayList<>();
-  private final ArrayList<Integer> majorSmell = new ArrayList<>();
-
+  private final int numberOfMonsters;
+  private final ArrayList<Integer> minorSmell;
+  private final ArrayList<Integer> majorSmell;
   private final int startPoint;
   private final int endPoint;
   private final Cave[][] gameBoard;
@@ -40,7 +39,8 @@ public class DungeonImpl implements Dungeon {
    * @param treasurePercentage the percentage denominated out of 100 of treasure filled caves
    *
    */
-  public DungeonImpl(boolean wraps, int rows, int columns, int interconnect, int treasurePercentage) {
+  public DungeonImpl(boolean wraps, int rows, int columns, int interconnect,
+                     int treasurePercentage) {
 
     // Check the dungeon invariants!
     checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage);
@@ -53,6 +53,9 @@ public class DungeonImpl implements Dungeon {
     this.treasurePercentage = treasurePercentage;
     this.gameBoard = gameBoard;
     this.seed = 0;
+    this.minorSmell = new ArrayList<>();
+    this.majorSmell = new ArrayList<>();
+    this.numberOfMonsters = 2;
 
     int temporaryStartPoint;
     int temporaryEndPoint;
@@ -101,6 +104,9 @@ public class DungeonImpl implements Dungeon {
     this.interconnectivity = 0;
     this.treasurePercentage = 20;
     this.seed = 1;
+    this.minorSmell = new ArrayList<>();
+    this.majorSmell = new ArrayList<>();
+    this.numberOfMonsters = 2;
 
     int temporaryStartPoint;
     int temporaryEndPoint;
@@ -137,7 +143,7 @@ public class DungeonImpl implements Dungeon {
     this.endPoint = temporaryEndPoint;
 
     // Fill the caves with Monsters
-    fillCavesWithMonsters(getCavesIndexArrayList(), 1);
+    fillCavesWithMonsters(getCavesIndexArrayList(), 0);
 
     // Fill the caves with Smells!
     // Note, we pass the tunnels too.
@@ -159,6 +165,9 @@ public class DungeonImpl implements Dungeon {
     this.interconnectivity = 0;
     this.treasurePercentage = 20;
     this.seed = 1;
+    this.minorSmell = new ArrayList<>();
+    this.majorSmell = new ArrayList<>();
+    this.numberOfMonsters = 2;
 
     int temporaryStartPoint;
     int temporaryEndPoint;
@@ -322,7 +331,7 @@ public class DungeonImpl implements Dungeon {
       for (int index = 0; index < temporaryCaveObject.getNeighbors().size(); index++) {
         if (!visited.contains(findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)))) {
           queue.add(findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)));
-          if (findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)).getMonsterList().size() >= 1) {
+          if (findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)).getCaveMonsters().size() >= 1) {
             visited.add(findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)));
           }
         }
@@ -475,7 +484,7 @@ public class DungeonImpl implements Dungeon {
     // Generator that chooses which cave
     RandomNumberGenerator rand =
         new RandomNumberGenerator(0, caves.size() - 2,
-            0, 1);
+            randomCaveChoiceSeed, 1);
 
     while (numberOfCavesWithMonsters != 0) {
 
@@ -859,6 +868,30 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
+  public List<Monster> peekCaveMonsters(Point2D inputCavePoint) {
+    Cave caveObject = null;
+
+    for (Integer caveIndex : this.getAllCaves()) {
+      Cave temporaryObject = this.findCaveByIndex(caveIndex);
+      if (temporaryObject.getRow() == inputCavePoint.getRow()
+          && temporaryObject.getColumn() == inputCavePoint.getColumn()) {
+        caveObject = this.findCaveByIndex(caveIndex);
+        break;
+      }
+    }
+
+    try {
+      // Underlying method already returns a deep copy
+      return caveObject.getCaveMonsters();
+    }
+
+    catch (NullPointerException e) {
+      return new ArrayList<>();
+    }
+
+  }
+
+  @Override
   public boolean gameFinished(Point2D inputCavePoint) {
     return inputCavePoint.getRow() == this.getEndPoint().getRow()
         && inputCavePoint.getColumn() == this.getEndPoint().getColumn();
@@ -874,9 +907,9 @@ public class DungeonImpl implements Dungeon {
     System.out.println("Minor smells " + this.minorSmell.toString());
     System.out.println("Major smells " + this.majorSmell.toString());
     for (int index = 0; index < getCavesIndexArrayList().size(); index++) {
-      if (findCaveByIndex(getCavesIndexArrayList().get(index)).getMonsterList().size() > 0) {
+      if (findCaveByIndex(getCavesIndexArrayList().get(index)).getCaveMonsters().size() > 0) {
         System.out.println(findCaveByIndex(getCavesIndexArrayList().get(index)).getLocation());
-        System.out.println(findCaveByIndex(getCavesIndexArrayList().get(index)).getMonsterList().toString());
+        System.out.println(findCaveByIndex(getCavesIndexArrayList().get(index)).getCaveMonsters().toString());
       }
 
     }

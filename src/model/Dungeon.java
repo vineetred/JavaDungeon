@@ -59,6 +59,14 @@ public interface Dungeon {
    */
   boolean gameFinished(Point2D inputCavePoint);
 
+  /** Returns whatever monster that is held at the cave at
+   * the given point. A new List is created leaving the actual cave monsters untouched.
+   *
+   * @param inputCavePoint the Point2D object that we expunge the treasure from
+   * @return List of Treasure enums
+   */
+  List<Monster> peekCaveMonsters(Point2D inputCavePoint);
+
   void stats();
 
 }
