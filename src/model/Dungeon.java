@@ -67,8 +67,7 @@ public interface Dungeon {
    */
   List<Monster> peekCaveMonsters(Point2D inputCavePoint);
 
-  /** Return the point 2d object of the cave or tunnel that exists
-   * in the given direction.
+  /** Shoot a crooked arrow in the given direction from the given point and to a given distance.
    * @param inputCavePoint the Point2D object that we check the moves for
    * @param direction the character direction as N, S, E, W
    * @param distance the distance that the arrow is to be shot!

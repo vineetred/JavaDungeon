@@ -595,15 +595,13 @@ public class DungeonTest {
     // Create a player
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
 
-    // First test
-    assertFalse(testDungeon.gameFinished(testPlayer.getPlayerLocation()));
-
     // Let's finish the game
     // <------> Move <------>
     List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
     playerPickTreasureFromCave(testPlayer, caveTreasure);
     testPlayer.moveSouth();
 
+    // Should be 0 as there must a wall in this direction
     assertEquals(0, testDungeon.shootCrookedArrow(testPlayer.getPlayerLocation(),
         "W", 1));
 

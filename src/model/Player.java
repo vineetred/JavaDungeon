@@ -66,11 +66,19 @@ public interface Player {
   boolean isAlive();
 
   /**
-   * The player shoots an arrow from their quiver!
+   * The player shoots an arrow from their quiver! Necessary to reduce the quiver count by 1.
    * @param inputDistance an integer distance.
    * @param inputDirection string direction!
+   * @throws IllegalArgumentException if bad arguments are given!
    */
   void shoot(int inputDistance, String inputDirection);
+
+  /**
+   * The player fights the passed monster. If they die during the process, their alive
+   * boolean gets changed
+   * @param monster the input monster interface object
+   */
+  void fightMonster(Monster monster);
 
 
 }

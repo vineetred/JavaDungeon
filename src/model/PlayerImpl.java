@@ -44,6 +44,10 @@ public class PlayerImpl implements Player {
     this.playerCrookedArrows.add(new CrookedArrow());
   }
 
+  private boolean getFiftyFiftyChance() {
+    return Math.random() > 0.5;
+  }
+
   @Override
   public void pickUpTreasure(List<Treasure> inputTreasure) {
     if (inputTreasure == null) {
@@ -124,8 +128,27 @@ public class PlayerImpl implements Player {
 
     // All checks passed; deduct arrows by 1
     // and invoke the shootArrow method with the passed params
-//   this.playerCrookedArrows.remove(0).shootArrow(inputDistance, inputDirection);
     this.playerCrookedArrows.remove(0);
+  }
+
+  @Override
+  public void fightMonster(Monster monster) {
+    // Check if monster is injured
+    if (monster.getHits() == 1) {
+      // If so, we take a chance
+      if (this.getFiftyFiftyChance()) {
+        monster.takeHit();
+      }
+      // Dead player
+      else {
+        this.alive = false;
+      }
+    }
+
+    // Dead player
+    else {
+      this.alive = false;
+    }
   }
 
 }
