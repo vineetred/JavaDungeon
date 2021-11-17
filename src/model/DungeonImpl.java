@@ -91,6 +91,13 @@ public class DungeonImpl implements Dungeon {
     this.startPoint = temporaryStartPoint;
     this.endPoint = temporaryEndPoint;
 
+    // Fill the caves with Monsters
+    fillCavesWithMonsters(getCavesIndexArrayList(), 0);
+
+    // Fill the caves with Smells!
+    // Note, we pass the tunnels too.
+    fillCavesWithSmells(getAllCavesAndTunnels());
+
   }
 
   /** The dungeon constructor to generate a non-random dungeon.
@@ -510,7 +517,7 @@ public class DungeonImpl implements Dungeon {
   private void fillCavesWithSmells(ArrayList<Integer> cavesAndTunnels) {
     for (int index = 0; index < cavesAndTunnels.size(); index++) {
       // DO BFS from this place
-      if (breadthFirstSearchByLevel(cavesAndTunnels.get(index), 1).size() > 1) {
+      if (breadthFirstSearchByLevel(cavesAndTunnels.get(index), 1).size() - 1 >= 1) {
         majorSmell.add(cavesAndTunnels.get(index));
       }
       else {

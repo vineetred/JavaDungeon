@@ -57,7 +57,7 @@ public class Driver {
     Appendable output = System.out;
 
     Controller ctrl = new ControllerImpl(input, output);
-    Dungeon d = ctrl.buildDungeon(true, 5, 6, 1, 25, 3);
+    Dungeon d = ctrl.buildDungeon(true, 5, 6, 1, 25, 6);
     Player player = new PlayerImpl(d.getStartPoint(), d);
     ctrl.playGame(d, player, input);
 

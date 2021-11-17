@@ -77,6 +77,25 @@ public class ControllerImpl implements Controller{
 
   }
 
+  private void playerStats(Player inputPlayer) {
+
+    try {
+      out.append("\n<---VITALS--->\n");
+      out.append("\nPlayer Treasure: ")
+          .append(String.valueOf(inputPlayer.getPlayerTreasure()));
+      out.append("\nPlayer Arrows: ")
+          .append(String.valueOf(inputPlayer.getPlayerCrookedArrows().size()));
+      out.append("\nPlayer Alive?: ")
+          .append(String.valueOf(inputPlayer.isAlive()))
+          .append("\n");
+    }
+
+    catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+
+  }
+
   private void parseMove(Player inputPlayer, String inputDirection) {
 
     try {
@@ -182,9 +201,6 @@ public class ControllerImpl implements Controller{
     }
   }
 
-
-
-
   private void playerPickTreasureFromCave(Player inputPlayer,
                                                  List<Treasure> caveTreasure) {
 
@@ -229,11 +245,11 @@ public class ControllerImpl implements Controller{
 
     try {
       if (d.isMajorSmell(inputPoint)) {
-        out.append("There is a super bad smell nearby!");
+        out.append("\nThere is a super bad smell nearby!");
       }
 
       else if (d.isMinorSmell(inputPoint)) {
-        out.append("There is a bad smell nearby!");
+        out.append("\nThere is a bad smell nearby!");
       }
     }
 
@@ -357,6 +373,18 @@ public class ControllerImpl implements Controller{
 
   }
 
+  private void invalidInputMessage() {
+    try {
+      out.append("\nInvalid option! Try again!\n");
+    }
+
+    catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+
+
+  }
+
   @Override
   public Dungeon buildDungeon(boolean wraps, int rows, int columns, int interconnect,
                               int treasurePercentage, int numberOfMonsters) {
@@ -381,6 +409,8 @@ public class ControllerImpl implements Controller{
 //      if () {
 //        playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
 //      }
+
+      playerStats(player);
 
       boolean treasureInCave = checkTreasure(d, player.getPlayerLocation());
 
@@ -414,6 +444,10 @@ public class ControllerImpl implements Controller{
 
       else if (userMotive.equals("S")) {
         shoot(d, player, getUserShootingDistance(), getUserDirection());
+      }
+
+      else {
+        invalidInputMessage();
       }
 
     }
