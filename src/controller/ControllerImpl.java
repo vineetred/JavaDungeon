@@ -2,7 +2,6 @@ package controller;
 
 import model.*;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -147,8 +146,32 @@ public class ControllerImpl implements Controller{
       else {
         out.append("\nThere is treasure in the room!");
         for (Treasure treasure : caveTreasure) {
-          out.append("\nA " + treasure.toString());
+          out.append("\nA ").append(treasure.toString());
         }
+        return true;
+      }
+
+    }
+
+    catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+  }
+
+  private boolean checkArrows(Dungeon d, Point2D inputPoint) {
+
+    try {
+      List<CrookedArrow> caveCrookedArrows = d.peekCaveCrookedArrows(inputPoint);
+      if (caveCrookedArrows == null || caveCrookedArrows.size() == 0) {
+        out.append("\nNo arrows in the cave");
+        return false;
+      }
+
+      else {
+        out.append("\nThere are arrows in the room! ")
+            .append(String.valueOf(caveCrookedArrows.size()))
+            .append(" arrow(s)");
+//        out.append("\nPlayer just picks up: " + caveCrookedArrows.size() + " arrows");
         return true;
       }
 
@@ -180,24 +203,16 @@ public class ControllerImpl implements Controller{
     }
   }
 
-  private void playerCheckAndPickArrows(Player inputPlayer,
-                                        List<CrookedArrow> crookedArrowsList) {
+  private void playerPickCrookedArrowsFromCave(Player inputPlayer,
+                                               List<CrookedArrow> crookedArrowsList) {
 
     try {
 
-      if (crookedArrowsList == null || crookedArrowsList.size() == 0) {
-        out.append("\nNo Arrows in the cave");
-      }
-
-      else {
-        inputPlayer.pickUpCrookedArrows(crookedArrowsList);
-        out.append("\nThere are arrows! in the room!");
-        out.append("\nPlayer just picks up: " + crookedArrowsList.size() + " arrows");
-
-      }
+      inputPlayer.pickUpCrookedArrows(crookedArrowsList);
+      out.append("\nPlayer picks up arrows!");
 
       if (crookedArrowsList.size() > 0) {
-        out.append("\nCurrent player arrows: " + crookedArrowsList.size());
+        out.append("\nPlayer currently has arrows (number): " + crookedArrowsList.size());
       }
       else {
         out.append("\nCurrent player arrows: 0");
@@ -255,11 +270,22 @@ public class ControllerImpl implements Controller{
 
   private void shoot(Dungeon d, Player inputPlayer, int inputDistance, String inputDirection) {
 
-    inputPlayer.shoot(inputDistance, inputDirection);
-    int shootingResult = d.shootCrookedArrow(inputPlayer.getPlayerLocation(), inputDirection,
-        inputDistance);
+
 
     try {
+
+      try {
+        inputPlayer.shoot(inputDistance, inputDirection);
+      }
+
+      catch (IllegalStateException e) {
+        out.append("You have no arrows to shoot!");
+        return;
+      }
+
+      int shootingResult = d.shootCrookedArrow(inputPlayer.getPlayerLocation(), inputDirection,
+          inputDistance);
+
       if (shootingResult == 0) {
         out.append("You just wasted an arrow!");
       }
@@ -293,6 +319,44 @@ public class ControllerImpl implements Controller{
     }
   }
 
+  private String getUserMotive() {
+
+    try {
+      out.append("\nMove, Pickup, or Shoot? (M/P/S)? ");
+    }
+    catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+
+    return scan.nextLine();
+
+  }
+
+  private String getUserDirection() {
+
+    try {
+      out.append("\nDirection? ");
+    }
+    catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+
+    return scan.nextLine();
+
+  }
+
+  private int getUserShootingDistance() {
+    try {
+      out.append("\nNumber of caves? (HAS TO BE A NUMBER!) ");
+    }
+    catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+
+    return Integer.parseInt(scan.nextLine());
+
+  }
+
   @Override
   public Dungeon buildDungeon(boolean wraps, int rows, int columns, int interconnect,
                               int treasurePercentage, int numberOfMonsters) {
@@ -312,13 +376,17 @@ public class ControllerImpl implements Controller{
   public void playGame(Dungeon d, Player player, Readable input) {
 
 
-//    while (player.isAlive() && !d.gameFinished(player.getPlayerLocation())) {
+    while (player.isAlive() && !d.gameFinished(player.getPlayerLocation())) {
 
-      if (checkTreasure(d, player.getPlayerLocation())) {
-        playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
-      }
+//      if () {
+//        playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
+//      }
 
-      playerCheckAndPickArrows(player, d.expungeCaveCrookedArrows(player.getPlayerLocation()));
+      boolean treasureInCave = checkTreasure(d, player.getPlayerLocation());
+
+      boolean arrowsInCave = checkArrows(d, player.getPlayerLocation());
+
+//      playerPickCrookedArrowsFromCave(player, d.expungeCaveCrookedArrows(player.getPlayerLocation()));
 
       checkSmell(d, player.getPlayerLocation());
 
@@ -328,16 +396,27 @@ public class ControllerImpl implements Controller{
 
       getPossibleMoves(d, player);
 
-      try {
+      String userMotive = getUserMotive();
 
-        parseMove(player, new BufferedReader());
+      if (userMotive.equals("M")) {
+        parseMove(player, getUserDirection());
       }
 
-      catch (IOException ioo) {
+      else if (userMotive.equals("P")) {
+        if (treasureInCave) {
+          playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
+        }
 
+        if (arrowsInCave) {
+          playerPickCrookedArrowsFromCave(player, d.expungeCaveCrookedArrows(player.getPlayerLocation()));
+        }
       }
 
-//    }
+      else if (userMotive.equals("S")) {
+        shoot(d, player, getUserShootingDistance(), getUserDirection());
+      }
+
+    }
 
 
     // While (player alive and game not finished)

@@ -929,7 +929,7 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public List<CrookedArrow> expungeCaveCrookedArrows(Point2D inputCavePoint) {
+  public List<CrookedArrow> peekCaveCrookedArrows(Point2D inputCavePoint) {
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
@@ -944,6 +944,30 @@ public class DungeonImpl implements Dungeon {
     try {
       // Underlying method already returns a deep copy
       return caveObject.getCaveCrookedArrows();
+    }
+
+    catch (NullPointerException e) {
+      return new ArrayList<>();
+
+    }
+  }
+
+  @Override
+  public List<CrookedArrow> expungeCaveCrookedArrows(Point2D inputCavePoint) {
+    Cave caveObject = null;
+
+    for (Integer caveIndex : this.getAllCaves()) {
+      Cave temporaryObject = this.findCaveByIndex(caveIndex);
+      if (temporaryObject.getRow() == inputCavePoint.getRow()
+          && temporaryObject.getColumn() == inputCavePoint.getColumn()) {
+        caveObject = this.findCaveByIndex(caveIndex);
+        break;
+      }
+    }
+
+    try {
+      // Underlying method already returns a deep copy
+      return caveObject.pickCaveCrookedArrows();
     }
 
     catch (NullPointerException e) {

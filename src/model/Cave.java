@@ -103,9 +103,23 @@ class Cave {
     return new ArrayList<>(this.monsterList);
   }
 
-  // Returns the cave's arrow list.
-  // null if no arrows!
+
+  // Check if arrows exists, if so, return the contents of the cave
   protected ArrayList<CrookedArrow> getCaveCrookedArrows() {
-    return new ArrayList<>(this.arrowList);
+    if (this.arrowList.size() == 0) {
+      return null;
+    }
+    else {
+      return new ArrayList<>(this.arrowList);
+    }
+  }
+
+  // Returns the cave's arrow list and set to empty!
+  // null if no arrows!
+  protected ArrayList<CrookedArrow> pickCaveCrookedArrows() {
+
+    ArrayList<CrookedArrow> temporaryList = this.arrowList;
+    this.arrowList = new ArrayList<>();
+    return temporaryList;
   }
 }

@@ -89,6 +89,14 @@ public interface Dungeon {
    * @param inputCavePoint the Point2D object that we expunge the treasure from
    * @return List of Treasure enums
    */
+  List<CrookedArrow> peekCaveCrookedArrows(Point2D inputCavePoint);
+
+  /** Returns whatever treasure that is held at the cave at
+   * the given point. A new List is created leaving the actual cave treasure untouched.
+   *
+   * @param inputCavePoint the Point2D object that we expunge the treasure from
+   * @return List of Treasure enums
+   */
   List<CrookedArrow> expungeCaveCrookedArrows(Point2D inputCavePoint);
 
   /** Shoot a crooked arrow in the given direction from the given point and to a given distance.

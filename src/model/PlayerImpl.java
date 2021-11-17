@@ -123,7 +123,7 @@ public class PlayerImpl implements Player {
     }
 
     if (this.playerCrookedArrows.size() == 0) {
-      throw new IllegalArgumentException("Player does not have arrows to shoot!");
+      throw new IllegalStateException("Player does not have arrows to shoot!");
     }
 
     // All checks passed; deduct arrows by 1
