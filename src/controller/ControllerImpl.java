@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -46,9 +47,9 @@ public class ControllerImpl implements Controller{
           "| |_______|_______|___|___|___|_____|");
 
       out.append("\nAuthor: Vineet Reddy");
-      out.append("Version: 1.0.2");
-      out.append("Year: 2021");
-      out.append("GitHub: vineetred");
+      out.append("\nVersion: 1.0.2");
+      out.append("\nYear: 2021");
+      out.append("\nGitHub: vineetred");
       out.append("\nWelcome to the Labyrinth!");
     }
 
@@ -62,13 +63,13 @@ public class ControllerImpl implements Controller{
 
     try {
       out.append("\nDungeon Params: ");
-      out.append("Wrapping ---> " + wraps);
-      out.append("Rows ---> " + rows);
-      out.append("Columns ---> " + columns);
-      out.append("Interconnectedness ---> " + interconnect);
-      out.append("Treasure ---> " + treasurePercentage + "%");
-      out.append("Arrows ---> " + treasurePercentage + "%");
-      out.append("Monsters ---> " + numberOfMonsters);
+      out.append("\nWrapping ---> " + wraps);
+      out.append("\nRows ---> " + rows);
+      out.append("\nColumns ---> " + columns);
+      out.append("\nInterconnectedness ---> " + interconnect);
+      out.append("\nTreasure ---> " + treasurePercentage + "%");
+      out.append("\nArrows ---> " + treasurePercentage + "%");
+      out.append("\nMonsters ---> " + numberOfMonsters);
     }
 
     catch (IOException ioe) {
@@ -144,9 +145,9 @@ public class ControllerImpl implements Controller{
       }
 
       else {
-        out.append("There is treasure in the room!");
+        out.append("\nThere is treasure in the room!");
         for (Treasure treasure : caveTreasure) {
-          out.append("A " + treasure.toString());
+          out.append("\nA " + treasure.toString());
         }
         return true;
       }
@@ -167,7 +168,7 @@ public class ControllerImpl implements Controller{
     try {
 
       if (!(caveTreasure == null) && !(caveTreasure.size() == 0)) {
-        out.append("Player just picks up the treasure!");
+        out.append("\nPlayer just picks up the treasure!");
         inputPlayer.pickUpTreasure(caveTreasure);
       }
 
@@ -190,7 +191,7 @@ public class ControllerImpl implements Controller{
 
       else {
         inputPlayer.pickUpCrookedArrows(crookedArrowsList);
-        out.append("There is treasure in the room!");
+        out.append("\nThere are arrows! in the room!");
         out.append("\nPlayer just picks up: " + crookedArrowsList.size() + " arrows");
 
       }
@@ -280,9 +281,9 @@ public class ControllerImpl implements Controller{
   private void getPossibleMoves(Dungeon d, Player inputPlayer) {
     try {
 
-      out.append("Possible moves from here - ");
+      out.append("\nPossible moves from here - ");
       for (String direction : d.getMovesAtCaveIndex(inputPlayer.getPlayerLocation())) {
-        out.append(direction);
+        out.append("\n" + direction);
       }
 
     }
@@ -308,10 +309,10 @@ public class ControllerImpl implements Controller{
 
 
   @Override
-  public void playGame(Dungeon d, Player player) {
+  public void playGame(Dungeon d, Player player, Readable input) {
 
 
-    while (player.isAlive() && !d.gameFinished(player.getPlayerLocation())) {
+//    while (player.isAlive() && !d.gameFinished(player.getPlayerLocation())) {
 
       if (checkTreasure(d, player.getPlayerLocation())) {
         playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
@@ -326,7 +327,17 @@ public class ControllerImpl implements Controller{
       // Check if shoot!
 
       getPossibleMoves(d, player);
-    }
+
+      try {
+
+        parseMove(player, new BufferedReader());
+      }
+
+      catch (IOException ioo) {
+
+      }
+
+//    }
 
 
     // While (player alive and game not finished)
