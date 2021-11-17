@@ -1,8 +1,8 @@
 package model;
 
-class CrookedArrow {
+public class CrookedArrow {
 
-  protected CrookedArrow() {
+  public CrookedArrow() {
 
   }
 

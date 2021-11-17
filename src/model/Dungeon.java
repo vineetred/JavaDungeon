@@ -59,6 +59,22 @@ public interface Dungeon {
    */
   boolean gameFinished(Point2D inputCavePoint);
 
+  /** Check if the game is finished. This state is only reached when the given
+   * point is also the marked end point. The check is done using
+   * the derived column and row and not on object equality.
+   * @param inputCavePoint the Point2D object that we check for
+   * @return true if game is done, else false.
+   */
+  boolean isMinorSmell(Point2D inputCavePoint);
+
+  /** Check if the game is finished. This state is only reached when the given
+   * point is also the marked end point. The check is done using
+   * the derived column and row and not on object equality.
+   * @param inputCavePoint the Point2D object that we check for
+   * @return true if game is done, else false.
+   */
+  boolean isMajorSmell(Point2D inputCavePoint);
+
   /** Returns whatever monster that is held at the cave at
    * the given point. A new List is created leaving the actual cave monsters untouched.
    *

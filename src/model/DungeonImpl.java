@@ -1023,4 +1023,18 @@ public class DungeonImpl implements Dungeon {
 
     }
   }
+
+  @Override
+  public boolean isMinorSmell(Point2D inputCavePoint) {
+    Cave caveObject = this.getCaveAtPoint2D(inputCavePoint);
+    return this.minorSmell.contains(caveObject.getIndex());
+
+  }
+
+  @Override
+  public boolean isMajorSmell(Point2D inputCavePoint) {
+    Cave caveObject = this.getCaveAtPoint2D(inputCavePoint);
+    return this.majorSmell.contains(caveObject.getIndex());
+
+  }
 }
