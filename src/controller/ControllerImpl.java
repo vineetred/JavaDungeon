@@ -288,9 +288,22 @@ public class ControllerImpl implements Controller{
 
 
   @Override
-  public void playGame(Dungeon d) {
+  public void playGame(Dungeon d, Player player) {
 
 
+    while (player.isAlive() && !d.gameFinished(player.getPlayerLocation())) {
+      playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
+
+      playerPickCrookedArrowsFromCave(player, d.peekCaveCrookedArrows(player.getPlayerLocation()));
+
+      checkSmell(d, player.getPlayerLocation());
+
+      checkMonsters(d, player);
+
+      // Check if shoot!
+
+      getPossibleMoves(d, player);
+    }
 
 
     // While (player alive and game not finished)
