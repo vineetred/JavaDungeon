@@ -929,7 +929,7 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public List<CrookedArrow> peekCaveCrookedArrows(Point2D inputCavePoint) {
+  public List<CrookedArrow> expungeCaveCrookedArrows(Point2D inputCavePoint) {
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {

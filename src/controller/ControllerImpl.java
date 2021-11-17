@@ -133,24 +133,44 @@ public class ControllerImpl implements Controller{
 
   }
 
+
+  private boolean checkTreasure(Dungeon d, Point2D inputPoint) {
+
+    try {
+      List<Treasure> caveTreasure = d.peekCaveTreasure(inputPoint);
+      if (caveTreasure == null || caveTreasure.size() == 0) {
+        out.append("\nNo treasure in the cave");
+        return false;
+      }
+
+      else {
+        out.append("There is treasure in the room!");
+        for (Treasure treasure : caveTreasure) {
+          out.append("A " + treasure.toString());
+        }
+        return true;
+      }
+
+    }
+
+    catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+  }
+
+
+
+
   private void playerPickTreasureFromCave(Player inputPlayer,
                                                  List<Treasure> caveTreasure) {
 
     try {
 
-      if (caveTreasure == null || caveTreasure.size() == 0) {
-        out.append("\nNo treasure in the cave");
+      if (!(caveTreasure == null) && !(caveTreasure.size() == 0)) {
+        out.append("Player just picks up the treasure!");
+        inputPlayer.pickUpTreasure(caveTreasure);
       }
 
-      else {
-        inputPlayer.pickUpTreasure( caveTreasure);
-        out.append("There is treasure in the room!");
-        out.append("\nPlayer just picks up: ");
-        for (Treasure treasure : caveTreasure) {
-          out.append("A " + treasure.toString());
-        }
-
-      }
       out.append("\nCurrent player treasure: " + inputPlayer.getPlayerTreasure());
     }
 
@@ -159,8 +179,8 @@ public class ControllerImpl implements Controller{
     }
   }
 
-  private void playerPickCrookedArrowsFromCave(Player inputPlayer,
-                                          List<CrookedArrow> crookedArrowsList) {
+  private void playerCheckAndPickArrows(Player inputPlayer,
+                                        List<CrookedArrow> crookedArrowsList) {
 
     try {
 
@@ -292,9 +312,12 @@ public class ControllerImpl implements Controller{
 
 
     while (player.isAlive() && !d.gameFinished(player.getPlayerLocation())) {
-      playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
 
-      playerPickCrookedArrowsFromCave(player, d.peekCaveCrookedArrows(player.getPlayerLocation()));
+      if (checkTreasure(d, player.getPlayerLocation())) {
+        playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
+      }
+
+      playerCheckAndPickArrows(player, d.expungeCaveCrookedArrows(player.getPlayerLocation()));
 
       checkSmell(d, player.getPlayerLocation());
 

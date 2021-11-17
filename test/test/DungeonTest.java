@@ -687,7 +687,7 @@ public class DungeonTest {
     // With non-random dungeon
     Dungeon testDungeon = new DungeonImpl(false);
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
-    testPlayer.pickUpCrookedArrows(testDungeon.peekCaveCrookedArrows(
+    testPlayer.pickUpCrookedArrows(testDungeon.expungeCaveCrookedArrows(
         testPlayer.getPlayerLocation()));
 
     // State should be deterministic at this point

@@ -89,7 +89,7 @@ public interface Dungeon {
    * @param inputCavePoint the Point2D object that we expunge the treasure from
    * @return List of Treasure enums
    */
-  List<CrookedArrow> peekCaveCrookedArrows(Point2D inputCavePoint);
+  List<CrookedArrow> expungeCaveCrookedArrows(Point2D inputCavePoint);
 
   /** Shoot a crooked arrow in the given direction from the given point and to a given distance.
    * @param inputCavePoint the Point2D object that we check the moves for
