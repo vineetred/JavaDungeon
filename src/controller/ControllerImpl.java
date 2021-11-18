@@ -393,9 +393,56 @@ public class ControllerImpl implements Controller {
     }
   }
 
+  private void checkDungeonInvariants(boolean wraps, int rows, int columns, int interconnect,
+                                      int treasure, int numberOfMonsters) {
+    // A lot of exception handling to ensure that the dungeon is never
+    // created with invalid params
+    if (rows < 1 || columns < 1) {
+      throw new IllegalArgumentException("Cannot have 0 rows or columns!");
+    } else if (rows == 1 && columns < 6 || rows < 6 && columns == 1) {
+      throw new IllegalArgumentException("Need to have minimum of 6 rows/columns.");
+    } else if (rows == 2 && columns < 3) {
+      throw new IllegalArgumentException("You don't seem to have enough places for at least six " +
+          "nodes");
+    }
+
+    if (treasure < 20) {
+      throw new IllegalArgumentException("You must have at least 20% treasure. " +
+          "This is not an acceptable threshold.");
+    }
+
+    if (numberOfMonsters <= 0) {
+      throw new IllegalArgumentException("You must have at least one Otyugh!");
+    }
+
+    if (interconnect < 0) {
+      throw new IllegalArgumentException("The interconnectivity cannot be negative!");
+    }
+
+    if (interconnect > 0 && !wraps) {
+
+      int maxEdges = 2 * rows * columns - rows - columns;
+      if (interconnect > maxEdges -  (rows  * columns - 1)) {
+        throw new IllegalArgumentException("The interconnectivity is too high based on the number" +
+            " of rows and columns!");
+      }
+    } else if (interconnect > 0 && wraps) {
+
+      int maxEdges = 2 * rows * columns;
+      if (interconnect > maxEdges) {
+        throw new IllegalArgumentException("The interconnectivity is too high based on the number" +
+            " of rows and columns!");
+      }
+    }
+  }
+
   @Override
   public Dungeon buildDungeon(boolean wraps, int rows, int columns, int interconnect,
                               int treasurePercentage, int numberOfMonsters) {
+
+    // Make sure input given is null safe
+    checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage,
+        numberOfMonsters);
 
     welcomeMessage();
 

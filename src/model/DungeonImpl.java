@@ -589,7 +589,7 @@ public class DungeonImpl implements Dungeon {
               randomCaveChoiceSeed, 1);
 
       for (int t = 0; t < numberOfCavesWithTreasure; t++) {
-        findCaveByIndex(caves.get(rand.getRandomNumber())).addCrookedArrow(new CrookedArrow());
+        findCaveByIndex(caves.get(rand.getRandomNumber())).addWeapon(new CrookedArrow());
       }
     }
 
@@ -776,6 +776,10 @@ public class DungeonImpl implements Dungeon {
   @Override
   public List<String> getMovesAtCaveIndex(Point2D inputCavePoint) {
 
+    if (inputCavePoint == null) {
+      throw new IllegalArgumentException("Null input Point2D object given.");
+    }
+
     Cave caveObject = null;
 
     // We go through tunnels AND caves.
@@ -844,6 +848,11 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public List<Treasure> expungeCaveTreasure(Point2D inputCavePoint) {
+
+    if (inputCavePoint == null) {
+      throw new IllegalArgumentException("Null input Point2D object given.");
+    }
+
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
@@ -867,6 +876,11 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public List<Treasure> peekCaveTreasure(Point2D inputCavePoint) {
+
+    if (inputCavePoint == null) {
+      throw new IllegalArgumentException("Null input Point2D object given.");
+    }
+
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
@@ -891,6 +905,10 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public Point2D getCaveInDirection(Point2D inputCavePoint, String direction) {
+
+    if (inputCavePoint == null || direction == null) {
+      throw new IllegalArgumentException("Null input Point2D/direction object given.");
+    }
 
     Cave caveObject = null;
 
@@ -955,6 +973,11 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public List<Monster> peekCaveMonsters(Point2D inputCavePoint) {
+
+    if (inputCavePoint == null) {
+      throw new IllegalArgumentException("Null input Point2D object given.");
+    }
+
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
@@ -979,6 +1002,11 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public List<Weapon> peekCaveWeapons(Point2D inputCavePoint) {
+
+    if (inputCavePoint == null) {
+      throw new IllegalArgumentException("Null input Point2D object given.");
+    }
+
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
@@ -992,7 +1020,7 @@ public class DungeonImpl implements Dungeon {
 
     try {
       // Underlying method already returns a deep copy
-      return caveObject.getCaveCrookedArrows();
+      return caveObject.getCaveWeapon();
     }
 
     catch (NullPointerException e) {
@@ -1003,6 +1031,11 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public List<Weapon> expungeCaveWeapons(Point2D inputCavePoint) {
+
+    if (inputCavePoint == null) {
+      throw new IllegalArgumentException("Null input Point2D object given.");
+    }
+
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
@@ -1016,7 +1049,7 @@ public class DungeonImpl implements Dungeon {
 
     try {
       // Underlying method already returns a deep copy
-      return caveObject.pickCaveCrookedArrows();
+      return caveObject.pickCaveWeapon();
     }
 
     catch (NullPointerException e) {
@@ -1027,6 +1060,11 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public boolean gameFinished(Point2D inputCavePoint) {
+
+    if (inputCavePoint == null) {
+      throw new IllegalArgumentException("Null input Point2D object given.");
+    }
+
     return inputCavePoint.getRow() == this.getEndPoint().getRow()
         && inputCavePoint.getColumn() == this.getEndPoint().getColumn();
   }
@@ -1038,6 +1076,10 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public int shootWeapon(Point2D inputCavePoint, String direction, int distance) {
+
+    if (inputCavePoint == null || direction == null) {
+      throw new IllegalArgumentException("Null input Point2D/direction/distance object given.");
+    }
 
     // Simple check to avoid useless distance values
     if (distance <= 0) {
@@ -1111,6 +1153,11 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public boolean isMinorSmell(Point2D inputCavePoint) {
+
+    if (inputCavePoint == null) {
+      throw new IllegalArgumentException("Null input Point2D object given.");
+    }
+
     Cave caveObject = this.getCaveAtPoint2D(inputCavePoint);
     return this.minorSmell.contains(caveObject.getIndex());
 
@@ -1118,6 +1165,11 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public boolean isMajorSmell(Point2D inputCavePoint) {
+
+    if (inputCavePoint == null) {
+      throw new IllegalArgumentException("Null input Point2D object given.");
+    }
+
     Cave caveObject = this.getCaveAtPoint2D(inputCavePoint);
     return this.majorSmell.contains(caveObject.getIndex());
 

@@ -128,6 +128,11 @@ public class PlayerImpl implements Player {
 
   @Override
   public void fightMonster(Monster monster) {
+
+    if (monster == null) {
+      throw new IllegalArgumentException("Null input monster object given.");
+    }
+
     if (monster.getHits() == 2) {
       this.alive = true;
     }
