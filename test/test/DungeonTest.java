@@ -601,6 +601,7 @@ public class DungeonTest {
     testPlayer.moveSouth();
 
     // Should be 0 as there must a wall in this direction
+    // WE hit a wall
     assertEquals(0, testDungeon.shootCrookedArrow(testPlayer.getPlayerLocation(),
         "W", 1));
 
@@ -619,10 +620,11 @@ public class DungeonTest {
     playerPickTreasureFromCave(testPlayer, caveTreasure);
     testPlayer.moveSouth();
 
-
+    // Now we actually hit an Otyugh
     assertEquals(1, testDungeon.shootCrookedArrow(testPlayer.getPlayerLocation(),
         "W", 1));
 
+    // Twice
     assertEquals(2, testDungeon.shootCrookedArrow(testPlayer.getPlayerLocation(),
         "W", 1));
 
