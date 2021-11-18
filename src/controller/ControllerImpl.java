@@ -1,18 +1,27 @@
 package controller;
 
-import model.*;
+import model.Weapon;
+import model.Dungeon;
+import model.DungeonImpl;
+import model.Monster;
+import model.Player;
+import model.Point2D;
+import model.Treasure;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class ControllerImpl implements Controller{
+/**
+ * This class represent a controller for a Dungeon maze game. It implements the methods described
+ * in the controller interface. These methods allow a user to communicate with the game; play
+ * as it were. There are some helper methods that also aid in the playing of the game.
+ */
+public class ControllerImpl implements Controller {
 
   private final Readable in;
-  private Appendable out;
+  private final Appendable out;
 
 
   /**
@@ -31,7 +40,7 @@ public class ControllerImpl implements Controller{
     this.in = in;
   }
 
-  private void welcomeMessage(){
+  private void welcomeMessage() {
 
     try {
       out.append("___________________________________  \n" +
@@ -52,9 +61,7 @@ public class ControllerImpl implements Controller{
       out.append("\nYear: 2021");
       out.append("\nGitHub: vineetred");
       out.append("\nWelcome to the Labyrinth!");
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
@@ -71,9 +78,7 @@ public class ControllerImpl implements Controller{
       out.append("\nTreasure ---> " + treasurePercentage + "%");
       out.append("\nArrows ---> " + treasurePercentage + "%");
       out.append("\nMonsters ---> " + numberOfMonsters);
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
 
@@ -86,13 +91,11 @@ public class ControllerImpl implements Controller{
       out.append("\nPlayer Treasure: ")
           .append(String.valueOf(inputPlayer.getPlayerTreasure()));
       out.append("\nPlayer Arrows: ")
-          .append(String.valueOf(inputPlayer.getPlayerCrookedArrows().size()));
+          .append(String.valueOf(inputPlayer.getPlayerWeapons().size()));
       out.append("\nPlayer Alive?: ")
           .append(String.valueOf(inputPlayer.isAlive()))
           .append("\n");
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
 
@@ -104,49 +107,32 @@ public class ControllerImpl implements Controller{
       if (Objects.equals(inputDirection, "N")) {
         try {
           inputPlayer.moveNorth();
-        }
-
-        catch (IllegalStateException stateException) {
+        } catch (IllegalStateException stateException) {
           out.append("You cannot do that! There's a wall there.");
         }
-      }
-
-      else if (Objects.equals(inputDirection, "S")) {
+      } else if (Objects.equals(inputDirection, "S")) {
         try {
           inputPlayer.moveSouth();
-        }
-
-        catch (IllegalStateException stateException) {
+        } catch (IllegalStateException stateException) {
           out.append("You cannot do that! There's a wall there.");
         }
+      } else if (Objects.equals(inputDirection, "E")) {
+        try {
+          inputPlayer.moveEast();
+        } catch (IllegalStateException stateException) {
+          out.append("You cannot do that! There's a wall there.");
+        }
+      } else if (Objects.equals(inputDirection, "W")) {
+        try {
+          inputPlayer.moveWest();
+        } catch (IllegalStateException stateException) {
+          out.append("You cannot do that! There's a wall there.");
+        }
+      } else {
+        out.append("Invalid move: ").append(inputDirection);
       }
 
-      else if (Objects.equals(inputDirection, "E")) {
-          try {
-            inputPlayer.moveEast();
-          }
-
-          catch (IllegalStateException stateException) {
-            out.append("You cannot do that! There's a wall there.");
-          }
-        }
-
-        else if (Objects.equals(inputDirection, "W")) {
-          try {
-            inputPlayer.moveWest();
-          }
-
-          catch (IllegalStateException stateException) {
-            out.append("You cannot do that! There's a wall there.");
-          }
-        }
-
-        else {
-          out.append("Invalid move: ").append(inputDirection);
-        }
-
-    }
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
@@ -159,9 +145,7 @@ public class ControllerImpl implements Controller{
       if (caveTreasure == null || caveTreasure.size() == 0) {
         out.append("\nNo treasure in the cave");
         return false;
-      }
-
-      else {
+      } else {
         out.append("\nThere is treasure in the room!");
         for (Treasure treasure : caveTreasure) {
           out.append("\nA ").append(treasure.toString());
@@ -169,9 +153,7 @@ public class ControllerImpl implements Controller{
         return true;
       }
 
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
@@ -179,62 +161,53 @@ public class ControllerImpl implements Controller{
   private boolean checkArrows(Dungeon d, Point2D inputPoint) {
 
     try {
-      List<CrookedArrow> caveCrookedArrows = d.peekCaveCrookedArrows(inputPoint);
-      if (caveCrookedArrows == null || caveCrookedArrows.size() == 0) {
+      List<Weapon> caveWeapons = d.peekCaveWeapons(inputPoint);
+      if (caveWeapons == null || caveWeapons.size() == 0) {
         out.append("\nNo arrows in the cave");
         return false;
-      }
-
-      else {
+      } else {
         out.append("\nThere are arrows in the room! ")
-            .append(String.valueOf(caveCrookedArrows.size()))
+            .append(String.valueOf(caveWeapons.size()))
             .append(" arrow(s)");
         return true;
       }
 
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
 
   private void playerPickTreasureFromCave(Player inputPlayer,
-                                                 List<Treasure> caveTreasure) {
+                                          List<Treasure> caveTreasure) {
 
     try {
 
-      if (!(caveTreasure == null) && !(caveTreasure.size() == 0)) {
+      if (caveTreasure != null && caveTreasure.size() != 0) {
         out.append("\nPlayer just picks up the treasure!");
         inputPlayer.pickUpTreasure(caveTreasure);
       }
 
       out.append("\nCurrent player treasure: " + inputPlayer.getPlayerTreasure());
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
 
   private void playerPickCrookedArrowsFromCave(Player inputPlayer,
-                                               List<CrookedArrow> crookedArrowsList) {
+                                               List<Weapon> crookedArrowsList) {
 
     try {
 
-      inputPlayer.pickUpCrookedArrows(crookedArrowsList);
+      inputPlayer.pickUpWeapons(crookedArrowsList);
       out.append("\nPlayer picks up arrows!");
 
       if (crookedArrowsList.size() > 0) {
         out.append("\nPlayer currently has arrows (number): " + crookedArrowsList.size());
-      }
-      else {
+      } else {
         out.append("\nCurrent player arrows: 0");
       }
 
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
@@ -247,14 +220,10 @@ public class ControllerImpl implements Controller{
 
       if (d.isMajorSmell(inputPoint)) {
         out.append("\nThere is a super bad smell nearby!");
-      }
-
-      else if (d.isMinorSmell(inputPoint)) {
+      } else if (d.isMinorSmell(inputPoint)) {
         out.append("\nThere is a bad smell nearby!");
       }
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
@@ -277,9 +246,7 @@ public class ControllerImpl implements Controller{
     if (!inputPlayer.isAlive()) {
       try {
         out.append("You just died fighting an Otyugh!");
-      }
-
-      catch (IOException ioe) {
+      } catch (IOException ioe) {
         throw new IllegalStateException("Append failed", ioe);
       }
     }
@@ -287,12 +254,13 @@ public class ControllerImpl implements Controller{
 
   private void shoot(Dungeon d, Player inputPlayer, int inputDistance, String inputDirection) {
 
-
-
+    int shootingResult = -1;
     try {
 
       try {
-        inputPlayer.shoot(inputDistance, inputDirection);
+        inputPlayer.useWeapon(inputDistance, inputDirection);
+        shootingResult = d.shootWeapon(inputPlayer.getPlayerLocation(), inputDirection,
+            inputDistance);
       }
 
       catch (IllegalStateException e) {
@@ -300,22 +268,22 @@ public class ControllerImpl implements Controller{
         return;
       }
 
-      int shootingResult = d.shootCrookedArrow(inputPlayer.getPlayerLocation(), inputDirection,
-          inputDistance);
+      catch (IllegalArgumentException e) {
+        out.append("That is an invalid distance! Try again.");
+      }
+
+
+
+
 
       if (shootingResult == 0) {
         out.append("You just wasted an arrow!");
-      }
-
-      else if (shootingResult == 1) {
+      } else if (shootingResult == 1) {
         out.append("Nice hit! You injured the monster.");
-      }
-
-      else if (shootingResult == 2) {
+      } else if (shootingResult == 2) {
         out.append("Good job! You just killed the monster.");
       }
-    }
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
 
@@ -329,9 +297,7 @@ public class ControllerImpl implements Controller{
         out.append("\n" + direction);
       }
 
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
@@ -340,8 +306,7 @@ public class ControllerImpl implements Controller{
 
     try {
       out.append("\nMove, Pickup, Shoot, or Quit? (M/P/S/Q)? ");
-    }
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
 
@@ -353,8 +318,7 @@ public class ControllerImpl implements Controller{
 
     try {
       out.append("\nDirection? ");
-    }
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
 
@@ -365,8 +329,7 @@ public class ControllerImpl implements Controller{
   private int getUserShootingDistance(Scanner inputScannerObject) {
     try {
       out.append("\nNumber of caves? (HAS TO BE A NUMBER!) ");
-    }
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
 
@@ -377,9 +340,7 @@ public class ControllerImpl implements Controller{
   private void invalidInputMessage() {
     try {
       out.append("\nInvalid option! Try again!\n");
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
 
@@ -389,9 +350,7 @@ public class ControllerImpl implements Controller{
   private void quitGame() {
     try {
       out.append("\nThanks for playing! See you later!\n");
-    }
-
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
@@ -405,15 +364,12 @@ public class ControllerImpl implements Controller{
 
         return true;
 
-      }
-
-      else {
+      } else {
         out.append("Invalid direction!: ").append(inputDirection);
         return false;
       }
 
-    }
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
 
@@ -426,18 +382,13 @@ public class ControllerImpl implements Controller{
       checkMonsters(d, inputPlayer);
       if (d.gameFinished(inputPlayer.getPlayerLocation()) && inputPlayer.isAlive()) {
         out.append("\nCongrats! You just finished the maze!");
-      }
-
-      else if (d.gameFinished(inputPlayer.getPlayerLocation()) && !inputPlayer.isAlive()) {
+      } else if (d.gameFinished(inputPlayer.getPlayerLocation()) && !inputPlayer.isAlive()) {
         out.append("\nSo close yet so far. You reached the end, but you are dead!");
-      }
-
-      else if (!inputPlayer.isAlive()) {
+      } else if (!inputPlayer.isAlive()) {
         out.append("\n*Chomp, chomp, chomp*, you are eaten by an Otyugh!\n" +
             "Better luck next time!");
       }
-    }
-    catch (IOException ioe) {
+    } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
   }
@@ -484,37 +435,27 @@ public class ControllerImpl implements Controller{
 
       String userMotive = getUserMotive(scan);
 
-//      System.out.println(userMotive);
-//      System.out.println(this.out);
-
       if (userMotive.equals("M")) {
         parseMove(player, getUserDirection(scan));
-      }
-
-      else if (userMotive.equals("P")) {
+      } else if (userMotive.equals("P")) {
         if (treasureInCave) {
           playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
         }
 
         if (arrowsInCave) {
-          playerPickCrookedArrowsFromCave(player, d.expungeCaveCrookedArrows(player.getPlayerLocation()));
+          playerPickCrookedArrowsFromCave(player,
+              d.expungeCaveWeapons(player.getPlayerLocation()));
         }
-      }
-
-      else if (userMotive.equals("S")) {
+      } else if (userMotive.equals("S")) {
         String userDirection = getUserDirection(scan);
         if (verifyDirection(userDirection)) {
           shoot(d, player, getUserShootingDistance(scan), userDirection);
         }
 
-      }
-
-      else if (userMotive.equals("Q") || userMotive.equals("q")) {
+      } else if (userMotive.equals("Q") || userMotive.equals("q")) {
         quitGame();
         return;
-      }
-
-      else {
+      } else {
         invalidInputMessage();
       }
 

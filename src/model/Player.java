@@ -18,9 +18,9 @@ public interface Player {
 
   /**
    * The player pickups up the given chest of arrows.
-   * @param inputCrookedArrows an ArrayList of CrookedArray type.
+   * @param inputWeapons an ArrayList of CrookedArray type.
    */
-  void pickUpCrookedArrows(List<CrookedArrow> inputCrookedArrows);
+  void pickUpWeapons(List<Weapon> inputWeapons);
 
   /**
    * The player's treasure is returned in an arraylist.
@@ -30,15 +30,20 @@ public interface Player {
 
   /**
    * The player's arrows are returned in an arraylist.
-   * @return ArrayList of CrookedArrow objects.
+   * @return ArrayList of Weapon objects.
    */
-  List<CrookedArrow> getPlayerCrookedArrows();
+  List<Weapon> getPlayerWeapons();
 
   /**
    * The current location of the player.
    * @return a Point2D object of the current player location.
    */
   Point2D getPlayerLocation();
+
+  /**
+   * The boolean that is true if player is alive; false if dead.
+   */
+  boolean isAlive();
 
   /**
    * The player moves north.
@@ -61,24 +66,18 @@ public interface Player {
   void moveWest();
 
   /**
-   * The boolean that is true if player is alive; false if dead.
-   */
-  boolean isAlive();
-
-  /**
    * The player shoots an arrow from their quiver! Necessary to reduce the quiver count by 1.
    * @param inputDistance an integer distance.
    * @param inputDirection string direction!
    * @throws IllegalArgumentException if bad arguments are given!
    */
-  void shoot(int inputDistance, String inputDirection);
+  void useWeapon(int inputDistance, String inputDirection);
 
   /**
    * The player fights the passed monster. If they die during the process, their alive
-   * boolean gets changed
+   * boolean gets changed. So, check if the player is alive at the start/end of every move.
    * @param monster the input monster interface object
    */
   void fightMonster(Monster monster);
-
 
 }

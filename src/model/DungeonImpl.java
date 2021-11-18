@@ -1,6 +1,13 @@
 package model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * The implementation of the Dungeon interface. This interface has some private methods that help
@@ -16,7 +23,6 @@ public class DungeonImpl implements Dungeon {
   private final int columns;
   private final int interconnectivity;
   private final int treasurePercentage;
-  // TODO: Change this!
   private final int numberOfMonsters;
   private ArrayList<Integer> minorSmell;
   private ArrayList<Integer> majorSmell;
@@ -43,7 +49,8 @@ public class DungeonImpl implements Dungeon {
                      int treasurePercentage, int numberOfMonsters) {
 
     // Check the dungeon invariants!
-    checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage);
+    checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage,
+        numberOfMonsters);
 
     Cave[][] gameBoard = new Cave[rows][columns];
     this.wraps = wraps;
@@ -67,14 +74,15 @@ public class DungeonImpl implements Dungeon {
       this.finalEdges = new ArrayList<Edge>();
 
       // Check the dungeon invariants!
-      checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage);
+      checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage,
+          numberOfMonsters);
       // Generate a filled graph
       createConnectedGraph();
       // Run the algorithm
       runKruskalAlgorithm();
       // Fill the caves with treasure
       fillCavesWithTreasure(getCavesIndexArrayList(), 0);
-      fillCavesWithArrows(getCavesIndexArrayList(), 0);
+      fillCavesWithArrows(getAllCavesAndTunnels(), 0);
       // Initialize the start and end points
       temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
       // Catch the illegal state exception emitted when we
@@ -127,14 +135,15 @@ public class DungeonImpl implements Dungeon {
       this.finalEdges = new ArrayList<Edge>();
 
       // Check the dungeon invariants!
-      checkDungeonInvariants(wraps, rows, columns, interconnectivity, treasurePercentage);
+      checkDungeonInvariants(wraps, rows, columns, interconnectivity, treasurePercentage,
+          numberOfMonsters);
       // Generate a filled graph
       createConnectedGraph();
       // Run the algorithm
       runKruskalAlgorithm();
       // Fill the caves with treasure
       fillCavesWithTreasure(getCavesIndexArrayList(), 1);
-      fillCavesWithArrows(getCavesIndexArrayList(), 1);
+      fillCavesWithArrows(getAllCavesAndTunnels(), 1);
 
       // Initialize the start and end points
       temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
@@ -189,14 +198,15 @@ public class DungeonImpl implements Dungeon {
       this.finalEdges = new ArrayList<Edge>();
 
       // Check the dungeon invariants!
-      checkDungeonInvariants(wraps, rows, columns, interconnectivity, treasurePercentage);
+      checkDungeonInvariants(wraps, rows, columns, interconnectivity, treasurePercentage,
+          numberOfMonsters);
       // Generate a filled graph
       createConnectedGraph();
       // Run the algorithm
       runKruskalAlgorithm();
       // Fill the caves with treasure
       fillCavesWithTreasure(getCavesIndexArrayList(), randomCaveTreasureChoiceSeed);
-      fillCavesWithArrows(getCavesIndexArrayList(), 0);
+      fillCavesWithArrows(getAllCavesAndTunnels(), 0);
       // Initialize the start and end points
       temporaryStartPoint = findStartPoint(getCavesIndexArrayList());
       // Catch the illegal state exception emitted when we
@@ -222,7 +232,7 @@ public class DungeonImpl implements Dungeon {
   }
 
   private void checkDungeonInvariants(boolean wraps, int rows, int columns, int interconnect,
-                                         int treasure) {
+                                         int treasure, int numberOfMonsters) {
     // A lot of exception handling to ensure that the dungeon is never
     // created with invalid params
     if (rows < 1 || columns < 1) {
@@ -237,6 +247,10 @@ public class DungeonImpl implements Dungeon {
     if (treasure < 20) {
       throw new IllegalArgumentException("You must have at least 20% treasure. " +
           "This is not an acceptable threshold.");
+    }
+
+    if (numberOfMonsters <= 0) {
+      throw new IllegalArgumentException("You must have at least one Otyugh!");
     }
 
     if (interconnect < 0) {
@@ -341,7 +355,7 @@ public class DungeonImpl implements Dungeon {
     // Mark the source as visited
     visited.add(caveObject);
 
-    while(!queue.isEmpty()) {
+    while (!queue.isEmpty()) {
       Cave temporaryCaveObject = queue.poll();
       // Process all neighbours of temporaryCaveObject
       // Iterate through the neighbours
@@ -548,13 +562,15 @@ public class DungeonImpl implements Dungeon {
       }
       else {
         // Extra logic for 2nd level from current node if major smell was not invoked
-        int caveIndicesForSmellFilling = breadthFirstSearchByLevel(cavesAndTunnels.get(index), 2).size() - 1;
+        int caveIndicesForSmellFilling = breadthFirstSearchByLevel(cavesAndTunnels.get(index),
+            2).size() - 1;
 
         // If returned array size == 1, then we add it to minor smell
         if (caveIndicesForSmellFilling == 1 && !minorSmell.contains(cavesAndTunnels.get(index))) {
           minorSmell.add(cavesAndTunnels.get(index));
         }
-        else if (caveIndicesForSmellFilling > 1 && !majorSmell.contains(cavesAndTunnels.get(index))) {
+        else if (caveIndicesForSmellFilling > 1
+            && !majorSmell.contains(cavesAndTunnels.get(index))) {
           majorSmell.add(cavesAndTunnels.get(index));
         }
       }
@@ -962,7 +978,7 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public List<CrookedArrow> peekCaveCrookedArrows(Point2D inputCavePoint) {
+  public List<Weapon> peekCaveWeapons(Point2D inputCavePoint) {
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
@@ -986,7 +1002,7 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public List<CrookedArrow> expungeCaveCrookedArrows(Point2D inputCavePoint) {
+  public List<Weapon> expungeCaveWeapons(Point2D inputCavePoint) {
     Cave caveObject = null;
 
     for (Integer caveIndex : this.getAllCaves()) {
@@ -1021,7 +1037,26 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public int shootCrookedArrow(Point2D inputCavePoint, String direction, int distance) {
+  public int shootWeapon(Point2D inputCavePoint, String direction, int distance) {
+
+    // Simple check to avoid useless distance values
+    if (distance <= 0) {
+      throw new IllegalArgumentException("Cannot shoot an arrow in this dungeon with a " +
+          "zero/negative distance!");
+    }
+
+    // Check for wrong direction strings taken care by the controller. We also throw an
+    // exception here.
+
+    List<String> valid = Arrays.asList("N", "S", "E", "W");
+
+    if (!valid.contains(direction)) {
+      throw new IllegalArgumentException("This is an invalid direction!");
+    }
+
+
+
+
 
     Point2D movingPoint = inputCavePoint;
     Cave movingCaveObject = this.getCaveAtPoint2D(inputCavePoint);

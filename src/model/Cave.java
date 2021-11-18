@@ -10,7 +10,7 @@ class Cave {
   private ArrayList<Treasure> treasureList;
   // TODO: Add the array list that can store Monsters!
   private ArrayList<Monster> monsterList;
-  private ArrayList<CrookedArrow> arrowList;
+  private ArrayList<Weapon> arrowList;
 
 
   protected Cave(int row, int column, ArrayList entrances, ArrayList neighborList,
@@ -93,7 +93,7 @@ class Cave {
   }
 
   // Takes a monster interface object and adds it to this cave!
-  protected void addCrookedArrow(CrookedArrow arrow) {
+  protected void addCrookedArrow(Weapon arrow) {
     this.arrowList.add(arrow);
   }
 
@@ -106,7 +106,7 @@ class Cave {
 
 
   // Check if arrows exists, if so, return the contents of the cave
-  protected ArrayList<CrookedArrow> getCaveCrookedArrows() {
+  protected ArrayList<Weapon> getCaveCrookedArrows() {
     if (this.arrowList.size() == 0) {
       return null;
     }
@@ -117,9 +117,9 @@ class Cave {
 
   // Returns the cave's arrow list and set to empty!
   // null if no arrows!
-  protected ArrayList<CrookedArrow> pickCaveCrookedArrows() {
+  protected ArrayList<Weapon> pickCaveCrookedArrows() {
 
-    ArrayList<CrookedArrow> temporaryList = this.arrowList;
+    ArrayList<Weapon> temporaryList = this.arrowList;
     this.arrowList = new ArrayList<>();
     return temporaryList;
   }

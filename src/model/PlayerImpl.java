@@ -12,7 +12,7 @@ public class PlayerImpl implements Player {
   private Point2D playerLocation;
   private ArrayList<Treasure> playerTreasure;
   private final Dungeon dungeon;
-  private final ArrayList<CrookedArrow> playerCrookedArrows;
+  private final ArrayList<Weapon> playerWeapons;
   private boolean alive;
 
   /**
@@ -30,7 +30,7 @@ public class PlayerImpl implements Player {
     this.playerLocation = inputPoint;
     this.dungeon = inputDungeon;
     this.playerTreasure = new ArrayList<>();
-    this.playerCrookedArrows = new ArrayList<>();
+    this.playerWeapons = new ArrayList<>();
     this.alive = true;
 
     initializeQuiver();
@@ -39,9 +39,9 @@ public class PlayerImpl implements Player {
 
   private void initializeQuiver() {
     // Adding three arrows to start!
-    this.playerCrookedArrows.add(new CrookedArrow());
-    this.playerCrookedArrows.add(new CrookedArrow());
-    this.playerCrookedArrows.add(new CrookedArrow());
+    this.playerWeapons.add(new CrookedArrow());
+    this.playerWeapons.add(new CrookedArrow());
+    this.playerWeapons.add(new CrookedArrow());
   }
 
   private boolean getFiftyFiftyChance() {
@@ -58,22 +58,17 @@ public class PlayerImpl implements Player {
   }
 
   @Override
-  public void pickUpCrookedArrows(List<CrookedArrow> inputCrookedArrows) {
-    if (inputCrookedArrows == null) {
+  public void pickUpWeapons(List<Weapon> inputWeapons) {
+    if (inputWeapons == null) {
       throw new IllegalArgumentException("Illegal input to pick up arrows!");
     }
     // Pick the arrows up
-    playerCrookedArrows.addAll(inputCrookedArrows);
+    playerWeapons.addAll(inputWeapons);
   }
 
   @Override
   public boolean isAlive() {
-    if (alive) {
-      return true;
-    }
-    else {
-      return false;
-    }
+    return this.alive;
   }
 
   @Override
@@ -87,8 +82,8 @@ public class PlayerImpl implements Player {
   }
 
   @Override
-  public List<CrookedArrow> getPlayerCrookedArrows() {
-    return new ArrayList<>(this.playerCrookedArrows);
+  public List<Weapon> getPlayerWeapons() {
+    return new ArrayList<>(this.playerWeapons);
   }
 
   @Override
@@ -112,7 +107,7 @@ public class PlayerImpl implements Player {
   }
 
   @Override
-  public void shoot(int inputDistance, String inputDirection) {
+  public void useWeapon(int inputDistance, String inputDirection) {
 
     if (inputDistance < 0) {
       throw new IllegalArgumentException("Cannot shoot less than 0");
@@ -122,13 +117,13 @@ public class PlayerImpl implements Player {
       throw new IllegalArgumentException("Must have a direction to shoot");
     }
 
-    if (this.playerCrookedArrows.size() == 0) {
+    if (this.playerWeapons.size() == 0) {
       throw new IllegalStateException("Player does not have arrows to shoot!");
     }
 
     // All checks passed; deduct arrows by 1
     // and invoke the shootArrow method with the passed params
-    this.playerCrookedArrows.remove(0);
+    this.playerWeapons.remove(0);
   }
 
   @Override

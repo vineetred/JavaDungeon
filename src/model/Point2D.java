@@ -8,7 +8,18 @@ package model;
  *
  */
 public interface Point2D {
+
+  /**
+   * Return the x-coordinate of this point.
+   *
+   * @return x-coordinate of this point
+   */
   int getRow();
 
+  /**
+   * Return the y-coordinate of this point.
+   *
+   * @return y-coordinate of this point
+   */
   int getColumn();
 }

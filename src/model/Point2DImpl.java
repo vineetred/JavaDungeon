@@ -27,11 +27,6 @@ public class Point2DImpl implements Point2D {
     return row;
   }
 
-  /**
-   * Return the y-coordinate of this point.
-   *
-   * @return y-coordinate of this point
-   */
   @Override
   public int getColumn() {
     return column;
