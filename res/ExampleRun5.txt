@@ -1,0 +1,138 @@
+File: ExampleRun1.txt
+
+SUMMARY: We create a 5 x 6 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
+of 25%. Everything is generated randomly so these test runs might not be exactly the same each time
+it is run! This run simulates a user navigating the maze, killing the Otyugh at the end point, and
+finishing the game!
+
+NOTE: The treasure/arrows generated in the driver run is pseudo-random without specifying any seed.
+Hence, it most likely
+will not match the treasure/arrows that you see in the example run text file. Please note that this
+is a parameter that can
+be specified to the default constructors.
+
+_________________________________________________________________________________________________________
+C:\Users\Vineet\.jdks\openjdk-17\bin\java.exe "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2021.2.2\lib\idea_rt.jar=54809:C:\Program Files\JetBrains\IntelliJ IDEA 2021.2.2\bin" -Dfile.encoding=UTF-8 -classpath C:\Users\Vineet\Desktop\Dungeon\out\production\Dungeon driver.Driver
+
+<---VITALS--->
+
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
+
+There is treasure in the room!
+A Diamond
+A Diamond
+A Diamond
+A Diamond
+A Diamond
+A Diamond
+There are arrows in the room! 2 arrow(s)
+Possible moves from here -
+South
+Move, Pickup, or Shoot? (M/P/S)? M
+
+Direction? S
+
+<---VITALS--->
+
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
+
+No treasure in the cave
+No arrows in the cave
+Possible moves from here -
+North
+East
+Move, Pickup, or Shoot? (M/P/S)? M
+
+Direction? E
+
+<---VITALS--->
+
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
+
+No treasure in the cave
+No arrows in the cave
+Possible moves from here -
+North
+South
+West
+Move, Pickup, or Shoot? (M/P/S)? M
+
+Direction? S
+
+<---VITALS--->
+
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
+
+No treasure in the cave
+No arrows in the cave
+There is a bad smell nearby!
+Possible moves from here -
+South
+East
+North
+Move, Pickup, or Shoot? (M/P/S)? M
+
+Direction? S
+
+<---VITALS--->
+
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
+
+No treasure in the cave
+No arrows in the cave
+There is a super bad smell nearby!
+Possible moves from here -
+North
+West
+Move, Pickup, or Shoot? (M/P/S)? S
+
+Number of caves? (HAS TO BE A NUMBER!) 1
+
+Direction? W
+Nice hit! You injured the monster.
+<---VITALS--->
+
+Player Treasure: []
+Player Arrows: 2
+Player Alive?: true
+
+No treasure in the cave
+No arrows in the cave
+There is a super bad smell nearby!
+Possible moves from here -
+North
+West
+Move, Pickup, or Shoot? (M/P/S)? S
+
+Number of caves? (HAS TO BE A NUMBER!) 1
+
+Direction? W
+Good job! You just killed the monster.
+<---VITALS--->
+
+Player Treasure: []
+Player Arrows: 1
+Player Alive?: true
+
+No treasure in the cave
+No arrows in the cave
+There is a super bad smell nearby!
+Possible moves from here -
+North
+West
+Move, Pickup, or Shoot? (M/P/S)? M
+
+Direction? W
+
+Congrats! You just finished the maze!
+Process finished with exit code 0

@@ -471,23 +471,6 @@ public class ControllerImpl implements Controller{
 
     endgame(d, player);
 
-    // While (player alive and game not finished)
-      // Print what's in the cave
-        // Treasure + pick
-        // Arrows + pick
-        // Smells
-        // Monsters
-          // if fully healthy, game over. If not, chance
-
-      // Show possible attacks
-        // Perform attack if needed
-      // Show possible moves
-        // Perform player move
-
-    // Print what happened
-
-
-
   }
 
 

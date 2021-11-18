@@ -153,7 +153,7 @@ public class DungeonImpl implements Dungeon {
     this.endPoint = temporaryEndPoint;
 
     // Fill the caves with Monsters
-    fillCavesWithMonsters(getCavesIndexArrayList(), 1);
+    fillCavesWithMonsters(getCavesIndexArrayList(), 0);
 
     // Fill the caves with Smells!
     // Note, we pass the tunnels too.
