@@ -37,10 +37,10 @@ kill them before you can win!
 
 # Execution
 ## JAR
-* Just run the JAR file like so ```java -jar Dungeon.jar``` and the program should several 
-  demo runs that show the different styles of this game.
-*  It ends with a run where the user must provide it with dungeon parameters to generate a new 
-   dungeon. It tries to make a move North and sees what happens, before the simulation ends.
+* Just run the JAR file like so ```java -jar Dungeon.jar <WRAP BOOL> <ROWS INT> <COLS INT> 
+  <INTERCONNECTIVITY INT> <TREASURE THRESHOLD INT> <NUMBER OF MONSTERS INT>``` and the program 
+  should launch with the given dungeon params, allowing one to play.
+* Can be safely excited if the user wins, dies, or quits.
 
 # Usage
 ## Model
