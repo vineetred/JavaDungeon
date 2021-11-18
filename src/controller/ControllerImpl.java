@@ -149,9 +149,6 @@ public class ControllerImpl implements Controller{
     catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
-
-
-
   }
 
 
@@ -192,7 +189,6 @@ public class ControllerImpl implements Controller{
         out.append("\nThere are arrows in the room! ")
             .append(String.valueOf(caveCrookedArrows.size()))
             .append(" arrow(s)");
-//        out.append("\nPlayer just picks up: " + caveCrookedArrows.size() + " arrows");
         return true;
       }
 

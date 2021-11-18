@@ -1,19 +1,5 @@
 # JavaDungeon
 
-## Todo
-1. Add Otyugh
-   1. Might want to create a class and maybe an interface too
-   2. Pop one at the end
-   3. See how we do random treasure, do same as that since both require caves as the only place where stuff can be held
-   4. BFS situation - Drop smell units in the caves away from where step 3 happens. 
-   5. Maintain health also of the Otyugh!
-2. Add arrow functionality!
-   1. Randomly spread arrows throughout the maze; read monster and treasure addition for this
-3. Need to take number of monster as a parameter!
-4. Tests for smell :(.
-5. Need to figure out how to return the cave monsters such that underlying objects also reflect 
-   battle changes!
-
 # Overview
 JavaDungeon is a game that consists of a maze dungeon and a player who tries to navigate through 
 this maze.
@@ -22,8 +8,12 @@ The world for our game consists of a dungeon, a network of tunnels and caves tha
 so that player can explore the entire world by traveling from cave to cave through the tunnels 
 that connect them.
 
+The player must also fight Otyughs - a type of monster that is native to the maze dungeon! You must
+kill them before you can win!
+
 
 # Features
+
 * Generate a dungeon via different ways. One can generate a non-random deterministic 5 x 6 
   maze or by specifying commands through user input.
 * A wrapping or non-wrapping dungeon with varying interconnectivity can be generated based on 
@@ -38,6 +28,11 @@ that connect them.
 * A Point2D interface allows us to easily interact with the model when passing/receiving 
   location data of a certain object within the maze.
 * All the output is parsed by the driver which is then printed to the console.
+* We also have a controller that controls all the aspects of the game; providing an interface for the game.
+* The driver allows the user to specify the dungeon parameters that they would like, which is then fed into the controller.
+* Monsters such as Otyughs lurk the maze. A player will get killed if they meet a healthy Otyugh. 50% chance of survival
+  if they meet an injured Otyugh.
+* Arrows can be found throughout the maze, a tool used to slay Otyugh's.
 
 
 # Execution
