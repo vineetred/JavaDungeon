@@ -349,7 +349,19 @@ public class DungeonImpl implements Dungeon {
       for (int index = 0; index < temporaryCaveObject.getNeighbors().size(); index++) {
         if (!visited.contains(findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)))) {
           queue.add(findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)));
-          if (findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)).getCaveMonsters().size() >= 1) {
+          ArrayList<Monster> caveMonsters =
+              findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)).getCaveMonsters();
+
+          int numberOfMonsters = 0;
+
+          for (Monster monster : caveMonsters) {
+            if (monster.getHits() != 2) {
+              numberOfMonsters++;
+            }
+          }
+
+
+          if ( numberOfMonsters >= 1) {
             visited.add(findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)));
           }
         }
@@ -1050,16 +1062,9 @@ public class DungeonImpl implements Dungeon {
   }
 
   @Override
-  public void stats() {
-    System.out.println("Minor smells " + this.minorSmell.toString());
-    System.out.println("Major smells " + this.majorSmell.toString());
-    for (int index = 0; index < getCavesIndexArrayList().size(); index++) {
-      if (findCaveByIndex(getCavesIndexArrayList().get(index)).getCaveMonsters().size() > 0) {
-        System.out.println(findCaveByIndex(getCavesIndexArrayList().get(index)).getLocation());
-        System.out.println(findCaveByIndex(getCavesIndexArrayList().get(index)).getCaveMonsters().toString());
-      }
+  public void resetSmell() {
+    fillCavesWithSmells(getAllCavesAndTunnels());
 
-    }
   }
 
   @Override

@@ -100,6 +100,7 @@ class Cave {
   // Returns the cave's monster list.
   // null if no monsters!
   protected ArrayList<Monster> getCaveMonsters() {
+
     return new ArrayList<>(this.monsterList);
   }
 

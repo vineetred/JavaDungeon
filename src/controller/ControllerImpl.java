@@ -244,6 +244,9 @@ public class ControllerImpl implements Controller{
   private void checkSmell(Dungeon d, Point2D inputPoint) {
 
     try {
+
+      d.resetSmell();
+
       if (d.isMajorSmell(inputPoint)) {
         out.append("\nThere is a super bad smell nearby!");
       }

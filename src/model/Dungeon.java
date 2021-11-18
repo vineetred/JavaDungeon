@@ -108,6 +108,6 @@ public interface Dungeon {
    */
   int shootCrookedArrow(Point2D inputCavePoint, String direction, int distance);
 
-  void stats();
+  void resetSmell();
 
 }
