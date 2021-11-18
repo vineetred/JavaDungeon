@@ -108,6 +108,8 @@ public interface Dungeon {
    */
   int shootCrookedArrow(Point2D inputCavePoint, String direction, int distance);
 
+  /** Resets the smell units across the dungeon to account for any dead monsters.
+   */
   void resetSmell();
 
 }

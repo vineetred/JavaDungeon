@@ -2,7 +2,9 @@ package controller;
 
 import model.*;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -341,7 +343,7 @@ public class ControllerImpl implements Controller{
   private String getUserMotive() {
 
     try {
-      out.append("\nMove, Pickup, or Shoot? (M/P/S)? ");
+      out.append("\nMove, Pickup, Shoot, or Quit? (M/P/S/Q)? ");
     }
     catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
@@ -388,6 +390,40 @@ public class ControllerImpl implements Controller{
 
   }
 
+  private void quitGame() {
+    try {
+      out.append("\nThanks for playing! See you later!\n");
+    }
+
+    catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+  }
+
+  private boolean verifyDirection(String inputDirection) {
+    try {
+      if (Objects.equals(inputDirection, "N")
+          || Objects.equals(inputDirection, "S")
+          || Objects.equals(inputDirection, "E")
+          || Objects.equals(inputDirection, "W")) {
+
+        return true;
+
+      }
+
+      else {
+        out.append("Invalid direction!: ").append(inputDirection);
+        return false;
+      }
+
+    }
+    catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+
+  }
+
+
   private void endgame(Dungeon d, Player inputPlayer) {
     try {
 
@@ -425,14 +461,10 @@ public class ControllerImpl implements Controller{
 
 
   @Override
-  public void playGame(Dungeon d, Player player, Readable input) {
+  public void playGame(Dungeon d, Player player) {
 
 
     while (player.isAlive() && !d.gameFinished(player.getPlayerLocation())) {
-
-//      if () {
-//        playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
-//      }
 
       playerStats(player);
 
@@ -463,7 +495,16 @@ public class ControllerImpl implements Controller{
       }
 
       else if (userMotive.equals("S")) {
-        shoot(d, player, getUserShootingDistance(), getUserDirection());
+        String userDirection = getUserDirection();
+        if (verifyDirection(userDirection)) {
+          shoot(d, player, getUserShootingDistance(), userDirection);
+        }
+
+      }
+
+      else if (userMotive.equals("Q") || userMotive.equals("q")) {
+        quitGame();
+        return;
       }
 
       else {
