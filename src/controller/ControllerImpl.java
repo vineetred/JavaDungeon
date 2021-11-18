@@ -45,7 +45,7 @@ public class ControllerImpl implements Controller{
           "| | | ________| | __|____ | | | __| |\n" +
           "|_| |__ |   | __|__ | ____| | |_| __|\n" +
           "|   ____| | |____ | |__ |   |__ |__ |\n" +
-          "| |_______|_______|___|___|___|_____|");
+          "| |_______|_______|___|___|___|_____|\n");
 
       out.append("\nAuthor: Vineet Reddy");
       out.append("\nVersion: 1.0.2");
