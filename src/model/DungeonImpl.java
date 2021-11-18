@@ -18,8 +18,8 @@ public class DungeonImpl implements Dungeon {
   private final int treasurePercentage;
   // TODO: Change this!
   private final int numberOfMonsters;
-  private final ArrayList<Integer> minorSmell;
-  private final ArrayList<Integer> majorSmell;
+  private ArrayList<Integer> minorSmell;
+  private ArrayList<Integer> majorSmell;
   private final int startPoint;
   private final int endPoint;
   private final Cave[][] gameBoard;
@@ -115,7 +115,7 @@ public class DungeonImpl implements Dungeon {
     this.seed = 1;
     this.minorSmell = new ArrayList<>();
     this.majorSmell = new ArrayList<>();
-    this.numberOfMonsters = 2;
+    this.numberOfMonsters = 1;
 
     int temporaryStartPoint;
     int temporaryEndPoint;
@@ -338,8 +338,7 @@ public class DungeonImpl implements Dungeon {
     Cave caveObject = this.findCaveByIndex(caveIndex);
     // Mark Cave as visited
     queue.add(caveObject);
-    // Mark source as visited
-    // TODO: Check if indices make it easier?
+    // Mark the source as visited
     visited.add(caveObject);
 
     while(!queue.isEmpty()) {
@@ -359,7 +358,6 @@ public class DungeonImpl implements Dungeon {
               numberOfMonsters++;
             }
           }
-
 
           if ( numberOfMonsters >= 1) {
             visited.add(findCaveByIndex(temporaryCaveObject.getNeighbors().get(index)));
@@ -511,20 +509,24 @@ public class DungeonImpl implements Dungeon {
     // Minus 1 because we must always have one at the end point
     int numberOfCavesWithMonsters = numberOfMonsters - 1;
 
-    // Generator that chooses which cave
-    RandomNumberGenerator rand =
-        new RandomNumberGenerator(0, caves.size() - 2,
-            randomCaveChoiceSeed, 1);
+    if (randomCaveChoiceSeed != 1) {
+      // Generator that chooses which cave
+      RandomNumberGenerator rand =
+          new RandomNumberGenerator(0, caves.size() - 2,
+              randomCaveChoiceSeed, 1);
 
-    while (numberOfCavesWithMonsters != 0) {
+      while (numberOfCavesWithMonsters != 0) {
 
-      int randomCaveIndex = caves.get(rand.getRandomNumber());
-      Cave temporaryCave = findCaveByIndex(randomCaveIndex);
-      if (randomCaveIndex != this.startPoint && randomCaveIndex != this.endPoint) {
-        temporaryCave.addMonster(new Otyugh());
-        numberOfCavesWithMonsters--;
+        int randomCaveIndex = caves.get(rand.getRandomNumber());
+        Cave temporaryCave = findCaveByIndex(randomCaveIndex);
+        if (randomCaveIndex != this.startPoint && randomCaveIndex != this.endPoint) {
+          temporaryCave.addMonster(new Otyugh());
+          numberOfCavesWithMonsters--;
+        }
       }
     }
+
+
 
     // Adding to the end point!
     if (numberOfCavesWithMonsters == 0) {
@@ -534,6 +536,11 @@ public class DungeonImpl implements Dungeon {
   }
 
   private void fillCavesWithSmells(ArrayList<Integer> cavesAndTunnels) {
+
+    // Reinitializing!
+    this.minorSmell = new ArrayList<>();
+    this.majorSmell = new ArrayList<>();
+
     for (int index = 0; index < cavesAndTunnels.size(); index++) {
       // DO BFS from this place
       if (breadthFirstSearchByLevel(cavesAndTunnels.get(index), 1).size() - 1 >= 1) {
@@ -1063,7 +1070,7 @@ public class DungeonImpl implements Dungeon {
 
   @Override
   public void resetSmell() {
-    fillCavesWithSmells(getAllCavesAndTunnels());
+    this.fillCavesWithSmells(getAllCavesAndTunnels());
 
   }
 

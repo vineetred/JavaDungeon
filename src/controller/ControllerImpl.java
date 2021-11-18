@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 public class ControllerImpl implements Controller{
 
-  private final Appendable out;
-  private final Scanner scan;
+  private final Readable in;
+  private Appendable out;
 
 
   /**
@@ -28,7 +28,7 @@ public class ControllerImpl implements Controller{
     }
 
     this.out = out;
-    scan = new Scanner(in);
+    this.in = in;
   }
 
   private void welcomeMessage(){
@@ -340,7 +340,7 @@ public class ControllerImpl implements Controller{
     }
   }
 
-  private String getUserMotive() {
+  private String getUserMotive(Scanner inputScannerObject) {
 
     try {
       out.append("\nMove, Pickup, Shoot, or Quit? (M/P/S/Q)? ");
@@ -349,11 +349,11 @@ public class ControllerImpl implements Controller{
       throw new IllegalStateException("Append failed", ioe);
     }
 
-    return scan.nextLine();
+    return inputScannerObject.next();
 
   }
 
-  private String getUserDirection() {
+  private String getUserDirection(Scanner inputScannerObject) {
 
     try {
       out.append("\nDirection? ");
@@ -362,11 +362,11 @@ public class ControllerImpl implements Controller{
       throw new IllegalStateException("Append failed", ioe);
     }
 
-    return scan.nextLine();
+    return inputScannerObject.next();
 
   }
 
-  private int getUserShootingDistance() {
+  private int getUserShootingDistance(Scanner inputScannerObject) {
     try {
       out.append("\nNumber of caves? (HAS TO BE A NUMBER!) ");
     }
@@ -374,7 +374,7 @@ public class ControllerImpl implements Controller{
       throw new IllegalStateException("Append failed", ioe);
     }
 
-    return Integer.parseInt(scan.nextLine());
+    return Integer.parseInt(inputScannerObject.next());
 
   }
 
@@ -427,6 +427,7 @@ public class ControllerImpl implements Controller{
   private void endgame(Dungeon d, Player inputPlayer) {
     try {
 
+      checkMonsters(d, inputPlayer);
       if (d.gameFinished(inputPlayer.getPlayerLocation()) && inputPlayer.isAlive()) {
         out.append("\nCongrats! You just finished the maze!");
       }
@@ -464,6 +465,13 @@ public class ControllerImpl implements Controller{
   public void playGame(Dungeon d, Player player) {
 
 
+    if (d == null || player == null) {
+      throw new IllegalArgumentException("Dungeon/Player cannot be null!");
+    }
+
+    Scanner scan = new Scanner(in);
+
+
     while (player.isAlive() && !d.gameFinished(player.getPlayerLocation())) {
 
       playerStats(player);
@@ -478,10 +486,13 @@ public class ControllerImpl implements Controller{
 
       getPossibleMoves(d, player);
 
-      String userMotive = getUserMotive();
+      String userMotive = getUserMotive(scan);
+
+//      System.out.println(userMotive);
+//      System.out.println(this.out);
 
       if (userMotive.equals("M")) {
-        parseMove(player, getUserDirection());
+        parseMove(player, getUserDirection(scan));
       }
 
       else if (userMotive.equals("P")) {
@@ -495,9 +506,9 @@ public class ControllerImpl implements Controller{
       }
 
       else if (userMotive.equals("S")) {
-        String userDirection = getUserDirection();
+        String userDirection = getUserDirection(scan);
         if (verifyDirection(userDirection)) {
-          shoot(d, player, getUserShootingDistance(), userDirection);
+          shoot(d, player, getUserShootingDistance(scan), userDirection);
         }
 
       }
@@ -514,6 +525,7 @@ public class ControllerImpl implements Controller{
     }
 
     endgame(d, player);
+    scan.close();
 
   }
 

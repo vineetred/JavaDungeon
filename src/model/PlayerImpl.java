@@ -133,8 +133,12 @@ public class PlayerImpl implements Player {
 
   @Override
   public void fightMonster(Monster monster) {
+    if (monster.getHits() == 2) {
+      this.alive = true;
+    }
+
     // Check if monster is injured
-    if (monster.getHits() == 1) {
+    else if (monster.getHits() == 1) {
       // If so, we take a chance
       if (this.getFiftyFiftyChance()) {
         monster.takeHit();

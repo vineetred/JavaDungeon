@@ -573,7 +573,6 @@ public class DungeonTest {
     // With non-random dungeon
     Dungeon testDungeon = new DungeonImpl(true);
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
-//    testDungeon.stats();
 
     int numberOfMonsters = 0;
     for (int row = 0; row < 5; row++) {
@@ -584,7 +583,7 @@ public class DungeonTest {
       }
     }
 
-    assertEquals(2, numberOfMonsters);
+    assertEquals(1, numberOfMonsters);
 
   }
 
@@ -683,7 +682,7 @@ public class DungeonTest {
   }
 
   @Test
-  public void testDungeonArrowInitialization() {
+  public void testArrowExpungeAndPlayerPickArrows() {
     // With non-random dungeon
     Dungeon testDungeon = new DungeonImpl(false);
     Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
@@ -694,6 +693,54 @@ public class DungeonTest {
     // Note that we use the non-random treasure seed for this test
     // as this makes the number of arrows deterministic as well
     assertEquals(5, testPlayer.getPlayerCrookedArrows().size());
+
+  }
+
+  @Test
+  public void testSmellGenerationAndResetSmell() {
+    // With non-random dungeon
+    Dungeon testDungeon = new DungeonImpl(false);
+    Player testPlayer = new PlayerImpl(testDungeon.getStartPoint(), testDungeon);
+
+    assertFalse(testDungeon.isMajorSmell(new Point2DImpl(3, 0)));
+    assertFalse(testDungeon.isMinorSmell(new Point2DImpl(3, 0)));
+
+    assertTrue(testDungeon.isMajorSmell(new Point2DImpl(3, 4)));
+    assertTrue(testDungeon.isMinorSmell(new Point2DImpl(2, 4)));
+
+    // Let's finish the game
+    // <------> Move <------>
+    List<Treasure> caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveEast();
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+    // <------> Move <------>
+    caveTreasure = testDungeon.expungeCaveTreasure(testPlayer.getPlayerLocation());
+    playerPickTreasureFromCave(testPlayer, caveTreasure);
+    testPlayer.moveSouth();
+
+    // Killing the Otyugh at the end!
+    testDungeon.shootCrookedArrow(testPlayer.getPlayerLocation(), "W", 1);
+    testDungeon.shootCrookedArrow(testPlayer.getPlayerLocation(), "W", 1);
+
+    testDungeon.resetSmell();
+
+    // Dead otyugh means no smell!
+    assertFalse(testDungeon.isMajorSmell(new Point2DImpl(3, 4)));
+    assertFalse(testDungeon.isMinorSmell(new Point2DImpl(2, 4)));
+
+
+
 
   }
 }
