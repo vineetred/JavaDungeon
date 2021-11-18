@@ -385,6 +385,27 @@ public class ControllerImpl implements Controller{
 
   }
 
+  private void endgame(Dungeon d, Player inputPlayer) {
+    try {
+
+      if (d.gameFinished(inputPlayer.getPlayerLocation()) && inputPlayer.isAlive()) {
+        out.append("\nCongrats! You just finished the maze!");
+      }
+
+      else if (d.gameFinished(inputPlayer.getPlayerLocation()) && !inputPlayer.isAlive()) {
+        out.append("\nSo close yet so far. You reached the end, but you are dead!");
+      }
+
+      else if (!inputPlayer.isAlive()) {
+        out.append("\n*Chomp, chomp, chomp*, you are eaten by an Otyugh!\n" +
+            "Better luck next time!");
+      }
+    }
+    catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+  }
+
   @Override
   public Dungeon buildDungeon(boolean wraps, int rows, int columns, int interconnect,
                               int treasurePercentage, int numberOfMonsters) {
@@ -416,13 +437,9 @@ public class ControllerImpl implements Controller{
 
       boolean arrowsInCave = checkArrows(d, player.getPlayerLocation());
 
-//      playerPickCrookedArrowsFromCave(player, d.expungeCaveCrookedArrows(player.getPlayerLocation()));
-
       checkSmell(d, player.getPlayerLocation());
 
       checkMonsters(d, player);
-
-      // Check if shoot!
 
       getPossibleMoves(d, player);
 
@@ -452,6 +469,7 @@ public class ControllerImpl implements Controller{
 
     }
 
+    endgame(d, player);
 
     // While (player alive and game not finished)
       // Print what's in the cave

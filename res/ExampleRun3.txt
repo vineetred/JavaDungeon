@@ -1,13 +1,15 @@
-File: ExampleRun3.txt
+File: ExampleRun1.txt
 
-SUMMARY: We create a 4 x 3 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a
-treasure threshold of 20%. Since the graph used is a predetermined non-random graph generated using a seed,
-we know the shortest path that the user can take, but, our goal is to navigate all the locations. Hence, we visit every
-node within this run.
+SUMMARY: We create a 5 x 6 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
+of 25%. Everything is generated randomly so these test runs might not be exactly the same each time
+it is run! This run simulates a user navigating the maze and getting eaten by an Otyugh!
 
-NOTE: The treasure generated in the driver run is pseudo-random without specifying any seed. Hence, it most likely
-will not match the treasure that you see in the example run text file. Please note that this is a parameter that can
+NOTE: The treasure/arrows generated in the driver run is pseudo-random without specifying any seed.
+Hence, it most likely
+will not match the treasure/arrows that you see in the example run text file. Please note that this
+is a parameter that can
 be specified to the default constructors.
+
 _________________________________________________________________________________________________________
 ___________________________________
 | _____ |   | ___ | ___ ___ | |   | |
@@ -21,97 +23,52 @@ ___________________________________
 |_| |__ |   | __|__ | ____| | |_| __|
 |   ____| | |____ | |__ |   |__ |__ |
 | |_______|_______|___|___|___|_____|
-
 Author: Vineet Reddy
 Version: 1.0.2
 Year: 2021
 GitHub: vineetred
-
 Welcome to the Labyrinth!
-<-------- Visiting every single node -------->
-
 Dungeon Params:
-Wrapping ---> false
-Rows ---> 4
-Columns ---> 3
-Interconnectedness ---> 0
-Treasure ---> 20%
-Start point ---> 0,1
-End point ---> 2,0
+Wrapping ---> true
+Rows ---> 5
+Columns ---> 6
+Interconnectedness ---> 1
+Treasure ---> 25%
+Arrows ---> 25%
+Monsters ---> 7
+<---VITALS--->
 
-Creating a player!
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
 
-Welcome new Player!
+No treasure in the cave
+No arrows in the cave
+There is a super bad smell nearby!
+Possible moves from here -
+East
+Move, Pickup, or Shoot? (M/P/S)? M
 
-Current player location: 0,1
+Direction? E
 
-Possible moves from current cave: [West, South, East]
+<---VITALS--->
 
-Current player location: 0,0
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
 
-Possible moves from current cave: [East]
+There is treasure in the room!
+A Diamond
+No arrows in the cave
+There is a super bad smell nearby!
+Possible moves from here -
+North
+West
+East
+Move, Pickup, or Shoot? (M/P/S)? M
 
-Going back to the previous cave
+Direction? W
 
-Current player location: 0,1
-
-Possible moves from current cave: [West, South, East]
-
-Current player location: 0,2
-
-Possible moves from current cave: [West]
-
-Going back to the previous cave
-
-Current player location: 0,1
-
-Possible moves from current cave: [West, South, East]
-
-Current player location: 1,1
-
-Possible moves from current cave: [East, North]
-
-Current player location: 1,2
-
-Possible moves from current cave: [West, South]
-
-Current player location: 2,2
-
-Possible moves from current cave: [North, West]
-
-Current player location: 2,1
-
-Possible moves from current cave: [West, East]
-
-Current player location: 2,0
-
-Possible moves from current cave: [North, South, East]
-This cave is actually the end point, but we will continue exploring!
-
-Current player location: 1,0
-
-Possible moves from current cave: [South]
-
-Going back to the previous cave
-
-Current player location: 2,0
-
-Possible moves from current cave: [North, South, East]
-
-Current player location: 3,0
-
-Possible moves from current cave: [East, North]
-
-Current player location: 3,1
-
-Possible moves from current cave: [West, East]
-
-Current player location: 3,2
-
-Possible moves from current cave: [West]
-
-We just visited every single location!
-
-<---- Simulation Done ----->
-
+*Chomp, chomp, chomp*, you are eaten by an Otyugh!
+Better luck next time!
 Process finished with exit code 0

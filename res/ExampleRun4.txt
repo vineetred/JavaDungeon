@@ -1,10 +1,13 @@
-File: ExampleRun3.txt
+File: ExampleRun1.txt
 
-SUMMARY: We create a 9 * 9 dungeon with some parameters. This run just demonstrates that a user can
-create a dungeon via user input.
+SUMMARY: We create a 5 x 6 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
+of 25%. Everything is generated randomly so these test runs might not be exactly the same each time
+it is run! This run simulates a user navigating the maze and killing an Otyugh!
 
-NOTE: The treasure generated in the driver run is pseudo-random without specifying any seed. Hence, it most likely
-will not match the treasure that you see in the example run text file. Please note that this is a parameter that can
+NOTE: The treasure/arrows generated in the driver run is pseudo-random without specifying any seed.
+Hence, it most likely
+will not match the treasure/arrows that you see in the example run text file. Please note that this
+is a parameter that can
 be specified to the default constructors.
 
 _________________________________________________________________________________________________________
@@ -20,53 +23,65 @@ ___________________________________
 |_| |__ |   | __|__ | ____| | |_| __|
 |   ____| | |____ | |__ |   |__ |__ |
 | |_______|_______|___|___|___|_____|
-
 Author: Vineet Reddy
 Version: 1.0.2
 Year: 2021
 GitHub: vineetred
-
 Welcome to the Labyrinth!
-<-------- Simulating a real random game. User must give command line inputs -------->
-Wrapping (Y/N)?
-Y
-Interconnectivity (numbers only): ?
-0
-Rows (numbers only): ?
-9
-Columns (numbers only): ?
-9
-Treasure in percentage (out of 100): ?
-50
-
 Dungeon Params:
 Wrapping ---> true
-Rows ---> 9
-Columns ---> 9
-Interconnectedness ---> 0
-Treasure ---> 50%
-Start point --->5,0
-End point --->0,8
+Rows ---> 5
+Columns ---> 6
+Interconnectedness ---> 1
+Treasure ---> 25%
+Arrows ---> 25%
+Monsters ---> 7
+<---VITALS--->
 
-Creating a player!
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
 
-Welcome new Player!
-
-Let's get a description of the Player's location.
-
-Current player location: 5,0
 There is treasure in the room!
+A Sapphire
+There are arrows in the room! 1 arrow(s)
+There is a super bad smell nearby!
+Possible moves from here -
+North
+Move, Pickup, or Shoot? (M/P/S)? S
 
-Player just picks up:
-A Ruby
+Number of caves? (HAS TO BE A NUMBER!) 1
 
-Current player treasure: [Ruby]
+Direction? N
+Nice hit! You injured the monster.
+<---VITALS--->
 
-Possible moves from current cave: [East, West, South]
+Player Treasure: []
+Player Arrows: 2
+Player Alive?: true
 
-Let's try to go North and see if it is possible!.
-You cannot do that! There's a wall there! Try some other direction
+There is treasure in the room!
+A Sapphire
+There are arrows in the room! 1 arrow(s)
+There is a super bad smell nearby!
+Possible moves from here -
+North
+Move, Pickup, or Shoot? (M/P/S)? S
 
-<---- Simulation Done ----->
+Number of caves? (HAS TO BE A NUMBER!) 1
 
-Process finished with exit code 0
+Direction? N
+Good job! You just killed the monster.
+<---VITALS--->
+
+Player Treasure: []
+Player Arrows: 1
+Player Alive?: true
+
+There is treasure in the room!
+A Sapphire
+There are arrows in the room! 1 arrow(s)
+There is a super bad smell nearby!
+Possible moves from here -
+North
+Move, Pickup, or Shoot? (M/P/S)?

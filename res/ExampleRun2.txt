@@ -1,16 +1,16 @@
-File: ExampleRun2.txt
+File: ExampleRun1.txt
 
-SUMMARY: We create a 5 x 6 (row x column) a wrapping and non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
-of 20%. Since the graph used is a predetermined non-random graph generated using a seed, we know the shortest path
-that the user can take. We simply have this test run to see if a user can create a non-wrapping as well as wrapping
-dungeon.
+SUMMARY: We create a 5 x 6 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
+of 55%. Everything is generated randomly so these test runs might not be exactly the same each time
+it is run! This run simulates a user navigating through the maze and picking treasure/arrows as they
+ do so.
 
-NOTE: The treasure generated in the driver run is pseudo-random without specifying any seed. Hence, it most likely
-will not match the treasure that you see in the example run text file. Please note that this is a parameter that can
+NOTE: The treasure/arrows generated in the driver run is pseudo-random without specifying any seed.
+Hence, it most likely
+will not match the treasure/arrows that you see in the example run text file. Please note that this
+is a parameter that can
 be specified to the default constructors.
 
-EDIT: I have a welcome message at the start of the driver code, which gets chopped of otherwise. I simply appended it
-here.
 _________________________________________________________________________________________________________
 ___________________________________
 | _____ |   | ___ | ___ ___ | |   | |
@@ -24,70 +24,65 @@ ___________________________________
 |_| |__ |   | __|__ | ____| | |_| __|
 |   ____| | |____ | |__ |   |__ |__ |
 | |_______|_______|___|___|___|_____|
-
 Author: Vineet Reddy
 Version: 1.0.2
 Year: 2021
 GitHub: vineetred
-
 Welcome to the Labyrinth!
-<-------- Simulating creation of a non-wrapping dungeon -------->
-
-Dungeon Params:
-Wrapping ---> false
-Rows ---> 5
-Columns ---> 6
-Interconnectedness ---> 0
-Treasure ---> 20%
-Start point --->0,3
-End point --->3,3
-
-Creating a player!
-
-Welcome new Player!
-
-Let's get a description of the Player's location.
-
-Current player location: 0,3
-Treasure in the current room (in units): 1
-Sapphire
-
-Possible moves from current cave: [South]
-
-Let's try to go up from the first row of a non-wrapping dungeon! This will not be possible.
-You cannot do that! There's a wall there!
-
-<---- Simulation Done ----->
-
-<-------- Simulating creation of a wrapping dungeon -------->
-
 Dungeon Params:
 Wrapping ---> true
 Rows ---> 5
 Columns ---> 6
-Interconnectedness ---> 0
-Treasure ---> 20%
-Start point ---> 0,3
-End point ---> 3,1
+Interconnectedness ---> 1
+Treasure ---> 55%
+Arrows ---> 55%
+Monsters ---> 3
+<---VITALS--->
 
-Creating a player!
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
 
-Welcome new Player!
+There is treasure in the room!
+A Ruby
+A Diamond
+A Sapphire
+There are arrows in the room! 1 arrow(s)
+Possible moves from here -
+East
+South
+West
+Move, Pickup, or Shoot? (M/P/S)? P
 
-Let's get a description of the Player's location.
+Player just picks up the treasure!
+Current player treasure: [Ruby, Diamond, Sapphire]
+Player picks up arrows!
+Player currently has arrows (number): 1
+<---VITALS--->
 
-Current player location: 0,3
-Treasure in the current room (in units): 1
-Sapphire
+Player Treasure: [Ruby, Diamond, Sapphire]
+Player Arrows: 4
+Player Alive?: true
 
-Possible moves from current cave: [North, East, South]
+No treasure in the cave
+No arrows in the cave
+Possible moves from here -
+East
+South
+West
+Move, Pickup, or Shoot? (M/P/S)? M
 
-Since the dungeon is wrapping, we can move from the top most row to go further North (to the last row in reality).
+Direction? E
 
-Current player location: 4,3
+<---VITALS--->
 
-Possible moves from current cave: [South, East]
+Player Treasure: [Ruby, Diamond, Sapphire]
+Player Arrows: 4
+Player Alive?: true
 
-<---- Simulation Done ----->
-
-Process finished with exit code 0
+No treasure in the cave
+No arrows in the cave
+Possible moves from here -
+North
+West
+Move, Pickup, or Shoot? (M/P/S)?

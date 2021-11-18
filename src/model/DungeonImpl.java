@@ -153,7 +153,7 @@ public class DungeonImpl implements Dungeon {
     this.endPoint = temporaryEndPoint;
 
     // Fill the caves with Monsters
-    fillCavesWithMonsters(getCavesIndexArrayList(), 0);
+    fillCavesWithMonsters(getCavesIndexArrayList(), 1);
 
     // Fill the caves with Smells!
     // Note, we pass the tunnels too.
@@ -212,6 +212,13 @@ public class DungeonImpl implements Dungeon {
     // Assign it outside the loop as they are final
     this.startPoint = temporaryStartPoint;
     this.endPoint = temporaryEndPoint;
+
+    // Fill the caves with Monsters
+    fillCavesWithMonsters(getCavesIndexArrayList(), 0);
+
+    // Fill the caves with Smells!
+    // Note, we pass the tunnels too.
+    fillCavesWithSmells(getAllCavesAndTunnels());
   }
 
   private void checkDungeonInvariants(boolean wraps, int rows, int columns, int interconnect,

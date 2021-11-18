@@ -1,14 +1,13 @@
 File: ExampleRun1.txt
 
 SUMMARY: We create a 5 x 6 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
-of 20%. Since the graph used is a predetermined non-random graph generated using a seed, we know the shortest path
-that the user can take, which is what we simulate. We also check if there is treasure at every place and try to pick it
-up if it exists. We also print the possible moves, player treasure that they have hoarded at every move. We also reach
-the very end of this maze, checking if the game has ended after every move. This run also prints the location and
-player details every single move.
+of 25%. Everything is generated randomly so these test runs might not be exactly the same each time
+it is run! This run simulates a user navigating through the maze.
 
-NOTE: The treasure generated in the driver run is pseudo-random without specifying any seed. Hence, it most likely
-will not match the treasure that you see in the example run text file. Please note that this is a parameter that can
+NOTE: The treasure/arrows generated in the driver run is pseudo-random without specifying any seed.
+Hence, it most likely
+will not match the treasure/arrows that you see in the example run text file. Please note that this
+is a parameter that can
 be specified to the default constructors.
 
 _________________________________________________________________________________________________________
@@ -24,112 +23,63 @@ ___________________________________
 |_| |__ |   | __|__ | ____| | |_| __|
 |   ____| | |____ | |__ |   |__ |__ |
 | |_______|_______|___|___|___|_____|
-
 Author: Vineet Reddy
 Version: 1.0.2
 Year: 2021
 GitHub: vineetred
-
 Welcome to the Labyrinth!
-<-------- Simulating a run from start point to end point -------->
-
-<-------- along with printing details statistics along every step -------->
-
 Dungeon Params:
-Wrapping ---> false
+Wrapping ---> true
 Rows ---> 5
 Columns ---> 6
-Interconnectedness ---> 0
-Treasure ---> 20%
-Start point ---> 0,3
-End point ---> 3,3
+Interconnectedness ---> 1
+Treasure ---> 25%
+Arrows ---> 25%
+Monsters ---> 6
+<---VITALS--->
 
-Creating a player!
-
-Welcome new Player!
-
-Current player location: 0,3
-
-Let's pick up the treasure that might be available.
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
 
 No treasure in the cave
+There are arrows in the room! 1 arrow(s)
+There is a super bad smell nearby!
+Possible moves from here -
+East
+South
+West
+Move, Pickup, or Shoot? (M/P/S)? M
 
-Current player treasure: []
+Direction? S
 
-Possible moves from current cave: [South]
+<---VITALS--->
 
-Trying to move South
-
-Current player location: 1,3
-
-No treasure in the cave
-
-Current player treasure: []
-
-Is the game finished?
-
-Keep playing.
-
-Possible moves from current cave: [North, East]
-
-Trying to move West
-
-Current player location: 1,4
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
 
 No treasure in the cave
+No arrows in the cave
+There is a bad smell nearby!
+Possible moves from here -
+North
+South
+Move, Pickup, or Shoot? (M/P/S)? M
 
-Current player treasure: []
+Direction? N
 
-Is the game finished?
+<---VITALS--->
 
-Keep playing.
-
-Possible moves from current cave: [North, South, West]
-
-Trying to move South
-
-Current player location: 2,4
-There is treasure in the room!
-
-Player just picks up:
-A Ruby
-
-Current player treasure: [Ruby]
-
-Is the game finished?
-
-Keep playing.
-
-Possible moves from current cave: [South, East, North]
-
-Trying to move South
-
-Current player location: 3,4
+Player Treasure: []
+Player Arrows: 3
+Player Alive?: true
 
 No treasure in the cave
-
-Current player treasure: [Ruby]
-
-Is the game finished?
-
-Keep playing.
-
-Possible moves from current cave: [North, West]
-
-Trying to move East
-
-Current player location: 3,3
-There is treasure in the room!
-
-Player just picks up:
-A Diamond
-
-Current player treasure: [Ruby, Diamond]
-
-Is the game finished?
-
-Congratulations! You have successfully navigated the entire maze.
-
-<---- Simulation Done ----->
-
-Process finished with exit code 0
+There are arrows in the room! 1 arrow(s)
+There is a super bad smell nearby!
+Possible moves from here -
+East
+South
+West
+Move, Pickup, or Shoot? (M/P/S)?

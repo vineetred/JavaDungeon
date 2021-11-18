@@ -29,35 +29,12 @@ public class Driver {
    * small message at the start to the user as a way to tell them that this is a game.
    */
   public static void main(String[] args) {
-//    System.out.println("___________________________________  \n" +
-//        "| _____ |   | ___ | ___ ___ | |   | |\n" +
-//        "| |   | |_| |__ | |_| __|____ | | | |\n" +
-//        "| | | |_________|__ |______ |___|_| |\n" +
-//        "| |_|   | _______ |______ |   | ____|\n" +
-//        "| ___ | |____ | |______ | |_| |____ |\n" +
-//        "|___|_|____ | |   ___ | |________ | |\n" +
-//        "|   ________| | |__ | |______ | | | |\n" +
-//        "| | | ________| | __|____ | | | __| |\n" +
-//        "|_| |__ |   | __|__ | ____| | |_| __|\n" +
-//        "|   ____| | |____ | |__ |   |__ |__ |\n" +
-//        "| |_______|_______|___|___|___|_____|");
-//
-//    System.out.println("\nAuthor: Vineet Reddy");
-//    System.out.println("Version: 1.0.2");
-//    System.out.println("Year: 2021");
-//    System.out.println("GitHub: vineetred");
-//    System.out.print("\nWelcome to the Labyrinth!");
-//
-//    simulateFromStartToEnd();
-//    simulateCreationOfNonWrappingDungeon();
-//    simulateCreationOfWrappingDungeon();
-//    simulateVisitingEveryNodeInDungeon();
-//    simulateUserInput();
+
     Readable input = new BufferedReader(new InputStreamReader(System.in));
     Appendable output = System.out;
 
     Controller ctrl = new ControllerImpl(input, output);
-    Dungeon d = ctrl.buildDungeon(true, 5, 6, 1, 25, 6);
+    Dungeon d = ctrl.buildDungeon(true, 5, 6, 1, 25, 7);
     Player player = new PlayerImpl(d.getStartPoint(), d);
     ctrl.playGame(d, player, input);
 
