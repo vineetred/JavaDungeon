@@ -112,7 +112,7 @@ Run 5 -- ExampleRun5.txt
 * We create a 5 x 6 (row x column) non-wrapping maze with an interconnectivity degree of 0, along with a treasure threshold
   of 25%. Everything is generated randomly so these test runs might not be exactly the same each time
   it is run! This run simulates a user navigating the maze, killing the Otyugh at the end point, and
-  finishing the game! We see how the user is greeted when the game ends.
+  finishing the game! We see how tshe user is greeted when the game ends.
 
 
 

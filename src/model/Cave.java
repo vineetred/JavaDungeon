@@ -8,7 +8,6 @@ class Cave {
   private int set;
   private ArrayList<Integer> neighborList;
   private ArrayList<Treasure> treasureList;
-  // TODO: Add the array list that can store Monsters!
   private ArrayList<Monster> monsterList;
   private ArrayList<Weapon> weaponList;
 
