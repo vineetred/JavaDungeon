@@ -2,7 +2,8 @@
 
 # Overview
 JavaDungeon is a game that consists of a maze dungeon and a player who tries to navigate through 
-this maze.
+this maze. There are many obstacles that are thrown the player's way; all of which the player 
+must fight through.
 
 The world for our game consists of a dungeon, a network of tunnels and caves that are interconnected 
 so that player can explore the entire world by traveling from cave to cave through the tunnels 
@@ -37,10 +38,14 @@ kill them before you can win!
 
 # Execution
 ## JAR
-* Just run the JAR file like so ```java -jar Dungeon.jar <WRAP BOOL> <ROWS INT> <COLS INT> 
+* Just run the JAR file like so ```java -jar Dungeon.jar <WRAP STRING PARSED AS BOOL> <ROWS INT> 
+  <COLS INT> 
   <INTERCONNECTIVITY INT> <TREASURE THRESHOLD INT> <NUMBER OF MONSTERS INT>``` and the program 
   should launch with the given dungeon params, allowing one to play.
-* Can be safely excited if the user wins, dies, or quits.
+* Example - ```java -jar Dungeon.jar true 7 7 1 55 3```.
+* Keep in mind that the direction input is _always_ one of four symbols of the cardinal 
+  direction, namely, N S E W.
+* Can be safely exit-ed if the user wins, dies, or quits.
 
 # Usage
 ## Model
@@ -132,12 +137,15 @@ Run 5 -- ExampleRun5.txt
   dungeon is populated with the same type of treasure through its caves.
 * There is no upper limit on the amount of loot a player can carry.
 * We assume that once dead, an Otyugh _cannot_ contribute to the smell within the caves.
-  * Testing is done using a deterministic seed. We assume that it would work as expeceted when the 
-    seed is not specified anymore. However, this is not true for the example runs as they are done fully random.
+* Testing is done using a deterministic seed. We assume that it would work as expected when the 
+  seed is not specified anymore. However, this is not true for the example runs as they are done fully random.
+* We assume only one player can exist in a dungeon at any given time.
 
 # Limitations
 * Driver takes in command line arguments and the user must be well versed with knowing how to pass a CLI.
 * Game must be restarted in order to be played once it is finished.
+* As of now, we only accept the symbols of the four cardinal directions as the input for the 
+  direction.
 
 
 # Citations

@@ -11,7 +11,9 @@ import model.PlayerImpl;
 
 
 /**
- * Driver that acts as the controller for the Dungeon project. This just needs to be run.
+ * Driver that accepts command line inputs to create and control the model. The driver's sole
+ * responsibility is simply validating and parsing these command line inputs so that the
+ * controller can be properly instantiated.
  */
 public class Driver {
 
@@ -29,9 +31,10 @@ public class Driver {
     }
   }
 
-  /**This is the main for the dungeon model.
+  /** This is the main for the dungeon model.
+   * Order of arguments - wraps, rows, cols, interconnect degree, treasure %, number of monsters
    *
-   * @param args this takes in string arguments.
+   * @param args this takes in the six arguments needed
    */
   public static void main(String[] args) {
 
