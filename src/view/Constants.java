@@ -11,7 +11,10 @@ public final class Constants {
   public static final String DIAMOND_IMAGE_FILEPATH = "src/dungeon-images/diamond.png";
   public static final String EMERALD_IMAGE_FILEPATH = "src/dungeon-images/emerald.png";
   public static final String RUBY_IMAGE_FILEPATH = "src/dungeon-images/ruby.png";
+  public static final String BAD_SMELL_FILEPATH = "src/dungeon-images/stench02.png";
+  public static final String SUPER_BAD_SMELL_FILEPATH = "src/dungeon-images/stench01.png";
   public static final String FOG_TILE_FILEPATH = "src/dungeon-images/blank.png";
+
 
   public static final Map<String, String> DIRECTION_IMAGE_FILEPATH = new HashMap<>();
 

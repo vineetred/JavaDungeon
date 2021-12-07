@@ -3,42 +3,25 @@ package view;
 import model.Dungeon;
 import model.DungeonImpl;
 
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main {
   public static void main(String[] args) {
-//    NewGamePrompt obj = new NewGamePrompt("New Game Prompt");
-//    System.out.println(obj.getUserParameters());
-//    System.out.println(obj.getInputString());
-//    Menu.
-
-//    InGameMenu test = new InGameMenu();
-
-
-//    Scanner input = new Scanner(System.in);
-//    PlayerStats menu = new PlayerStats();
-//    ArrayList<String> tempString = new ArrayList<>();
-//    for (int i = 0; i < 3; i++) {
-//      tempString.add(input.next());
-//    }
-//
-//    menu.changePlayerStats(tempString);
-
-//    GameHUD DPAD = new GameHUD();
 
     ViewInterface view = new ViewImpl();
     ArrayList<String> userParams = (ArrayList<String>) view.startNewGame();
+    boolean wrapped = Boolean.parseBoolean(userParams.get(5));
+    int rows = Integer.parseInt(userParams.get(0));
+    int cols = Integer.parseInt(userParams.get(1));
+    int degree = Integer.parseInt(userParams.get(2));
+    int numberOfMonsters=  Integer.parseInt(userParams.get(3));
+    int treasurePercentage =  Integer.parseInt(userParams.get(4));
 
-    Dungeon dungeon = new DungeonImpl(true, Integer.parseInt(userParams.get(0)),
-        Integer.parseInt(userParams.get(1)), Integer.parseInt(userParams.get(2)),
-        Integer.parseInt(userParams.get(4)),
-        Integer.parseInt(userParams.get(3)));
+    Dungeon dungeon = new DungeonImpl(wrapped, rows, cols, degree, treasurePercentage,
+        numberOfMonsters);
 
-    view.generateHUD(dungeon, Integer.parseInt(userParams.get(0)), Integer.parseInt(userParams.get(1)), null);
-
-
+    view.generateHUD(dungeon, rows,
+        cols, null);
 
   }
 }

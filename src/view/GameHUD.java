@@ -3,6 +3,7 @@ package view;
 import model.Dungeon;
 import model.DungeonImpl;
 import model.Monster;
+import model.Point2D;
 import model.Point2DImpl;
 
 import model.Treasure;
@@ -17,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -110,13 +112,19 @@ class GameHUD extends JFrame {
     JPanel card1 = initializePlayerStats(inputMessage);
     JPanel card2 = initializeDPad();
     JPanel card3 = generateDungeonGraphics(inputDungeon, inputRows, inputCols,
-        new ArrayList<Boolean>());
+        null);
     JPanel card4 = initializePlayerShootingPrompt();
 
     JScrollPane scrollPane = new JScrollPane(card3);
     card3.setPreferredSize(new Dimension(new Dimension(Constants.OFFSET * (inputCols + 3),
         Constants.OFFSET * (inputRows + 3))));
-    scrollPane.getViewport().setPreferredSize(new Dimension(1024, 1024));
+
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    double width = screenSize.getWidth();
+    double height = screenSize.getHeight();
+
+
+    scrollPane.getViewport().setPreferredSize(new Dimension((int) width, (int) height));
     scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -249,7 +257,7 @@ class GameHUD extends JFrame {
   }
 
   private JPanel generateDungeonGraphics(Dungeon dungeonModel, int inputRows, int inputCols,
-                                       ArrayList<Boolean> wrapped) {
+                                       Map<Point2D, Boolean> visited) {
     JPanel mazePanel = new JPanel(null);
     ArrayList<String> cavePossibleDirection;
     ArrayList<Treasure> cavePossibleTreasure;
@@ -259,6 +267,29 @@ class GameHUD extends JFrame {
 
     for (int row = 0; row < inputRows; row++) {
       for (int col = 0; col < inputCols; col++) {
+
+        // Adding Bad smell
+        if (dungeonModel.isMinorSmell(new Point2DImpl(row, col))) {
+          ImageIcon badSmell = new ImageIcon(Constants.BAD_SMELL_FILEPATH);
+          JLabel badSmellLabel = new JLabel();
+          badSmellLabel.setIcon(badSmell);
+          badSmellLabel.setBounds(Constants.OFFSET * (col + 1),
+              Constants.OFFSET * (row + 1), 100, 100);
+          mazePanel.add(badSmellLabel);
+
+        }
+
+        // Adding Major bad smell
+        else if (dungeonModel.isMajorSmell(new Point2DImpl(row, col))) {
+
+          ImageIcon superBadSmell = new ImageIcon(Constants.SUPER_BAD_SMELL_FILEPATH);
+          JLabel superBadSmellLabel = new JLabel();
+          superBadSmellLabel.setIcon(superBadSmell);
+          superBadSmellLabel.setBounds(Constants.OFFSET * (col + 1),
+              Constants.OFFSET * (row + 1), 100, 100);
+          mazePanel.add(superBadSmellLabel);
+        }
+
         cavePossibleDirection = (ArrayList<String>)
             dungeonModel.getMovesAtCaveIndex(new Point2DImpl(row, col));
 
@@ -285,7 +316,8 @@ class GameHUD extends JFrame {
         JLabel label = new JLabel();
         ImageIcon image = new ImageIcon(Constants.DIRECTION_IMAGE_FILEPATH.get(flattenedCardinalDirections));
         label.setIcon(image);
-        label.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1), 100, 100);
+        label.setBounds(Constants.OFFSET * (col + 1),
+            Constants.OFFSET * (row + 1), 100, 100);
         mazePanel.add(label);
 
         // Adding treasure
@@ -313,7 +345,7 @@ class GameHUD extends JFrame {
             JLabel arrowLabel = new JLabel();
             arrowLabel.setIcon(arrow);
             arrowLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
-                25, 5);
+                25, 8);
             mazePanel.add(arrowLabel);
           }
 
@@ -343,10 +375,6 @@ class GameHUD extends JFrame {
         Constants.OFFSET * (inputRows + 2), 100, 25);
     mazePanel.add(vitalsPanelButton);
     mazePanel.add(shootPanelButton);
-
-//    mainPanel.setSize(1500, 1500);
-//    mazePanel.setPreferredSize(new Dimension(Constants.OFFSET * inputCols,
-//        Constants.OFFSET * inputRows));
 
     return mazePanel;
 

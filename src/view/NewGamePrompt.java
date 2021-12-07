@@ -18,6 +18,7 @@ class NewGamePrompt extends JFrame {
   public static JTextField inputDegree;
   public static JTextField inputRows;
   public static JTextField inputCols;
+  public static JTextField inputWrapped;
 
   private String myString;
   private final ArrayList<String> gameParameters;
@@ -51,12 +52,20 @@ class NewGamePrompt extends JFrame {
     container.add(inputCols);
 
     // Interconnect
-    display = new JLabel("Interconnectedness (true/false): ");
+    display = new JLabel("Interconnectedness: ");
     container.add(display);
 
     // the text field
     inputDegree = new JTextField(5);
     container.add(inputDegree);
+
+    // Interconnect
+    display = new JLabel("Wrapped (true/false): ");
+    container.add(display);
+
+    // the text field
+    inputWrapped = new JTextField(3);
+    container.add(inputWrapped);
 
     // Number of monsters
     display = new JLabel("Num of monsters: ");
@@ -79,15 +88,15 @@ class NewGamePrompt extends JFrame {
     submitButton.setActionCommand("Submit Button");
     container.add(submitButton);
 
-    // toggle button
-    toggleButton = new JButton("Toggle color");
-    toggleButton.setActionCommand("Toggle color button");
-    container.add(toggleButton);
-
-    // exit button
-    exitButton = new JButton("Exit");
-    exitButton.setActionCommand("Exit Button");
-    container.add(exitButton);
+//    // toggle button
+//    toggleButton = new JButton("Toggle color");
+//    toggleButton.setActionCommand("Toggle color button");
+//    container.add(toggleButton);
+//
+//    // exit button
+//    exitButton = new JButton("Exit");
+//    exitButton.setActionCommand("Exit Button");
+//    container.add(exitButton);
 
     NewGamePrompt.submitButton.addActionListener(e -> {
 
@@ -111,13 +120,17 @@ class NewGamePrompt extends JFrame {
       gameParameters.add(myString);
       clearString(inputTreasure);
 
+      myString = inputWrapped.getText();
+      gameParameters.add(myString);
+      clearString(inputWrapped);
+
       this.dispose();
     });
 
     pack();
     setVisible(true);
 
-    while (gameParameters.size() < 4) {
+    while (gameParameters.size() < 5) {
       try {
         // Sleep till we get our game params
         Thread.sleep(200);
