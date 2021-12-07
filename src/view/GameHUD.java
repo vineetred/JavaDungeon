@@ -49,14 +49,16 @@ class GameHUD extends JFrame {
 
   JPanel playerStatsCard;
 
-  protected GameHUD(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage) {
+  protected GameHUD(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
+                    Point2DImpl playerLocation) {
 
-    init(inputDungeon, inputRows, inputCols, inputMessage);
+    init(inputDungeon, inputRows, inputCols, inputMessage, playerLocation);
 
   }
 
-  protected void init(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage) {
-    mainFrame = initializeGameHUD(inputDungeon, inputRows, inputCols, inputMessage);
+  protected void init(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
+                      Point2DImpl playerLocation) {
+    mainFrame = initializeGameHUD(inputDungeon, inputRows, inputCols, inputMessage, playerLocation);
     initializeGameMenu(mainFrame, new JMenuBar());
   }
 
@@ -104,7 +106,7 @@ class GameHUD extends JFrame {
   }
 
   private JFrame initializeGameHUD(Dungeon inputDungeon, int inputRows, int inputCols,
-                                   String inputMessage) {
+                                   String inputMessage, Point2DImpl playerLocation) {
     JFrame mainFrame = new JFrame("Dungeon HUD");
     cardLayoutBuff = new CardLayout(50, 50);
 
@@ -112,7 +114,7 @@ class GameHUD extends JFrame {
     JPanel card1 = initializePlayerStats(inputMessage);
     JPanel card2 = initializeDPad();
     JPanel card3 = generateDungeonGraphics(inputDungeon, inputRows, inputCols,
-        null);
+        null, playerLocation);
     JPanel card4 = initializePlayerShootingPrompt();
 
     JScrollPane scrollPane = new JScrollPane(card3);
@@ -257,7 +259,7 @@ class GameHUD extends JFrame {
   }
 
   private JPanel generateDungeonGraphics(Dungeon dungeonModel, int inputRows, int inputCols,
-                                       Map<Point2D, Boolean> visited) {
+                                       Map<Point2D, Boolean> visited, Point2DImpl playerLocation) {
     JPanel mazePanel = new JPanel(null);
     ArrayList<String> cavePossibleDirection;
     ArrayList<Treasure> cavePossibleTreasure;
@@ -267,6 +269,15 @@ class GameHUD extends JFrame {
 
     for (int row = 0; row < inputRows; row++) {
       for (int col = 0; col < inputCols; col++) {
+
+        if (row == playerLocation.getRow() && col == playerLocation.getColumn()) {
+          ImageIcon playerImageIcon = new ImageIcon(Constants.RUBY_IMAGE_FILEPATH);
+          JLabel playerLocationLabel = new JLabel();
+          playerLocationLabel.setIcon(playerImageIcon);
+          playerLocationLabel.setBounds(Constants.OFFSET * (col + 1),
+              Constants.OFFSET * (row + 1), 100, 100);
+          mazePanel.add(playerLocationLabel);
+        }
 
         // Adding Bad smell
         if (dungeonModel.isMinorSmell(new Point2DImpl(row, col))) {
@@ -379,6 +390,7 @@ class GameHUD extends JFrame {
     return mazePanel;
 
   }
+
 
 
   private void clearString(JTextField inputJButton) {
