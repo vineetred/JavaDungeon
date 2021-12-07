@@ -1,5 +1,6 @@
 package view;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,8 +23,8 @@ public class Main {
 //
 //    menu.changePlayerStats(tempString);
 
-    GameHUD DPAD = new GameHUD();
-
+//    GameHUD DPAD = new GameHUD();
+    SwingUtilities.invokeLater(GameHUD::new);
 
   }
 }

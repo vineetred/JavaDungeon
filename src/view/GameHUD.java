@@ -1,65 +1,237 @@
 package view;
 
+import model.DungeonImpl;
+import model.Point2DImpl;
+
+import view.Constants;
+
+import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 class GameHUD extends JFrame {
 
-  private String userDirection;
-  private JButton north;
-  private JButton south;
-  private JButton east;
-  private JButton west;
+  JMenu menu;
+  String userChoice;
 
+  private String userInputDirection;
 
-  protected GameHUD () {
+  public static JLabel userTreasure;
+  public static JLabel userArrows;
+  public static JLabel userAlive;
 
-    setSize(400, 400);
-    setLocation(500, 500);
-    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+  JPanel mainPanel;
+  public static CardLayout cardLayoutBuff;
 
-    this.setLayout(new FlowLayout());
-    Container container = getContentPane();
+  JButton movePanelButton = new JButton("Move");
+  JButton vitalsPanelButton = new JButton("Vitals");
+  JButton mazePanelButton = new JButton("Maze");
 
-    north = new BasicArrowButton(BasicArrowButton.NORTH);
-    south = new BasicArrowButton(BasicArrowButton.SOUTH);
-    east = new BasicArrowButton(BasicArrowButton.EAST);
-    west = new BasicArrowButton(BasicArrowButton.WEST);
+  BufferedImage bi;
 
-    container.add(north);
-    container.add(south);
-    container.add(east);
-    container.add(west);
+  protected GameHUD() {
 
-    pack();
-    setVisible(true);
-    setSize(500, 250);
+    JFrame mainFrame = initializeGameHUD();
+    initializeGameMenu(mainFrame, new JMenuBar());
 
-    north.addActionListener(e -> {
-      this.userDirection = "N";
-    });
-
-    south.addActionListener(e -> {
-      this.userDirection = "S";
-    });
-
-    east.addActionListener(e -> {
-      this.userDirection = "E";
-    });
-
-    west.addActionListener(e -> {
-      this.userDirection = "W";
-    });
   }
 
+  static class exitMenu implements ActionListener
+  {
+    public void actionPerformed(ActionEvent e)
+    {
+      System.exit(0);
+    }
+  }
+
+  private void initializeGameMenu(JFrame inputJFrame, JMenuBar inputJMenuBar) {
+
+    this.userChoice = "";
+    JMenuItem restartButton, newGameButton;
+
+    inputJFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+    menu = new JMenu("Options");
+
+    restartButton = new JMenuItem("Restart Game");
+    newGameButton = new JMenuItem("New Game");
+
+    menu.add(restartButton);
+    menu.add(newGameButton);
+
+    inputJMenuBar.add(menu);
+    inputJFrame.setJMenuBar(inputJMenuBar);
+//    inputJFrame.setSize(1500,1500);
+//    inputJFrame.setLayout(null);
+//    inputJFrame.setVisible(true);
+
+    JMenuItem exit = new JMenuItem("Exit");
+    exit.addActionListener(new exitMenu());
+    menu.add(exit);
+
+    restartButton.addActionListener(e -> {
+      this.userChoice = "Restart Game";
+    });
+
+    newGameButton.addActionListener(e -> {
+      this.userChoice = "New Game";
+    });
+
+  }
+
+  private JFrame initializeGameHUD() {
+    JFrame mainFrame = new JFrame("Dungeon HUD");
+    cardLayoutBuff = new CardLayout(20, 20);
+
+    mainPanel = new JPanel(cardLayoutBuff);
+    JPanel card1 = initializePlayerStats();
+    JPanel card2 = initializeDPad();
+    DungeonImpl testDungeon = new DungeonImpl(false);
+    JPanel card3 = generateDungeonGraphics(testDungeon, 5, 6, false, new ArrayList<Boolean>());
+    mainPanel.add(card1, "Player Vitals");
+    mainPanel.add(card2, "DPad");
+    mainPanel.add(card3, "Maze");
+
+
+    movePanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "DPad"));
+    vitalsPanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Player Vitals"));
+    mazePanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Maze"));
+
+
+    mainFrame.add(mainPanel);
+    cardLayoutBuff.show(mainPanel, "Home");
+    mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    mainFrame.setLocationRelativeTo(null);
+    mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//    mainFrame.setSize(1500, 1700);
+    mainFrame.setVisible(true);
+    mainFrame.pack();
+    mainFrame.setVisible(true);
+
+    return mainFrame;
+
+  }
+
+  private JPanel initializeDPad() {
+
+
+    JPanel card = new JPanel();
+
+    JButton northArrowButton = new BasicArrowButton(BasicArrowButton.NORTH);
+    JButton southArrowButton = new BasicArrowButton(BasicArrowButton.SOUTH);
+    JButton eastArrowButton = new BasicArrowButton(BasicArrowButton.EAST);
+    JButton westArrowButton = new BasicArrowButton(BasicArrowButton.WEST);
+
+    card.add(northArrowButton);
+    card.add(southArrowButton);
+    card.add(eastArrowButton);
+    card.add(westArrowButton);
+    card.add(mazePanelButton);
+
+    northArrowButton.addActionListener(e -> {
+      this.userInputDirection = "N";
+      System.out.println("SDASD");
+    });
+
+    southArrowButton.addActionListener(e -> {
+      this.userInputDirection = "S";
+    });
+
+    eastArrowButton.addActionListener(e -> {
+      this.userInputDirection = "E";
+    });
+
+    westArrowButton.addActionListener(e -> {
+      this.userInputDirection = "W";
+    });
+
+    return card;
+  }
+
+  private JPanel initializePlayerStats() {
+    JPanel card = new JPanel();
+
+    // userArrows
+    userArrows = new JLabel("Arrows: 0 ", SwingConstants.CENTER);
+    card.add(userArrows);
+
+
+    // userTreasure
+    userTreasure = new JLabel("Treasure: None ");
+    userTreasure.setForeground(Color.RED);
+    card.add(userTreasure);
+
+    // userAlive
+    userAlive = new JLabel("Alive: True ");
+    card.add(userAlive);
+    card.add(movePanelButton);
+    return card;
+
+
+  }
+
+  private JPanel generateDungeonGraphics(DungeonImpl dungeonModel, int inputRows, int inputCols,
+                                       boolean wraps,
+                                       ArrayList<Boolean> wrapped) {
+    JPanel mazePanel = new JPanel(null);
+    ArrayList<String> cavePossibleDirection;
+    ArrayList<String> outputString;
+
+    for (int row = 0; row < inputRows; row++) {
+      for (int col = 0; col < inputCols; col++) {
+        cavePossibleDirection = (ArrayList<String>)
+            dungeonModel.getMovesAtCaveIndex(new Point2DImpl(row, col));
+
+        outputString = new ArrayList<>();
+
+        if (cavePossibleDirection.contains("North")) {
+          outputString.add("N");
+        }
+
+        if (cavePossibleDirection.contains("South")) {
+          outputString.add("S");
+        }
+
+        if (cavePossibleDirection.contains("East")) {
+          outputString.add("E");
+        }
+
+        if (cavePossibleDirection.contains("West")) {
+          outputString.add("W");
+        }
+
+        String flattenedCardinalDirections = String.join("", outputString);
+
+        JLabel label = new JLabel();
+        ImageIcon image = new ImageIcon(Constants.DIRECTION_IMAGE_FILEPATH.get(flattenedCardinalDirections));
+        label.setIcon(image);
+        label.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1), 100, 100);
+
+        mazePanel.add(label);
+      }
+    }
+
+    vitalsPanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows + 1), 100, 25);
+    mazePanel.add(vitalsPanelButton);
+    return mazePanel;
+
+  }
+
+
+
   // Will always return empty string unless some choice is made
-  protected String getUserDirection() {
-    return new String(userDirection);
+  protected String getUserInputDirection() {
+    return new String(userInputDirection);
   }
 
   protected void resetUserDirection() {
-    this.userDirection = "";
+    this.userInputDirection = "";
   }
 }
