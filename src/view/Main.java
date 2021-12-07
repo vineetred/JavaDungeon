@@ -23,5 +23,6 @@ public class Main {
     view.generateHUD(dungeon, rows,
         cols, null);
 
+
   }
 }

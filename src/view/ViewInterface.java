@@ -9,6 +9,8 @@ public interface ViewInterface {
 
   void generateHUD(Dungeon inputDungeon, int inputRows, int inputCols, List<Boolean> visited);
 
+  void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols, List<Boolean> visited);
+
   List<String> startNewGame();
 
   String getUserIntention();

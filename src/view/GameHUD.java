@@ -1,25 +1,20 @@
 package view;
 
 import model.Dungeon;
-import model.DungeonImpl;
 import model.Monster;
 import model.Point2D;
 import model.Point2DImpl;
 
 import model.Treasure;
 import model.Weapon;
-import view.Constants;
 
-import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -52,12 +47,12 @@ class GameHUD extends JFrame {
   protected GameHUD(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
                     Point2DImpl playerLocation) {
 
-    init(inputDungeon, inputRows, inputCols, inputMessage, playerLocation);
+    initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation);
 
   }
 
-  protected void init(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
-                      Point2DImpl playerLocation) {
+  protected void initialize(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
+                            Point2DImpl playerLocation) {
     mainFrame = initializeGameHUD(inputDungeon, inputRows, inputCols, inputMessage, playerLocation);
     initializeGameMenu(mainFrame, new JMenuBar());
   }
