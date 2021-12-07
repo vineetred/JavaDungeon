@@ -1,5 +1,8 @@
 package view;
 
+import model.Dungeon;
+import model.DungeonImpl;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -24,7 +27,18 @@ public class Main {
 //    menu.changePlayerStats(tempString);
 
 //    GameHUD DPAD = new GameHUD();
-    SwingUtilities.invokeLater(GameHUD::new);
+
+    ViewInterface view = new ViewImpl();
+    ArrayList<String> userParams = (ArrayList<String>) view.startNewGame();
+
+    Dungeon dungeon = new DungeonImpl(true, Integer.parseInt(userParams.get(0)),
+        Integer.parseInt(userParams.get(1)), Integer.parseInt(userParams.get(2)),
+        Integer.parseInt(userParams.get(4)),
+        Integer.parseInt(userParams.get(3)));
+
+    view.generateHUD(dungeon, Integer.parseInt(userParams.get(0)), Integer.parseInt(userParams.get(1)), null);
+
+
 
   }
 }

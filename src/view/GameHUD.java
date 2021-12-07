@@ -1,5 +1,6 @@
 package view;
 
+import model.Dungeon;
 import model.DungeonImpl;
 import model.Point2DImpl;
 
@@ -33,11 +34,9 @@ class GameHUD extends JFrame {
   JButton vitalsPanelButton = new JButton("Vitals");
   JButton mazePanelButton = new JButton("Maze");
 
-  BufferedImage bi;
+  protected GameHUD(Dungeon inputDungeon, int inputRows, int inputCols) {
 
-  protected GameHUD() {
-
-    JFrame mainFrame = initializeGameHUD();
+    JFrame mainFrame = initializeGameHUD(inputDungeon, inputRows, inputCols);
     initializeGameMenu(mainFrame, new JMenuBar());
 
   }
@@ -85,15 +84,15 @@ class GameHUD extends JFrame {
 
   }
 
-  private JFrame initializeGameHUD() {
+  private JFrame initializeGameHUD(Dungeon inputDungeon, int inputRows, int inputCols) {
     JFrame mainFrame = new JFrame("Dungeon HUD");
     cardLayoutBuff = new CardLayout(20, 20);
 
     mainPanel = new JPanel(cardLayoutBuff);
     JPanel card1 = initializePlayerStats();
     JPanel card2 = initializeDPad();
-    DungeonImpl testDungeon = new DungeonImpl(false);
-    JPanel card3 = generateDungeonGraphics(testDungeon, 5, 6, false, new ArrayList<Boolean>());
+    JPanel card3 = generateDungeonGraphics(inputDungeon, inputRows, inputCols,
+        new ArrayList<Boolean>());
     mainPanel.add(card1, "Player Vitals");
     mainPanel.add(card2, "DPad");
     mainPanel.add(card3, "Maze");
@@ -136,7 +135,6 @@ class GameHUD extends JFrame {
 
     northArrowButton.addActionListener(e -> {
       this.userInputDirection = "N";
-      System.out.println("SDASD");
     });
 
     southArrowButton.addActionListener(e -> {
@@ -176,8 +174,7 @@ class GameHUD extends JFrame {
 
   }
 
-  private JPanel generateDungeonGraphics(DungeonImpl dungeonModel, int inputRows, int inputCols,
-                                       boolean wraps,
+  private JPanel generateDungeonGraphics(Dungeon dungeonModel, int inputRows, int inputCols,
                                        ArrayList<Boolean> wrapped) {
     JPanel mazePanel = new JPanel(null);
     ArrayList<String> cavePossibleDirection;

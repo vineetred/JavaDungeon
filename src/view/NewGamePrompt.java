@@ -22,8 +22,8 @@ class NewGamePrompt extends JFrame {
   private String myString;
   private final ArrayList<String> gameParameters;
 
-  protected NewGamePrompt(String caption) {
-    super(caption);
+  protected NewGamePrompt() {
+    super("New game");
 
     gameParameters = new ArrayList<>();
 
