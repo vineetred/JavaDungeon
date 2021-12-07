@@ -6,6 +6,13 @@ import java.util.Map;
 public final class Constants {
 
   public static final int OFFSET = 100;
+  public static final String ARROW_IMAGE_FILEPATH = "src/dungeon-images/arrow-black.png";
+  public static final String MONSTER_IMAGE_FILEPATH = "src/dungeon-images/otyugh.png";
+  public static final String DIAMOND_IMAGE_FILEPATH = "src/dungeon-images/diamond.png";
+  public static final String EMERALD_IMAGE_FILEPATH = "src/dungeon-images/emerald.png";
+  public static final String RUBY_IMAGE_FILEPATH = "src/dungeon-images/ruby.png";
+  public static final String FOG_TILE_FILEPATH = "src/dungeon-images/blank.png";
+
   public static final Map<String, String> DIRECTION_IMAGE_FILEPATH = new HashMap<>();
 
   static {

@@ -17,7 +17,7 @@ public class ViewImpl implements ViewInterface {
 
   @Override
   public void generateHUD(Dungeon inputDungeon, int inputRows, int inputCols, List<Boolean> visited) {
-    this.gameHUDBuff = new GameHUD(inputDungeon, inputRows, inputCols);
+    this.gameHUDBuff = new GameHUD(inputDungeon, inputRows, inputCols, "");
   }
 
   @Override
