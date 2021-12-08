@@ -59,6 +59,10 @@ public class ViewImpl implements ViewInterface {
   @Override
   public void closeProgram() {
     System.exit(0);
+  }
 
+  @Override
+  public void displayUserMessage(String inputString) {
+    this.gameHUDBuff.displayUserMessage(inputString);
   }
 }

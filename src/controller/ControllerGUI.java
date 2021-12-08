@@ -141,6 +141,7 @@ public class ControllerGUI {
           return true;
         } catch (IllegalStateException stateException) {
           out.append("You cannot do that! There's a wall there.");
+          view.displayUserMessage("You cannot do that! There's a wall there.");
         }
       } else if (Objects.equals(inputDirection, "S")) {
         try {
@@ -148,6 +149,7 @@ public class ControllerGUI {
           return true;
         } catch (IllegalStateException stateException) {
           out.append("You cannot do that! There's a wall there.");
+          view.displayUserMessage("You cannot do that! There's a wall there.");
         }
       } else if (Objects.equals(inputDirection, "E")) {
         try {
@@ -155,6 +157,7 @@ public class ControllerGUI {
           return true;
         } catch (IllegalStateException stateException) {
           out.append("You cannot do that! There's a wall there.");
+          view.displayUserMessage("You cannot do that! There's a wall there.");
         }
       } else if (Objects.equals(inputDirection, "W")) {
         try {
@@ -162,6 +165,7 @@ public class ControllerGUI {
           return true;
         } catch (IllegalStateException stateException) {
           out.append("You cannot do that! There's a wall there.");
+          view.displayUserMessage("You cannot do that! There's a wall there.");
         }
       } else {
         out.append("Invalid move: ").append(inputDirection);
@@ -416,11 +420,14 @@ public class ControllerGUI {
       checkMonsters(d, inputPlayer);
       if (d.gameFinished(inputPlayer.getPlayerLocation()) && inputPlayer.isAlive()) {
         out.append("\nCongrats! You just finished the maze!");
+        view.displayUserMessage("\nCongrats! You just finished the maze!");
       } else if (d.gameFinished(inputPlayer.getPlayerLocation()) && !inputPlayer.isAlive()) {
         out.append("\nSo close yet so far. You reached the end, but you are dead!");
+        view.displayUserMessage("\nSo close yet so far. You reached the end, but you are dead!");
       } else if (!inputPlayer.isAlive()) {
         out.append("\n*Chomp, chomp, chomp*, you are eaten by an Otyugh!\n" +
             "Better luck next time!");
+        view.displayUserMessage("\nChomp, chomp, chomp*, you are eaten by an Otyugh!");
       }
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
@@ -534,11 +541,15 @@ public class ControllerGUI {
 
       checkMonsters(d, player);
 
+      if (!player.isAlive()) {
+        break;
+      }
+
 //      getPossibleMoves(d, player);
 
 //      String userMotive = getUserMotive(scan);
 
-      // Change userMotive to get shit from the view
+      // TODO: Change userMotive to get shit from the view
       String userMotive = "M";
 
       if (userMotive.equals("M")) {
@@ -547,15 +558,16 @@ public class ControllerGUI {
         while (!userMoveMade) {
           try {
             userMoveMade = parseMove(player, getUserDirection(view));
-            // Sleep till we get our game params
-            Thread.sleep(1000);
+            view.resetUserDirection();
+            // Sleep till we get our game move
+            Thread.sleep(200);
           }
 
           catch (InterruptedException e) {
 
           }
         }
-        view.resetUserDirection();
+
       }
 
 

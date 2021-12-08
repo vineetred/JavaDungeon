@@ -36,7 +36,6 @@ class GameHUD extends JFrame {
   public static JLabel userAlive;
 
   JPanel mainPanel;
-//  public static CardLayout cardLayoutBuff;
 
   JButton movePanelButton = new JButton("Move");
   JButton vitalsPanelButton = new JButton("Vitals");
@@ -115,7 +114,7 @@ class GameHUD extends JFrame {
                                    String inputMessage, Point2DImpl playerLocation,
                                    PlayerImpl inputPlayer) {
     JFrame mainFrameBuff = new JFrame("Dungeon HUD");
-    CardLayout cardLayoutBuff = new CardLayout(50, 50);
+    CardLayout cardLayoutBuff = new CardLayout(20, 20);
 
     mainPanel = new JPanel(cardLayoutBuff);
     JPanel card1 = initializePlayerStats(inputMessage, inputPlayer.getPlayerWeapons().size(),
@@ -182,6 +181,7 @@ class GameHUD extends JFrame {
 
     northArrowButton.addActionListener(e -> {
       this.userInputDirection = "N";
+
     });
 
     southArrowButton.addActionListener(e -> {
@@ -434,7 +434,7 @@ class GameHUD extends JFrame {
     shootingParameters = new ArrayList<>();
   }
 
-  protected void showUserMessage(String inputMessage) {
+  protected void displayUserMessage(String inputMessage) {
     showMessageDialog(null, inputMessage);
   }
 

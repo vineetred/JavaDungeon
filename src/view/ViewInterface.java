@@ -28,4 +28,6 @@ public interface ViewInterface {
 
   void closeProgram();
 
+  void displayUserMessage(String inputString);
+
 }
