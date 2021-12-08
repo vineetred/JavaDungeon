@@ -11,7 +11,10 @@ import model.Treasure;
 import view.ViewImpl;
 import view.ViewInterface;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +49,7 @@ public class ControllerGUI {
    */
   public ControllerGUI(Readable in, Appendable out, ViewInterface view, int rows, int cols,
                        int degree, int numberOfMonsters, int treasurePercentage, Map<Point2D,
-      Boolean> visited) {
+      Boolean> visited)  {
 
     if (in == null || out == null) {
       throw new IllegalArgumentException("Readable and Appendable can't be null");
@@ -518,7 +521,7 @@ public class ControllerGUI {
     }
 
 //    view.generateHUD(d, rows, cols, new HashMap<>(), (PlayerImpl) player);
-    Scanner scan = new Scanner(in);
+//    Scanner scan = new Scanner(in);
 
     view.generateHUD(d, rows,
         cols, visited, (PlayerImpl) player);
@@ -576,6 +579,7 @@ public class ControllerGUI {
         }
       }
 
+
       if (userMotive.equals("M")) {
         boolean userMoveMade = false;
 
@@ -597,6 +601,7 @@ public class ControllerGUI {
 
 
       else if (userMotive.equals("P")) {
+
         if (treasureInCave) {
           playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
         }
@@ -640,9 +645,8 @@ public class ControllerGUI {
     }
 
     endgame(d, player);
-    scan.close();
+//    scan.close();
 
   }
-
 
 }

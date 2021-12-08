@@ -5,6 +5,7 @@ import model.PlayerImpl;
 import model.Point2D;
 import model.Point2DImpl;
 
+import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.Map;
 
@@ -102,5 +103,10 @@ public class ViewImpl implements ViewInterface {
   @Override
   public void displayUserMessage(String inputString) {
     this.gameHUDBuff.displayUserMessage(inputString);
+  }
+
+  @Override
+  public void setListeners(KeyListener keys) {
+    this.gameHUDBuff.setListeners(keys);
   }
 }

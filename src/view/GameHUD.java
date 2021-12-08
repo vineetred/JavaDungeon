@@ -15,7 +15,10 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -55,9 +58,9 @@ class GameHUD extends JFrame {
   protected GameHUD(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
                     Point2DImpl playerLocation, PlayerImpl inputPlayer) {
     mazePanel = new JPanel(null);
+
     playerStatsCard = new JPanel();
     initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation, inputPlayer);
-
 
 
   }
@@ -75,8 +78,38 @@ class GameHUD extends JFrame {
     mainFrame = initializeGameHUD(inputDungeon, inputRows, inputCols, inputMessage,
         playerLocation, inputPlayer);
     initializeGameMenu(mainFrame, new JMenuBar());
+
+    mainFrame.addKeyListener(new KeyListener() {
+      @Override
+      public void keyTyped(KeyEvent e) {
+      }
+
+      @Override
+      public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+          userPickUp = true;
+        }
+
+        else if (e.getKeyCode() == KeyEvent.VK_M) {
+          userMove = true;
+        }
+
+        else if (e.getKeyCode() == KeyEvent.VK_S) {
+          userShoot = true;
+        }
+      }
+
+      @Override
+      public void keyReleased(KeyEvent e) {
+      }
+    });
+
     mainFrame.setVisible(true);
+    mainFrame.setFocusable(true);
+
+
   }
+
 
   static class exitMenu implements ActionListener
   {
@@ -160,12 +193,13 @@ class GameHUD extends JFrame {
     pickUpButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Maze"));
     fireTriggerButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Player Vitals"));
 
+
     mainFrameBuff.add(mainPanel);
+
     cardLayoutBuff.show(mainPanel, "Maze");
     mainFrameBuff.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 //    mainFrameBuff.setVisible(true);
     mainFrameBuff.pack();
-
 
     return mainFrameBuff;
 
@@ -434,9 +468,6 @@ class GameHUD extends JFrame {
         Constants.OFFSET * (inputRows) + 120, 100, 25);
 
 
-
-//    playerStatsCard.add(movePanelButton);
-
     pickUpButton.addActionListener(e -> {
       this.userPickUp = true;
     });
@@ -451,8 +482,12 @@ class GameHUD extends JFrame {
     mazePanel.add(pickUpButton);
     mazePanel.add(movePanelButton);
 
+
+
     mazePanel.revalidate();
     mazePanel.setVisible(true);
+//    mazePanel.setFocusable(true);
+
 //    return mazePanel;
 
   }
@@ -506,6 +541,10 @@ class GameHUD extends JFrame {
   protected void resetUserShootingParameters() {
     shootingParameters = new ArrayList<>();
     resetUserShoot();
+  }
+
+  protected void setListeners(KeyListener keys) {
+    this.addKeyListener(keys);
   }
 
   protected void displayUserMessage(String inputMessage) {

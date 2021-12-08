@@ -5,6 +5,7 @@ import model.Player;
 import model.PlayerImpl;
 import model.Point2D;
 
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,5 +38,7 @@ public interface ViewInterface {
   void resetUserShoot();
 
   void displayUserMessage(String inputString);
+
+  void setListeners(KeyListener keys);
 
 }
