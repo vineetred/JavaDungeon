@@ -228,10 +228,12 @@ public class ControllerGUI {
 
       if (caveTreasure != null && caveTreasure.size() != 0) {
         out.append("\nPlayer just picks up the treasure!");
+        view.displayUserMessage("Player just picks up the treasure!");
         inputPlayer.pickUpTreasure(caveTreasure);
       }
 
       out.append("\nCurrent player treasure: " + inputPlayer.getPlayerTreasure());
+      view.displayUserMessage("\nCurrent player treasure: " + inputPlayer.getPlayerTreasure());
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
     }
@@ -243,11 +245,14 @@ public class ControllerGUI {
     try {
 
       inputPlayer.pickUpWeapons(crookedArrowsList);
+      view.displayUserMessage("Player picks up arrows!");
       out.append("\nPlayer picks up arrows!");
 
       if (crookedArrowsList.size() > 0) {
-        out.append("\nPlayer currently has arrows (number): " + crookedArrowsList.size());
+        view.displayUserMessage("Player currently has arrows (number): " + inputPlayer.getPlayerWeapons().size());
+        out.append("\nPlayer currently has arrows (number): " + inputPlayer.getPlayerWeapons().size());
       } else {
+        view.displayUserMessage("Current player arrows: 0");
         out.append("\nCurrent player arrows: 0");
       }
 
@@ -308,11 +313,13 @@ public class ControllerGUI {
       }
 
       catch (IllegalStateException e) {
+        view.displayUserMessage("You have no arrows to shoot!");
         out.append("You have no arrows to shoot!");
         return;
       }
 
       catch (IllegalArgumentException e) {
+        view.displayUserMessage("That is an invalid distance! Try again.");
         out.append("That is an invalid distance! Try again.");
       }
 
@@ -321,10 +328,13 @@ public class ControllerGUI {
 
 
       if (shootingResult == 0) {
+        view.displayUserMessage("You just wasted an arrow!");
         out.append("You just wasted an arrow!");
       } else if (shootingResult == 1) {
+        view.displayUserMessage("Nice hit! You injured the monster.");
         out.append("Nice hit! You injured the monster.");
       } else if (shootingResult == 2) {
+        view.displayUserMessage("Good job! You just killed the monster.");
         out.append("Good job! You just killed the monster.");
       }
     } catch (IOException ioe) {
@@ -550,7 +560,21 @@ public class ControllerGUI {
 //      String userMotive = getUserMotive(scan);
 
       // TODO: Change userMotive to get shit from the view
-      String userMotive = "M";
+//      String userMotive = "M";
+
+      String userMotive = view.getUserIntention();
+
+      while (Objects.equals(userMotive, "")) {
+        try {
+          userMotive = view.getUserIntention();
+          // Sleep till we get our game move
+          Thread.sleep(200);
+        }
+
+        catch (InterruptedException e) {
+
+        }
+      }
 
       if (userMotive.equals("M")) {
         boolean userMoveMade = false;
@@ -568,23 +592,41 @@ public class ControllerGUI {
           }
         }
 
+        view.resetUserMove();
       }
 
 
-//      else if (userMotive.equals("P")) {
-//        if (treasureInCave) {
-//          playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
-//        }
-//
-//        if (arrowsInCave) {
-//          playerPickCrookedArrowsFromCave(player,
-//              d.expungeCaveWeapons(player.getPlayerLocation()));
-//        }
-//      } else if (userMotive.equals("S")) {
-//        String userDirection = getUserDirection(scan);
-//        if (verifyDirection(userDirection)) {
-//          shoot(d, player, getUserShootingDistance(scan), userDirection);
-//        }
+      else if (userMotive.equals("P")) {
+        if (treasureInCave) {
+          playerPickTreasureFromCave(player, d.expungeCaveTreasure(player.getPlayerLocation()));
+        }
+
+        if (arrowsInCave) {
+          playerPickCrookedArrowsFromCave(player,
+              d.expungeCaveWeapons(player.getPlayerLocation()));
+        }
+
+        view.resetUserPickUp();
+      }
+
+      else if (userMotive.equals("S")) {
+        ArrayList<String> shootingParams = (ArrayList<String>) view.getUserShootingParameters();
+
+
+        String userDirection = shootingParams.get(0);
+        int shootingDistance = Integer.parseInt(shootingParams.get(1));
+
+        if (verifyDirection(userDirection)) {
+          shoot(d, player, shootingDistance, userDirection);
+        }
+
+        else {
+          view.displayUserMessage("Illegal shoot direction!");
+        }
+
+        view.resetUserShoot();
+
+      }
 //
 //      } else if (userMotive.equals("Q") || userMotive.equals("q")) {
 //        quitGame();

@@ -26,7 +26,15 @@ public interface ViewInterface {
 
   String getUserDirection();
 
+  List<String> getUserShootingParameters();
+
   void closeProgram();
+
+  void resetUserPickUp();
+
+  void resetUserMove();
+
+  void resetUserShoot();
 
   void displayUserMessage(String inputString);
 

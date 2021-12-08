@@ -32,6 +32,9 @@ public class ViewImpl implements ViewInterface {
 //        (Point2DImpl) inputPlayer.getPlayerLocation(), inputPlayer);
     this.gameHUDBuff.generateDungeonGraphics(inputDungeon, inputRows, inputCols,
         visited, (Point2DImpl) inputPlayer.getPlayerLocation());
+
+    this.gameHUDBuff.initializePlayerStats("", inputPlayer.getPlayerWeapons().size(),
+        inputPlayer.getPlayerTreasure().size(), inputPlayer.isAlive());
   }
 
   @Override
@@ -43,7 +46,22 @@ public class ViewImpl implements ViewInterface {
 
   @Override
   public String getUserIntention() {
-    return null;
+
+    if (this.gameHUDBuff.getUserPickUp()) {
+      return "P";
+    }
+
+    else if (this.gameHUDBuff.getUserMove()) {
+      return "M";
+    }
+
+    else if (this.gameHUDBuff.getUserShoot()) {
+      return "S";
+    }
+
+
+    return "";
+
   }
 
   @Override
@@ -54,6 +72,26 @@ public class ViewImpl implements ViewInterface {
   @Override
   public String getUserDirection() {
     return new String(gameHUDBuff.getUserInputDirection());
+  }
+
+  @Override
+  public List<String> getUserShootingParameters() {
+    return this.gameHUDBuff.getUserShootingParameters();
+  }
+
+  @Override
+  public void resetUserPickUp() {
+    this.gameHUDBuff.resetUserPickUp();
+  }
+
+  @Override
+  public void resetUserMove() {
+    this.gameHUDBuff.resetUserMove();
+  }
+
+  @Override
+  public void resetUserShoot() {
+    this.gameHUDBuff.resetUserShootingParameters();
   }
 
   @Override

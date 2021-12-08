@@ -28,8 +28,12 @@ class GameHUD extends JFrame {
   String userChoice;
   String stringBuff;
   JPanel mazePanel;
+  JPanel playerStatsCard;
 
   private String userInputDirection;
+  private boolean userPickUp;
+  private boolean userMove;
+  private boolean userShoot;
 
   public static JLabel userTreasure;
   public static JLabel userArrows;
@@ -42,14 +46,16 @@ class GameHUD extends JFrame {
   JButton mazePanelButton = new JButton("Maze");
   JButton shootPanelButton = new JButton("Shoot");
   JButton fireTriggerButton = new JButton("Fire!");
+  JButton pickUpButton = new JButton("Pick");
+  JButton anotherMazePanelButton = new JButton("Maze");
 
   ArrayList<String> shootingParameters;
 
-  JPanel playerStatsCard;
 
   protected GameHUD(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
                     Point2DImpl playerLocation, PlayerImpl inputPlayer) {
     mazePanel = new JPanel(null);
+    playerStatsCard = new JPanel();
     initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation, inputPlayer);
 
 
@@ -117,7 +123,7 @@ class GameHUD extends JFrame {
     CardLayout cardLayoutBuff = new CardLayout(20, 20);
 
     mainPanel = new JPanel(cardLayoutBuff);
-    JPanel card1 = initializePlayerStats(inputMessage, inputPlayer.getPlayerWeapons().size(),
+    initializePlayerStats(inputMessage, inputPlayer.getPlayerWeapons().size(),
         inputPlayer.getPlayerTreasure().size(), inputPlayer.isAlive());
     JPanel card2 = initializeDPad();
     // TODO: Visited map
@@ -128,8 +134,8 @@ class GameHUD extends JFrame {
     JPanel card4 = initializePlayerShootingPrompt();
 
     JScrollPane scrollPane = new JScrollPane(mazePanel);
-    mazePanel.setPreferredSize(new Dimension(new Dimension(Constants.OFFSET * (inputCols + 3),
-        Constants.OFFSET * (inputRows + 3))));
+    mazePanel.setPreferredSize(new Dimension(new Dimension(Constants.OFFSET * (inputCols + 4),
+        Constants.OFFSET * (inputRows + 5))));
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     double width = screenSize.getWidth();
@@ -140,7 +146,7 @@ class GameHUD extends JFrame {
     scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-    mainPanel.add(card1, "Player Vitals");
+    mainPanel.add(playerStatsCard, "Player Vitals");
     mainPanel.add(card2, "DPad");
     mainPanel.add(scrollPane, "Maze");
     mainPanel.add(card4, "Shoot");
@@ -149,7 +155,9 @@ class GameHUD extends JFrame {
     movePanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "DPad"));
     vitalsPanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Player Vitals"));
     mazePanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Maze"));
+    anotherMazePanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Maze"));
     shootPanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Shoot"));
+    pickUpButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Maze"));
     fireTriggerButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Player Vitals"));
 
     mainFrameBuff.add(mainPanel);
@@ -199,9 +207,13 @@ class GameHUD extends JFrame {
     return card;
   }
 
-  private JPanel initializePlayerStats(String inputMessage, int numArrows, int numTreasure,
+  protected void initializePlayerStats(String inputMessage, int numArrows, int numTreasure,
                                        boolean playerAlive) {
-    playerStatsCard = new JPanel();
+
+    playerStatsCard.setVisible(false);
+    playerStatsCard.removeAll();
+
+
 
     // userArrows
     userArrows = new JLabel("Arrows: " + numArrows, SwingConstants.CENTER);
@@ -221,10 +233,9 @@ class GameHUD extends JFrame {
     JLabel inputMessageLabel = new JLabel(inputMessage, SwingConstants.CENTER);
     playerStatsCard.add(inputMessageLabel);
 
-
-    playerStatsCard.add(movePanelButton);
-    return playerStatsCard;
-
+    playerStatsCard.add(anotherMazePanelButton);
+//    playerStatsCard.revalidate();
+//    playerStatsCard.setVisible(true);
 
   }
 
@@ -253,7 +264,9 @@ class GameHUD extends JFrame {
 
     // Fire button
     fireTriggerButton.setActionCommand("Fire Button");
+
     card.add(fireTriggerButton);
+
 
     fireTriggerButton.addActionListener(e -> {
 
@@ -264,6 +277,8 @@ class GameHUD extends JFrame {
       stringBuff = shootingDistanceTextField.getText();
       shootingParameters.add(stringBuff);
       clearString(shootingDistanceTextField);
+
+      this.userShoot = true;
 
     });
 
@@ -383,24 +398,58 @@ class GameHUD extends JFrame {
 
         if (cavePossibleMonsters != null) {
           if (cavePossibleMonsters.size() > 0) {
-            ImageIcon monster = new ImageIcon(Constants.MONSTER_IMAGE_FILEPATH);
-            JLabel monsterLabel = new JLabel();
-            monsterLabel.setIcon(monster);
-            monsterLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
-                25, 25);
-            mazePanel.add(monsterLabel);
+            // Only alive monsters
+            if (cavePossibleMonsters.get(0).getHits() < 2) {
+              ImageIcon monster = new ImageIcon(Constants.MONSTER_IMAGE_FILEPATH);
+              JLabel monsterLabel = new JLabel();
+              monsterLabel.setIcon(monster);
+              monsterLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
+                  25, 25);
+              mazePanel.add(monsterLabel);
+            }
           }
         }
 
       }
     }
 
+
+
+//    vitalsPanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
+//        Constants.OFFSET * (inputRows + 1), 100, 25);
+//    shootPanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
+//        Constants.OFFSET * (inputRows + 2), 100, 25);
+//    pickUpButton.setBounds(Constants.OFFSET * (inputCols + 1),
+//        Constants.OFFSET * (inputRows + 3), 100, 25);
+//    movePanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
+//        Constants.OFFSET * (inputRows + 4), 100, 25);
+
     vitalsPanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
-        Constants.OFFSET * (inputRows + 1), 100, 25);
+        Constants.OFFSET * (inputRows) + 30, 100, 25);
     shootPanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
-        Constants.OFFSET * (inputRows + 2), 100, 25);
+        Constants.OFFSET * (inputRows ) + 60, 100, 25);
+    pickUpButton.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 90, 100, 25);
+    movePanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 120, 100, 25);
+
+
+
+//    playerStatsCard.add(movePanelButton);
+
+    pickUpButton.addActionListener(e -> {
+      this.userPickUp = true;
+    });
+
+    movePanelButton.addActionListener(e -> {
+      this.userMove = true;
+    });
+
+
     mazePanel.add(vitalsPanelButton);
     mazePanel.add(shootPanelButton);
+    mazePanel.add(pickUpButton);
+    mazePanel.add(movePanelButton);
 
     mazePanel.revalidate();
     mazePanel.setVisible(true);
@@ -426,12 +475,37 @@ class GameHUD extends JFrame {
     this.userInputDirection = "";
   }
 
+  protected boolean getUserPickUp() {
+   return this.userPickUp;
+  }
+
+  protected void resetUserPickUp() {
+    this.userPickUp = false;
+  }
+
+  protected boolean getUserMove() {
+    return this.userMove;
+  }
+
+  protected void resetUserMove() {
+    this.userMove = false;
+  }
+
+  protected boolean getUserShoot() {
+    return this.userShoot;
+  }
+
+  protected void resetUserShoot() {
+    this.userShoot = false;
+  }
+
   protected ArrayList<String> getUserShootingParameters() {
     return new ArrayList<>(shootingParameters);
   }
 
   protected void resetUserShootingParameters() {
     shootingParameters = new ArrayList<>();
+    resetUserShoot();
   }
 
   protected void displayUserMessage(String inputMessage) {
