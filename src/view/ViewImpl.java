@@ -1,9 +1,12 @@
 package view;
 
 import model.Dungeon;
+import model.PlayerImpl;
+import model.Point2D;
 import model.Point2DImpl;
 
 import java.util.List;
+import java.util.Map;
 
 public class ViewImpl implements ViewInterface {
 
@@ -16,14 +19,17 @@ public class ViewImpl implements ViewInterface {
   }
 
   @Override
-  public void generateHUD(Dungeon inputDungeon, int inputRows, int inputCols, List<Boolean> visited) {
-    this.gameHUDBuff = new GameHUD(inputDungeon, inputRows, inputCols, "asd",
-        (Point2DImpl) inputDungeon.getStartPoint());
+  public void generateHUD(Dungeon inputDungeon, int inputRows, int inputCols,
+                          Map<Point2D, Boolean> visited, PlayerImpl inputPlayer) {
+    this.gameHUDBuff = new GameHUD(inputDungeon, inputRows, inputCols, "",
+        (Point2DImpl) inputDungeon.getStartPoint(), inputPlayer);
   }
 
   @Override
-  public void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols, List<Boolean> visited) {
-    this.gameHUDBuff.initialize(inputDungeon, inputRows, inputCols, "", (Point2DImpl) inputDungeon.getStartPoint());
+  public void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols,
+                         Map<Point2D, Boolean> visited, PlayerImpl inputPlayer) {
+    this.gameHUDBuff.initialize(inputDungeon, inputRows, inputCols, "",
+        (Point2DImpl) inputPlayer.getPlayerLocation(), inputPlayer);
   }
 
   @Override
@@ -39,7 +45,18 @@ public class ViewImpl implements ViewInterface {
   }
 
   @Override
+  public void resetUserDirection() {
+    this.gameHUDBuff.resetUserDirection();
+  }
+
+  @Override
   public String getUserDirection() {
-    return null;
+    return new String(gameHUDBuff.getUserInputDirection());
+  }
+
+  @Override
+  public void closeProgram() {
+    System.exit(0);
+
   }
 }

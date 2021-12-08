@@ -2,6 +2,7 @@ package view;
 
 import model.Dungeon;
 import model.DungeonImpl;
+import model.PlayerImpl;
 
 import java.util.ArrayList;
 
@@ -17,11 +18,13 @@ public class Main {
     int numberOfMonsters=  Integer.parseInt(userParams.get(3));
     int treasurePercentage =  Integer.parseInt(userParams.get(4));
 
-    Dungeon dungeon = new DungeonImpl(wrapped, rows, cols, degree, treasurePercentage,
+    Dungeon d = new DungeonImpl(wrapped, rows, cols, degree, treasurePercentage,
         numberOfMonsters);
 
-    view.generateHUD(dungeon, rows,
-        cols, null);
+    PlayerImpl player = new PlayerImpl(d.getStartPoint(), d);
+
+    view.generateHUD(d, rows,
+        cols, null, player);
 
 
   }

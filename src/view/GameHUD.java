@@ -2,6 +2,8 @@ package view;
 
 import model.Dungeon;
 import model.Monster;
+import model.Player;
+import model.PlayerImpl;
 import model.Point2D;
 import model.Point2DImpl;
 
@@ -13,6 +15,7 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -32,7 +35,7 @@ class GameHUD extends JFrame {
   public static JLabel userAlive;
 
   JPanel mainPanel;
-  public static CardLayout cardLayoutBuff;
+//  public static CardLayout cardLayoutBuff;
 
   JButton movePanelButton = new JButton("Move");
   JButton vitalsPanelButton = new JButton("Vitals");
@@ -45,16 +48,26 @@ class GameHUD extends JFrame {
   JPanel playerStatsCard;
 
   protected GameHUD(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
-                    Point2DImpl playerLocation) {
+                    Point2DImpl playerLocation, PlayerImpl inputPlayer) {
 
-    initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation);
+    initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation, inputPlayer);
 
   }
 
   protected void initialize(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
-                            Point2DImpl playerLocation) {
-    mainFrame = initializeGameHUD(inputDungeon, inputRows, inputCols, inputMessage, playerLocation);
+                            Point2DImpl playerLocation, PlayerImpl inputPlayer) {
+
+
+    if (mainFrame != null) {
+      mainFrame.setVisible(false); //you can't see me!
+      mainFrame.dispose();
+      mainFrame.revalidate();
+    }
+
+    mainFrame = initializeGameHUD(inputDungeon, inputRows, inputCols, inputMessage,
+        playerLocation, inputPlayer);
     initializeGameMenu(mainFrame, new JMenuBar());
+    mainFrame.setVisible(true);
   }
 
   static class exitMenu implements ActionListener
@@ -70,8 +83,6 @@ class GameHUD extends JFrame {
     this.userChoice = "";
     JMenuItem restartButton, newGameButton;
 
-    inputJFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
     menu = new JMenu("Options");
 
     restartButton = new JMenuItem("Restart Game");
@@ -82,9 +93,6 @@ class GameHUD extends JFrame {
 
     inputJMenuBar.add(menu);
     inputJFrame.setJMenuBar(inputJMenuBar);
-//    inputJFrame.setSize(1500,1500);
-//    inputJFrame.setLayout(null);
-//    inputJFrame.setVisible(true);
 
     JMenuItem exit = new JMenuItem("Exit");
     exit.addActionListener(new exitMenu());
@@ -101,13 +109,16 @@ class GameHUD extends JFrame {
   }
 
   private JFrame initializeGameHUD(Dungeon inputDungeon, int inputRows, int inputCols,
-                                   String inputMessage, Point2DImpl playerLocation) {
-    JFrame mainFrame = new JFrame("Dungeon HUD");
-    cardLayoutBuff = new CardLayout(50, 50);
+                                   String inputMessage, Point2DImpl playerLocation,
+                                   PlayerImpl inputPlayer) {
+    JFrame mainFrameBuff = new JFrame("Dungeon HUD");
+    CardLayout cardLayoutBuff = new CardLayout(50, 50);
 
     mainPanel = new JPanel(cardLayoutBuff);
-    JPanel card1 = initializePlayerStats(inputMessage);
+    JPanel card1 = initializePlayerStats(inputMessage, inputPlayer.getPlayerWeapons().size(),
+        inputPlayer.getPlayerTreasure().size(), inputPlayer.isAlive());
     JPanel card2 = initializeDPad();
+    // TODO: Visited map
     JPanel card3 = generateDungeonGraphics(inputDungeon, inputRows, inputCols,
         null, playerLocation);
     JPanel card4 = initializePlayerShootingPrompt();
@@ -137,14 +148,14 @@ class GameHUD extends JFrame {
     shootPanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Shoot"));
     fireTriggerButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Player Vitals"));
 
-    mainFrame.add(mainPanel);
+    mainFrameBuff.add(mainPanel);
     cardLayoutBuff.show(mainPanel, "Maze");
-    mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    mainFrame.setVisible(true);
-    mainFrame.pack();
+    mainFrameBuff.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//    mainFrameBuff.setVisible(true);
+    mainFrameBuff.pack();
 
 
-    return mainFrame;
+    return mainFrameBuff;
 
   }
 
@@ -183,21 +194,22 @@ class GameHUD extends JFrame {
     return card;
   }
 
-  private JPanel initializePlayerStats(String inputMessage) {
+  private JPanel initializePlayerStats(String inputMessage, int numArrows, int numTreasure,
+                                       boolean playerAlive) {
     playerStatsCard = new JPanel();
 
     // userArrows
-    userArrows = new JLabel("Arrows: 0 ", SwingConstants.CENTER);
+    userArrows = new JLabel("Arrows: " + numArrows, SwingConstants.CENTER);
     playerStatsCard.add(userArrows);
 
 
     // userTreasure
-    userTreasure = new JLabel("Treasure: None ");
+    userTreasure = new JLabel("Treasure: " + numTreasure);
     userTreasure.setForeground(Color.RED);
     playerStatsCard.add(userTreasure);
 
     // userAlive
-    userAlive = new JLabel("Alive: True ");
+    userAlive = new JLabel("Alive: " + playerAlive);
     playerStatsCard.add(userAlive);
 
     // inputMessageLabel
@@ -394,6 +406,9 @@ class GameHUD extends JFrame {
 
   // Will always return empty string unless some choice is made
   protected String getUserInputDirection() {
+    if (userInputDirection == null) {
+      return "";
+    }
     return new String(userInputDirection);
   }
 
