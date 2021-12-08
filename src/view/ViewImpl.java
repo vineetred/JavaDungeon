@@ -28,8 +28,10 @@ public class ViewImpl implements ViewInterface {
   @Override
   public void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols,
                          Map<Point2D, Boolean> visited, PlayerImpl inputPlayer) {
-    this.gameHUDBuff.initialize(inputDungeon, inputRows, inputCols, "",
-        (Point2DImpl) inputPlayer.getPlayerLocation(), inputPlayer);
+//    this.gameHUDBuff.initialize(inputDungeon, inputRows, inputCols, "",
+//        (Point2DImpl) inputPlayer.getPlayerLocation(), inputPlayer);
+    this.gameHUDBuff.generateDungeonGraphics(inputDungeon, inputRows, inputCols,
+        visited, (Point2DImpl) inputPlayer.getPlayerLocation());
   }
 
   @Override

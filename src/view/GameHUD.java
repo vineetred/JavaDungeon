@@ -27,6 +27,7 @@ class GameHUD extends JFrame {
   JFrame mainFrame;
   String userChoice;
   String stringBuff;
+  JPanel mazePanel;
 
   private String userInputDirection;
 
@@ -49,8 +50,10 @@ class GameHUD extends JFrame {
 
   protected GameHUD(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
                     Point2DImpl playerLocation, PlayerImpl inputPlayer) {
-
+    mazePanel = new JPanel(null);
     initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation, inputPlayer);
+
+
 
   }
 
@@ -119,12 +122,14 @@ class GameHUD extends JFrame {
         inputPlayer.getPlayerTreasure().size(), inputPlayer.isAlive());
     JPanel card2 = initializeDPad();
     // TODO: Visited map
-    JPanel card3 = generateDungeonGraphics(inputDungeon, inputRows, inputCols,
+//    JPanel card3 = generateDungeonGraphics(inputDungeon, inputRows, inputCols,
+//        null, playerLocation);
+    generateDungeonGraphics(inputDungeon, inputRows, inputCols,
         null, playerLocation);
     JPanel card4 = initializePlayerShootingPrompt();
 
-    JScrollPane scrollPane = new JScrollPane(card3);
-    card3.setPreferredSize(new Dimension(new Dimension(Constants.OFFSET * (inputCols + 3),
+    JScrollPane scrollPane = new JScrollPane(mazePanel);
+    mazePanel.setPreferredSize(new Dimension(new Dimension(Constants.OFFSET * (inputCols + 3),
         Constants.OFFSET * (inputRows + 3))));
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -265,9 +270,12 @@ class GameHUD extends JFrame {
     return card;
   }
 
-  private JPanel generateDungeonGraphics(Dungeon dungeonModel, int inputRows, int inputCols,
+  protected void generateDungeonGraphics(Dungeon dungeonModel, int inputRows,
+                                         int inputCols,
                                        Map<Point2D, Boolean> visited, Point2DImpl playerLocation) {
-    JPanel mazePanel = new JPanel(null);
+//    JPanel mazePanel = new JPanel(null);
+    mazePanel.setVisible(false);
+    mazePanel.removeAll();
     ArrayList<String> cavePossibleDirection;
     ArrayList<Treasure> cavePossibleTreasure;
     ArrayList<Weapon> cavePossibleArrows;
@@ -394,7 +402,9 @@ class GameHUD extends JFrame {
     mazePanel.add(vitalsPanelButton);
     mazePanel.add(shootPanelButton);
 
-    return mazePanel;
+    mazePanel.revalidate();
+    mazePanel.setVisible(true);
+//    return mazePanel;
 
   }
 
