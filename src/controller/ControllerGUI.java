@@ -545,27 +545,6 @@ public class ControllerGUI implements Controller {
     }
   }
 
-  @Override
-  public Dungeon buildDungeon(boolean wraps, int rows, int columns, int interconnect,
-                              int treasurePercentage, int numberOfMonsters) {
-
-    // Make sure input given is null safe
-    checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage,
-        numberOfMonsters);
-
-    welcomeMessage();
-
-    dungeonStats(wraps, rows, columns, interconnect, treasurePercentage,
-        numberOfMonsters);
-
-    this.dungeon = new DungeonImpl(wraps, rows, columns, interconnect, treasurePercentage,
-        numberOfMonsters);
-
-    return this.dungeon;
-
-  }
-
-
   private void saveGameState(Dungeon d) {
     try {
       FileOutputStream fileOut =
@@ -604,14 +583,37 @@ public class ControllerGUI implements Controller {
   }
 
   @Override
+  public Dungeon buildDungeon(boolean wraps, int rows, int columns, int interconnect,
+                              int treasurePercentage, int numberOfMonsters) {
+
+    // Make sure input given is null safe
+    checkDungeonInvariants(wraps, rows, columns, interconnect, treasurePercentage,
+        numberOfMonsters);
+
+    welcomeMessage();
+
+    dungeonStats(wraps, rows, columns, interconnect, treasurePercentage,
+        numberOfMonsters);
+
+    this.dungeon = new DungeonImpl(wraps, rows, columns, interconnect, treasurePercentage,
+        numberOfMonsters);
+
+    return this.dungeon;
+
+  }
+
+
+
+
+  @Override
   public void playGame(Dungeon d, Player player, ViewInterface view) {
 
     this.saveGameState(d);
 
     this.visited = new HashMap<>();
 
-    if (d == null || player == null) {
-      throw new IllegalArgumentException("Dungeon/Player cannot be null!");
+    if (d == null || player == null || view == null) {
+      throw new IllegalArgumentException("Dungeon/Player/View cannot be null!");
     }
 
     visited.put(player.getPlayerLocation().toString(), true);

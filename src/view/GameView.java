@@ -770,8 +770,6 @@ class GameView extends JFrame {
     mazePanel.setVisible(true);
     mazePanel.setFocusable(true);
 
-//    return mazePanel;
-
   }
 
 

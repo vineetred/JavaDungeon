@@ -2,13 +2,18 @@ package test;
 
 import controller.Controller;
 import controller.ControllerCLI;
+import controller.ControllerGUI;
 import model.Dungeon;
 import model.DungeonImpl;
+
 import model.Player;
 import model.PlayerImpl;
 import org.junit.Test;
+import view.MockView;
+import view.ViewInterface;
 
 import java.io.StringReader;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -126,5 +131,96 @@ public class ControllerTest {
     assertEquals(3, player.getPlayerWeapons().size());
 
   }
+
+  @Test (expected = IllegalArgumentException.class)
+  public void testGUIControllerException() {
+
+
+    ControllerGUI ctrl = new ControllerGUI(null, null, null, 7, 7, 1,
+        2, 25, new HashMap<>(), true);
+    Dungeon d = new DungeonImpl(false);
+    Player player = new PlayerImpl(d.getStartPoint(), d);
+    ctrl.playGame(d, player, null);
+
+    // We need to get a count of the user's arrows to verify that state remains same!
+    // as the controller handles this error correctly.
+    assertEquals(3, player.getPlayerWeapons().size());
+
+  }
+
+  @Test
+  public void testControllerGUIPlayGame() {
+
+    StringReader input = new StringReader("");
+    StringBuilder output = new StringBuilder();
+
+    ViewInterface view = new MockView();
+    ControllerGUI ctrl = new ControllerGUI(input, output, view, 7, 7, 1,
+        2, 25, new HashMap<>(), true);
+    Dungeon d = new DungeonImpl(false);
+    Player player = new PlayerImpl(d.getEndPoint(), d);
+    ctrl.playGame(d, player, view);
+
+    // We need to get a count of the user's arrows to verify that state remains same!
+    // as the controller handles this error correctly.
+    // Making sure the state remains same!
+    assertTrue(d.gameFinished(player.getPlayerLocation()));
+    assertFalse(player.isAlive());
+    assertEquals(3, player.getPlayerWeapons().size());
+    assertEquals(0, player.getPlayerTreasure().size());
+
+  }
+
+  @Test
+  public void testControllerGUIExit() {
+
+    StringReader input = new StringReader("");
+    StringBuilder output = new StringBuilder();
+
+    ViewInterface view = new MockView();
+    ControllerGUI ctrl = new ControllerGUI(input, output, view, 7, 7, 1,
+        2, 25, new HashMap<>(), true);
+    Dungeon d = new DungeonImpl(false);
+    Player player = new PlayerImpl(d.getEndPoint(), d);
+    ctrl.playGame(d, player, view);
+
+    // We need to get a count of the user's arrows to verify that state remains same!
+    // as the controller handles this error correctly.
+    // Making sure the state remains same!
+    // Will only be invoked if game exits!
+    assertEquals("[26<->27, 15<->21, 14<->15, 20<->26, 28<->29, 13<->19, 4<->10, " +
+            "12<->13, " +
+            "25<->26, 18<->24, 2<->8, 19<->20, 1<->2, 1<->7, 16<->22, 8<->14, 23<->29, 0<->6, " +
+            "27<->28, " +
+            "21<->22, 16<->17, 20<->21, 11<->17, 24<->25, 10<->16, 5<->11, 3<->9, 6<->12, 9<->10]",
+        d.toString());
+  }
+
+  @Test
+  public void testControllerShoot() {
+
+    StringReader input = new StringReader("");
+    StringBuilder output = new StringBuilder();
+
+    // Mock view has built in shoot parameters which should reduce the player arrow count by 1.
+    ViewInterface view = new MockView();
+    ControllerGUI ctrl = new ControllerGUI(input, output, view, 7, 7, 1,
+        2, 25, new HashMap<>(), true);
+    Dungeon d = new DungeonImpl(false);
+    Player player = new PlayerImpl(d.getEndPoint(), d);
+    player.useWeapon(2, "S");
+    ctrl.playGame(d, player, view);
+
+
+    // We need to get a count of the user's arrows to verify that state remains same!
+    // as the controller handles this error correctly.
+    // Making sure the state remains same!
+    assertTrue(d.gameFinished(player.getPlayerLocation()));
+    assertFalse(player.isAlive());
+    assertEquals(2, player.getPlayerWeapons().size());
+    assertEquals(0, player.getPlayerTreasure().size());
+
+  }
+
 
 }
