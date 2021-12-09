@@ -1,6 +1,7 @@
 package view;
 
 import model.Dungeon;
+import model.Player;
 import model.PlayerImpl;
 
 import java.util.ArrayList;
@@ -8,14 +9,41 @@ import java.util.List;
 import java.util.Map;
 
 public class MockView implements ViewInterface {
+
+  private String userIntention;
+  private String userDirection;
+  private ArrayList<String> shootingParams;
+  private Appendable log;
+  private Player player;
+  private Dungeon dungeon;
+
+  public MockView(Appendable log) {
+    this.log = log;
+    this.userIntention = "";
+    this.userDirection = "";
+    this.shootingParams = new ArrayList<>();
+  }
+
   @Override
   public void generateHUD(Dungeon inputDungeon, int inputRows, int inputCols, Map<String, Boolean> visited, PlayerImpl inputPlayer) {
 
+    this.player = inputPlayer;
+    this.dungeon = inputDungeon;
+
   }
+
 
   @Override
   public void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols, Map<String, Boolean> visited, PlayerImpl inputPlayer) {
 
+  }
+
+  public void simulateMovePlayer() {
+    this.player.moveNorth();
+  }
+
+  public void simulatePlayerShoot() {
+    this.player.useWeapon(2, "N");
   }
 
   @Override
@@ -25,7 +53,7 @@ public class MockView implements ViewInterface {
 
   @Override
   public String getUserIntention() {
-    return "S";
+    return userIntention;
   }
 
   @Override
@@ -35,17 +63,13 @@ public class MockView implements ViewInterface {
 
   @Override
   public String getUserDirection() {
-    return "S";
+    return userDirection;
   }
 
   @Override
   public List<String> getUserShootingParameters() {
 
-    ArrayList<String> temp = new ArrayList<>();
-    temp.add("N");
-    temp.add("2");
-
-    return temp;
+    return shootingParams;
   }
 
   @Override

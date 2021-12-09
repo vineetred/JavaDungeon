@@ -8,6 +8,8 @@ import model.DungeonImpl;
 
 import model.Player;
 import model.PlayerImpl;
+import model.Point2D;
+import model.Point2DImpl;
 import org.junit.Test;
 import view.MockView;
 import view.ViewInterface;
@@ -154,7 +156,7 @@ public class ControllerTest {
     StringReader input = new StringReader("");
     StringBuilder output = new StringBuilder();
 
-    ViewInterface view = new MockView();
+    ViewInterface view = new MockView(output);
     ControllerGUI ctrl = new ControllerGUI(input, output, view, 7, 7, 1,
         2, 25, new HashMap<>(), true);
     Dungeon d = new DungeonImpl(false);
@@ -177,7 +179,7 @@ public class ControllerTest {
     StringReader input = new StringReader("");
     StringBuilder output = new StringBuilder();
 
-    ViewInterface view = new MockView();
+    ViewInterface view = new MockView(output);
     ControllerGUI ctrl = new ControllerGUI(input, output, view, 7, 7, 1,
         2, 25, new HashMap<>(), true);
     Dungeon d = new DungeonImpl(false);
@@ -203,13 +205,13 @@ public class ControllerTest {
     StringBuilder output = new StringBuilder();
 
     // Mock view has built in shoot parameters which should reduce the player arrow count by 1.
-    ViewInterface view = new MockView();
+    MockView view = new MockView(output);
     ControllerGUI ctrl = new ControllerGUI(input, output, view, 7, 7, 1,
         2, 25, new HashMap<>(), true);
     Dungeon d = new DungeonImpl(false);
     Player player = new PlayerImpl(d.getEndPoint(), d);
-    player.useWeapon(2, "S");
     ctrl.playGame(d, player, view);
+    view.simulatePlayerShoot();
 
 
     // We need to get a count of the user's arrows to verify that state remains same!
@@ -218,6 +220,32 @@ public class ControllerTest {
     assertTrue(d.gameFinished(player.getPlayerLocation()));
     assertFalse(player.isAlive());
     assertEquals(2, player.getPlayerWeapons().size());
+    assertEquals(0, player.getPlayerTreasure().size());
+
+  }
+
+  @Test
+  public void testControllerGUIPlayerMove() {
+
+    StringReader input = new StringReader("");
+    StringBuilder output = new StringBuilder();
+
+    // Mock view has built in shoot parameters which should reduce the player arrow count by 1.
+    MockView view = new MockView(output);
+    ControllerGUI ctrl = new ControllerGUI(input, output, view, 7, 7, 1,
+        2, 25, new HashMap<>(), true);
+    Dungeon d = new DungeonImpl(false);
+    Player player = new PlayerImpl(d.getEndPoint(), d);
+    ctrl.playGame(d, player, view);
+    view.simulateMovePlayer();
+
+    // We need to get a count of the user's arrows to verify that state remains same!
+    // as the controller handles this error correctly.
+    // Making sure the state remains same!
+    assertEquals(new Point2DImpl(2, 3).toString(), player.getPlayerLocation().toString());
+    assertFalse(d.gameFinished(player.getPlayerLocation()));
+    assertFalse(player.isAlive());
+    assertEquals(3, player.getPlayerWeapons().size());
     assertEquals(0, player.getPlayerTreasure().size());
 
   }
