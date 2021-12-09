@@ -437,7 +437,7 @@ class GameView extends JFrame {
       for (int col = 0; col < inputCols; col++) {
 
         if (row == playerLocation.getRow() && col == playerLocation.getColumn()) {
-          ImageIcon playerImageIcon = new ImageIcon(Constants.RUBY_IMAGE_FILEPATH);
+          ImageIcon playerImageIcon = new ImageIcon(Constants.PLAYER_IMAGE_FILEPATH);
           JLabel playerLocationLabel = new JLabel();
           playerLocationLabel.setIcon(playerImageIcon);
           playerLocationLabel.setBounds(Constants.OFFSET * (col + 1),
