@@ -17,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.security.Key;
 import java.util.ArrayList;
@@ -72,6 +74,7 @@ class GameHUD extends JFrame {
     mazePanel = new JPanel(null);
 
     playerStatsCard = new JPanel();
+
     initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation, inputPlayer, visited);
 
 
@@ -180,8 +183,10 @@ class GameHUD extends JFrame {
 
     });
 
-    mainFrame.setVisible(true);
+
     mainFrame.setFocusable(true);
+    mainFrame.setVisible(true);
+
 
 
   }
@@ -310,6 +315,7 @@ class GameHUD extends JFrame {
 
     });
 
+
     southArrowButton.addActionListener(e -> {
       this.userInputDirection = "S";
     });
@@ -414,6 +420,8 @@ class GameHUD extends JFrame {
     ArrayList<Monster> cavePossibleMonsters;
     ArrayList<String> outputString;
 
+    int count = 0;
+
     for (int row = 0; row < inputRows; row++) {
       for (int col = 0; col < inputCols; col++) {
 
@@ -453,6 +461,7 @@ class GameHUD extends JFrame {
 
         JLabel label = new JLabel();
         ImageIcon image = new ImageIcon(Constants.FOG_TILE_FILEPATH);
+
         if (visited.containsKey(new Point2DImpl(row, col).toString())) {
           if (visited.get(new Point2DImpl(row, col).toString())) {
             // Adding Bad smell
@@ -580,6 +589,81 @@ class GameHUD extends JFrame {
     mazePanel.add(pickUpButton);
     mazePanel.add(movePanelButton);
 
+    mazePanel.addMouseListener(new MouseListener() {
+      @Override
+      public synchronized void mouseClicked(MouseEvent e) {
+
+        // Check for north
+        if (e.getY() > ((playerLocation.getRow()) * Constants.OFFSET)
+            && e.getY() <  ((playerLocation.getRow()) * Constants.OFFSET + 100)
+        && e.getX() >  (((playerLocation.getColumn() + 1) % inputCols) * Constants.OFFSET)
+        && e.getX() <  (((playerLocation.getColumn() + 1) % inputCols) * Constants.OFFSET + 100)) {
+          userMove = true;
+          userInputDirection = "N";
+        }
+
+        // Check for south
+        else if (e.getY() > (((playerLocation.getRow() + 2) % inputRows) * Constants.OFFSET)
+            && e.getY() <  (((playerLocation.getRow() + 2) % inputRows) * Constants.OFFSET + 100)
+            && e.getX() >  (((playerLocation.getColumn() + 1) % inputCols) * Constants.OFFSET)
+            && e.getX() <  (((playerLocation.getColumn() + 1) % inputCols) * Constants.OFFSET + 100)) {
+          userMove = true;
+          userInputDirection = "S";
+        }
+
+        // Check for East
+        else if (e.getY() > (((playerLocation.getRow() + 1) % inputRows) * Constants.OFFSET)
+            && e.getY() <  (((playerLocation.getRow() + 1) % inputRows) * Constants.OFFSET + 100)
+            && e.getX() >  (((playerLocation.getColumn() + 2) % inputCols) * Constants.OFFSET)
+            && e.getX() <  (((playerLocation.getColumn() + 2) % inputCols) * Constants.OFFSET + 100)) {
+          userMove = true;
+          userInputDirection = "E";
+        }
+
+        // Check for West
+        else if (e.getY() > (((playerLocation.getRow() + 1) % inputRows) * Constants.OFFSET)
+            && e.getY() <  (((playerLocation.getRow() + 1) % inputRows) * Constants.OFFSET + 100)
+            && e.getX() >  (((playerLocation.getColumn()) % inputCols) * Constants.OFFSET)
+            && e.getX() <  (((playerLocation.getColumn()) % inputCols) * Constants.OFFSET + 100)) {
+          userMove = true;
+          userInputDirection = "W";
+        }
+
+//        else if (e.getY() > (playerLocation.getColumn()) * Constants.OFFSET + 100)  {
+//          userMove = true;
+//          userInputDirection = "S";
+//        }
+//
+//        else if (e.getX() > (playerLocation.getColumn()) * Constants.OFFSET + 100)  {
+//          userMove = true;
+//          userInputDirection = "S";
+//        }
+
+
+
+      }
+
+      @Override
+      public void mousePressed(MouseEvent e) {
+
+      }
+
+      @Override
+      public void mouseReleased(MouseEvent e) {
+
+      }
+
+      @Override
+      public void mouseEntered(MouseEvent e) {
+
+      }
+
+      @Override
+      public void mouseExited(MouseEvent e) {
+
+      }
+    });
+
 
 
     mazePanel.revalidate();
@@ -641,9 +725,11 @@ class GameHUD extends JFrame {
     resetUserShoot();
   }
 
-  protected void setListeners(KeyListener keys) {
+  protected void setListeners(KeyListener keys, MouseListener clicks) {
     this.addKeyListener(keys);
+    this.addMouseListener(clicks);
   }
+
 
   protected void displayUserMessage(String inputMessage) {
     showMessageDialog(null, inputMessage);

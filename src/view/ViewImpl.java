@@ -6,6 +6,7 @@ import model.Point2D;
 import model.Point2DImpl;
 
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -65,7 +66,6 @@ public class ViewImpl implements ViewInterface {
       return this.gameHUDBuff.getUserChangeGame();
     }
 
-
     return "";
 
   }
@@ -111,8 +111,8 @@ public class ViewImpl implements ViewInterface {
   }
 
   @Override
-  public void setListeners(KeyListener keys) {
-    this.gameHUDBuff.setListeners(keys);
+  public void setListeners(KeyListener keys, MouseListener clicks) {
+    this.gameHUDBuff.setListeners(keys, clicks);
   }
 
   @Override
