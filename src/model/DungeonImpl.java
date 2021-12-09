@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -16,7 +17,7 @@ import java.util.Set;
  * We have various constructors to achieve differing randomness with the aim of ease of use and
  * debugging.
  */
-public class DungeonImpl implements Dungeon {
+public class DungeonImpl implements Dungeon, Serializable {
 
   private final boolean wraps;
   private final int rows;

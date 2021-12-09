@@ -8,6 +8,7 @@ import model.Point2DImpl;
 import java.awt.event.KeyListener;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ViewImpl implements ViewInterface {
 
@@ -21,14 +22,14 @@ public class ViewImpl implements ViewInterface {
 
   @Override
   public void generateHUD(Dungeon inputDungeon, int inputRows, int inputCols,
-                          Map<Point2D, Boolean> visited, PlayerImpl inputPlayer) {
+                          Map<String, Boolean> visited, PlayerImpl inputPlayer) {
     this.gameHUDBuff = new GameHUD(inputDungeon, inputRows, inputCols, "",
-        (Point2DImpl) inputDungeon.getStartPoint(), inputPlayer);
+        (Point2DImpl) inputDungeon.getStartPoint(), inputPlayer, visited);
   }
 
   @Override
   public void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols,
-                         Map<Point2D, Boolean> visited, PlayerImpl inputPlayer) {
+                         Map<String, Boolean> visited, PlayerImpl inputPlayer) {
 //    this.gameHUDBuff.initialize(inputDungeon, inputRows, inputCols, "",
 //        (Point2DImpl) inputPlayer.getPlayerLocation(), inputPlayer);
     this.gameHUDBuff.generateDungeonGraphics(inputDungeon, inputRows, inputCols,
@@ -58,6 +59,10 @@ public class ViewImpl implements ViewInterface {
 
     else if (this.gameHUDBuff.getUserShoot()) {
       return "S";
+    }
+
+    else if (!Objects.equals(this.gameHUDBuff.getUserChangeGame(), "")) {
+      return this.gameHUDBuff.getUserChangeGame();
     }
 
 
@@ -108,5 +113,15 @@ public class ViewImpl implements ViewInterface {
   @Override
   public void setListeners(KeyListener keys) {
     this.gameHUDBuff.setListeners(keys);
+  }
+
+  @Override
+  public String getUserChangeGame() {
+    return this.gameHUDBuff.getUserChangeGame();
+  }
+
+  @Override
+  public void resetUserChangeGame() {
+    this.gameHUDBuff.resetUserChangeGame();
   }
 }

@@ -20,7 +20,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -37,10 +41,14 @@ class GameHUD extends JFrame {
   private boolean userPickUp;
   private boolean userMove;
   private boolean userShoot;
+  private boolean userShootPrompt;
+
+  JTextField directionTextField = new JTextField(2);
 
   public static JLabel userTreasure;
   public static JLabel userArrows;
   public static JLabel userAlive;
+  JLabel directionLabel = new JLabel("Direction (N/S/E/W): ");
 
   JPanel mainPanel;
 
@@ -54,19 +62,23 @@ class GameHUD extends JFrame {
 
   ArrayList<String> shootingParameters;
 
+  private boolean left, right, up, down, letterM, letterP, letterS;
+
+
 
   protected GameHUD(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
-                    Point2DImpl playerLocation, PlayerImpl inputPlayer) {
+                    Point2DImpl playerLocation, PlayerImpl inputPlayer,
+                    Map<String, Boolean> visited) {
     mazePanel = new JPanel(null);
 
     playerStatsCard = new JPanel();
-    initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation, inputPlayer);
+    initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation, inputPlayer, visited);
 
 
   }
 
   protected void initialize(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
-                            Point2DImpl playerLocation, PlayerImpl inputPlayer) {
+                            Point2DImpl playerLocation, PlayerImpl inputPlayer, Map<String, Boolean> visited) {
 
 
     if (mainFrame != null) {
@@ -76,7 +88,7 @@ class GameHUD extends JFrame {
     }
 
     mainFrame = initializeGameHUD(inputDungeon, inputRows, inputCols, inputMessage,
-        playerLocation, inputPlayer);
+        playerLocation, inputPlayer, visited);
     initializeGameMenu(mainFrame, new JMenuBar());
 
     mainFrame.addKeyListener(new KeyListener() {
@@ -85,23 +97,85 @@ class GameHUD extends JFrame {
       }
 
       @Override
-      public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_P) {
+      public synchronized void keyPressed(KeyEvent e) {
+
+
+
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) left = true;
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) right = true;
+        if (e.getKeyCode() == KeyEvent.VK_UP) up = true;
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) down = true;
+        if (e.getKeyCode() == KeyEvent.VK_M) letterM = true;
+        if (e.getKeyCode() == KeyEvent.VK_P) letterP = true;
+        if (e.getKeyCode() == KeyEvent.VK_S) letterS = true;
+
+
+        if (letterP) {
           userPickUp = true;
         }
 
-        else if (e.getKeyCode() == KeyEvent.VK_M) {
-          userMove = true;
+        if (letterS) {
+          shootPanelButton.doClick();
+          userShootPrompt = true;
+//          userShoot = true;
         }
 
-        else if (e.getKeyCode() == KeyEvent.VK_S) {
-          userShoot = true;
+        if (letterM) {
+          if (up) {
+            userInputDirection = "N";
+            userMove = true;
+          }
+
+          else if (down) {
+            userInputDirection = "S";
+            userMove = true;
+          }
+
+          else if (left) {
+            userInputDirection = "W";
+            userMove = true;
+          }
+
+          else if (right) {
+            userInputDirection = "E";
+            userMove = true;
+          }
+
+
+        }
+
+        if (userShootPrompt) {
+          if (up) {
+            directionTextField.setText("N");
+          }
+
+          else if (down) {
+            directionTextField.setText("S");
+          }
+
+          else if (left) {
+            directionTextField.setText("W");
+          }
+
+          else if (right) {
+            directionTextField.setText("E");
+          }
+
         }
       }
+
 
       @Override
-      public void keyReleased(KeyEvent e) {
+      public synchronized void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) left = false;
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) right = false;
+        if (e.getKeyCode() == KeyEvent.VK_UP) up = false;
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) down = false;
+        if (e.getKeyCode() == KeyEvent.VK_M) letterM = false;
+        if (e.getKeyCode() == KeyEvent.VK_P) letterP = false;
+        if (e.getKeyCode() == KeyEvent.VK_S) letterS = false;
       }
+
     });
 
     mainFrame.setVisible(true);
@@ -122,15 +196,17 @@ class GameHUD extends JFrame {
   private void initializeGameMenu(JFrame inputJFrame, JMenuBar inputJMenuBar) {
 
     this.userChoice = "";
-    JMenuItem restartButton, newGameButton;
+    JMenuItem reuseButton, newGameButton, restartButton;
 
     menu = new JMenu("Options");
 
-    restartButton = new JMenuItem("Restart Game");
+    reuseButton = new JMenuItem("Reuse Game");
     newGameButton = new JMenuItem("New Game");
+    restartButton = new JMenuItem("Restart game");
 
-    menu.add(restartButton);
+    menu.add(reuseButton);
     menu.add(newGameButton);
+    menu.add(restartButton);
 
     inputJMenuBar.add(menu);
     inputJFrame.setJMenuBar(inputJMenuBar);
@@ -139,19 +215,25 @@ class GameHUD extends JFrame {
     exit.addActionListener(new exitMenu());
     menu.add(exit);
 
-    restartButton.addActionListener(e -> {
-      this.userChoice = "Restart Game";
+    reuseButton.addActionListener(e -> {
+      this.userChoice = "Reuse Game";
     });
 
     newGameButton.addActionListener(e -> {
       this.userChoice = "New Game";
     });
 
+    restartButton.addActionListener(e -> {
+      this.userChoice = "Restart Game";
+    });
+
+
+
   }
 
   private JFrame initializeGameHUD(Dungeon inputDungeon, int inputRows, int inputCols,
                                    String inputMessage, Point2DImpl playerLocation,
-                                   PlayerImpl inputPlayer) {
+                                   PlayerImpl inputPlayer, Map<String, Boolean> visited) {
     JFrame mainFrameBuff = new JFrame("Dungeon HUD");
     CardLayout cardLayoutBuff = new CardLayout(20, 20);
 
@@ -163,7 +245,7 @@ class GameHUD extends JFrame {
 //    JPanel card3 = generateDungeonGraphics(inputDungeon, inputRows, inputCols,
 //        null, playerLocation);
     generateDungeonGraphics(inputDungeon, inputRows, inputCols,
-        null, playerLocation);
+        visited, playerLocation);
     JPanel card4 = initializePlayerShootingPrompt();
 
     JScrollPane scrollPane = new JScrollPane(mazePanel);
@@ -281,11 +363,9 @@ class GameHUD extends JFrame {
 
 
     // Distance in Caves
-    JLabel directionLabel = new JLabel("Direction (N/S/E/W): ");
     card.add(directionLabel);
 
     // the text field
-    JTextField directionTextField = new JTextField(2);
     card.add(directionTextField);
 
     // Distance in Caves
@@ -314,6 +394,7 @@ class GameHUD extends JFrame {
 
       this.userShoot = true;
 
+
     });
 
     return card;
@@ -321,7 +402,7 @@ class GameHUD extends JFrame {
 
   protected void generateDungeonGraphics(Dungeon dungeonModel, int inputRows,
                                          int inputCols,
-                                       Map<Point2D, Boolean> visited, Point2DImpl playerLocation) {
+                                       Map<String, Boolean> visited, Point2DImpl playerLocation) {
 //    JPanel mazePanel = new JPanel(null);
     mazePanel.setVisible(false);
     mazePanel.removeAll();
@@ -343,27 +424,7 @@ class GameHUD extends JFrame {
           mazePanel.add(playerLocationLabel);
         }
 
-        // Adding Bad smell
-        if (dungeonModel.isMinorSmell(new Point2DImpl(row, col))) {
-          ImageIcon badSmell = new ImageIcon(Constants.BAD_SMELL_FILEPATH);
-          JLabel badSmellLabel = new JLabel();
-          badSmellLabel.setIcon(badSmell);
-          badSmellLabel.setBounds(Constants.OFFSET * (col + 1),
-              Constants.OFFSET * (row + 1), 100, 100);
-          mazePanel.add(badSmellLabel);
 
-        }
-
-        // Adding Major bad smell
-        else if (dungeonModel.isMajorSmell(new Point2DImpl(row, col))) {
-
-          ImageIcon superBadSmell = new ImageIcon(Constants.SUPER_BAD_SMELL_FILEPATH);
-          JLabel superBadSmellLabel = new JLabel();
-          superBadSmellLabel.setIcon(superBadSmell);
-          superBadSmellLabel.setBounds(Constants.OFFSET * (col + 1),
-              Constants.OFFSET * (row + 1), 100, 100);
-          mazePanel.add(superBadSmellLabel);
-        }
 
         cavePossibleDirection = (ArrayList<String>)
             dungeonModel.getMovesAtCaveIndex(new Point2DImpl(row, col));
@@ -389,60 +450,89 @@ class GameHUD extends JFrame {
         String flattenedCardinalDirections = String.join("", outputString);
 
         JLabel label = new JLabel();
-        ImageIcon image = new ImageIcon(Constants.DIRECTION_IMAGE_FILEPATH.get(flattenedCardinalDirections));
+        ImageIcon image = new ImageIcon(Constants.FOG_TILE_FILEPATH);
+        if (visited.containsKey(new Point2DImpl(row, col).toString())) {
+          if (visited.get(new Point2DImpl(row, col).toString())) {
+            // Adding Bad smell
+            if (dungeonModel.isMinorSmell(new Point2DImpl(row, col))) {
+              ImageIcon badSmell = new ImageIcon(Constants.BAD_SMELL_FILEPATH);
+              JLabel badSmellLabel = new JLabel();
+              badSmellLabel.setIcon(badSmell);
+              badSmellLabel.setBounds(Constants.OFFSET * (col + 1),
+                  Constants.OFFSET * (row + 1), 100, 100);
+              mazePanel.add(badSmellLabel);
+
+            }
+
+            // Adding Major bad smell
+            else if (dungeonModel.isMajorSmell(new Point2DImpl(row, col))) {
+
+              ImageIcon superBadSmell = new ImageIcon(Constants.SUPER_BAD_SMELL_FILEPATH);
+              JLabel superBadSmellLabel = new JLabel();
+              superBadSmellLabel.setIcon(superBadSmell);
+              superBadSmellLabel.setBounds(Constants.OFFSET * (col + 1),
+                  Constants.OFFSET * (row + 1), 100, 100);
+              mazePanel.add(superBadSmellLabel);
+            }
+
+            image = new ImageIcon(Constants.DIRECTION_IMAGE_FILEPATH.get(flattenedCardinalDirections));
+            // Adding treasure
+            cavePossibleTreasure = (ArrayList<Treasure>)
+                dungeonModel.peekCaveTreasure(new Point2DImpl(row, col));
+
+            if (cavePossibleTreasure != null) {
+              if (cavePossibleTreasure.size() > 0) {
+                ImageIcon diamond = new ImageIcon(Constants.DIAMOND_IMAGE_FILEPATH);
+                JLabel treasureLabel = new JLabel();
+                treasureLabel.setIcon(diamond);
+                treasureLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
+                    30, 30);
+                mazePanel.add(treasureLabel);
+              }
+            }
+
+            // Adding Arrows
+            cavePossibleArrows = (ArrayList<Weapon>)
+                dungeonModel.peekCaveWeapons(new Point2DImpl(row, col));
+
+            if (cavePossibleArrows != null) {
+              if (cavePossibleArrows.size() > 0) {
+                ImageIcon arrow = new ImageIcon(Constants.ARROW_IMAGE_FILEPATH);
+                JLabel arrowLabel = new JLabel();
+                arrowLabel.setIcon(arrow);
+                arrowLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
+                    25, 8);
+                mazePanel.add(arrowLabel);
+              }
+
+            }
+
+            // Adding Monsters
+            cavePossibleMonsters = (ArrayList<Monster>)
+                dungeonModel.peekCaveMonsters(new Point2DImpl(row, col));
+
+            if (cavePossibleMonsters != null) {
+              if (cavePossibleMonsters.size() > 0) {
+                // Only alive monsters
+                if (cavePossibleMonsters.get(0).getHits() < 2) {
+                  ImageIcon monster = new ImageIcon(Constants.MONSTER_IMAGE_FILEPATH);
+                  JLabel monsterLabel = new JLabel();
+                  monsterLabel.setIcon(monster);
+                  monsterLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
+                      25, 25);
+                  mazePanel.add(monsterLabel);
+                }
+              }
+            }
+          }
+        }
+
         label.setIcon(image);
         label.setBounds(Constants.OFFSET * (col + 1),
             Constants.OFFSET * (row + 1), 100, 100);
         mazePanel.add(label);
 
-        // Adding treasure
-        cavePossibleTreasure = (ArrayList<Treasure>)
-            dungeonModel.peekCaveTreasure(new Point2DImpl(row, col));
 
-        if (cavePossibleTreasure != null) {
-          if (cavePossibleTreasure.size() > 0) {
-            ImageIcon diamond = new ImageIcon(Constants.DIAMOND_IMAGE_FILEPATH);
-            JLabel treasureLabel = new JLabel();
-            treasureLabel.setIcon(diamond);
-            treasureLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
-                30, 30);
-            mazePanel.add(treasureLabel);
-          }
-        }
-
-        // Adding Arrows
-        cavePossibleArrows = (ArrayList<Weapon>)
-            dungeonModel.peekCaveWeapons(new Point2DImpl(row, col));
-
-        if (cavePossibleArrows != null) {
-          if (cavePossibleArrows.size() > 0) {
-            ImageIcon arrow = new ImageIcon(Constants.ARROW_IMAGE_FILEPATH);
-            JLabel arrowLabel = new JLabel();
-            arrowLabel.setIcon(arrow);
-            arrowLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
-                25, 8);
-            mazePanel.add(arrowLabel);
-          }
-
-        }
-
-        // Adding Monsters
-        cavePossibleMonsters = (ArrayList<Monster>)
-            dungeonModel.peekCaveMonsters(new Point2DImpl(row, col));
-
-        if (cavePossibleMonsters != null) {
-          if (cavePossibleMonsters.size() > 0) {
-            // Only alive monsters
-            if (cavePossibleMonsters.get(0).getHits() < 2) {
-              ImageIcon monster = new ImageIcon(Constants.MONSTER_IMAGE_FILEPATH);
-              JLabel monsterLabel = new JLabel();
-              monsterLabel.setIcon(monster);
-              monsterLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
-                  25, 25);
-              mazePanel.add(monsterLabel);
-            }
-          }
-        }
 
       }
     }
@@ -472,8 +562,14 @@ class GameHUD extends JFrame {
       this.userPickUp = true;
     });
 
+
+
     movePanelButton.addActionListener(e -> {
       this.userMove = true;
+    });
+
+    shootPanelButton.addActionListener(e -> {
+      this.userShootPrompt = true;
     });
 
 
@@ -549,6 +645,14 @@ class GameHUD extends JFrame {
 
   protected void displayUserMessage(String inputMessage) {
     showMessageDialog(null, inputMessage);
+  }
+
+  protected String getUserChangeGame() {
+    return new String(this.userChoice);
+  }
+
+  protected void resetUserChangeGame() {
+    this.userChoice = "";
   }
 
 

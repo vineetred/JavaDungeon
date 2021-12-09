@@ -13,7 +13,11 @@ import view.ViewInterface;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,10 +39,12 @@ public class ControllerGUI {
   private int cols;
   private int degree;
   private int numberOfMonsters;
-  private int treasurePercentage ;
-  private Map<Point2D, Boolean> visited;
+  private int treasurePercentage;
+  private boolean wrapped;
+  private Map<String, Boolean> visited;
   private ViewInterface view;
   private Dungeon dungeon;
+  private Dungeon savePointDungeon;
 
 
   /**
@@ -48,8 +54,8 @@ public class ControllerGUI {
    * @param out the target to print to
    */
   public ControllerGUI(Readable in, Appendable out, ViewInterface view, int rows, int cols,
-                       int degree, int numberOfMonsters, int treasurePercentage, Map<Point2D,
-      Boolean> visited)  {
+                       int degree, int numberOfMonsters, int treasurePercentage, Map<String,
+      Boolean> visited, boolean wrapped)  {
 
     if (in == null || out == null) {
       throw new IllegalArgumentException("Readable and Appendable can't be null");
@@ -65,6 +71,7 @@ public class ControllerGUI {
     this.numberOfMonsters = numberOfMonsters;
     this.treasurePercentage = treasurePercentage;
     this.visited = visited;
+    this.wrapped = wrapped;
 //    this.dungeon = dungeon;
   }
 
@@ -141,19 +148,22 @@ public class ControllerGUI {
       if (Objects.equals(inputDirection, "N")) {
         try {
           inputPlayer.moveNorth();
-          return true;
+
         } catch (IllegalStateException stateException) {
           out.append("You cannot do that! There's a wall there.");
           view.displayUserMessage("You cannot do that! There's a wall there.");
         }
+
+        return true;
       } else if (Objects.equals(inputDirection, "S")) {
         try {
           inputPlayer.moveSouth();
-          return true;
         } catch (IllegalStateException stateException) {
           out.append("You cannot do that! There's a wall there.");
           view.displayUserMessage("You cannot do that! There's a wall there.");
         }
+
+        return true;
       } else if (Objects.equals(inputDirection, "E")) {
         try {
           inputPlayer.moveEast();
@@ -162,6 +172,8 @@ public class ControllerGUI {
           out.append("You cannot do that! There's a wall there.");
           view.displayUserMessage("You cannot do that! There's a wall there.");
         }
+
+        return true;
       } else if (Objects.equals(inputDirection, "W")) {
         try {
           inputPlayer.moveWest();
@@ -170,9 +182,11 @@ public class ControllerGUI {
           out.append("You cannot do that! There's a wall there.");
           view.displayUserMessage("You cannot do that! There's a wall there.");
         }
+
+        return true;
       } else {
         out.append("Invalid move: ").append(inputDirection);
-        return false;
+        return true;
       }
 
     }
@@ -181,7 +195,6 @@ public class ControllerGUI {
       throw new IllegalStateException("Append failed", ioe);
     }
 
-    return false;
   }
 
 
@@ -190,13 +203,37 @@ public class ControllerGUI {
     try {
       List<Treasure> caveTreasure = d.peekCaveTreasure(inputPoint);
       if (caveTreasure == null || caveTreasure.size() == 0) {
+        view.displayUserMessage("No treasure in the cave!");
         out.append("\nNo treasure in the cave");
         return false;
       } else {
+
         out.append("\nThere is treasure in the room!");
+        StringBuilder treasureString = new StringBuilder("There is treasure in the cave!");
+        int rubies = 0;
+        int diamonds = 0;
+        int sapphires = 0;
+
         for (Treasure treasure : caveTreasure) {
+          if (Objects.equals(treasure.toString(), "Ruby")) {
+            rubies++;
+          }
+
+          if (Objects.equals(treasure.toString(), "Diamond")) {
+            diamonds++;
+          }
+
+          if (Objects.equals(treasure.toString(), "Sapphire")) {
+            sapphires++;
+          }
           out.append("\nA ").append(treasure.toString());
         }
+        treasureString.append(" ").append(rubies).append(" rubie(s), ").append(diamonds).append(
+            " " +
+                "diamond(s), ")
+            .append(sapphires).append(" ").append("sapphire(s)");
+
+        view.displayUserMessage(treasureString.toString());
         return true;
       }
 
@@ -210,12 +247,17 @@ public class ControllerGUI {
     try {
       List<Weapon> caveWeapons = d.peekCaveWeapons(inputPoint);
       if (caveWeapons == null || caveWeapons.size() == 0) {
+        view.displayUserMessage("No arrows in the cave.");
         out.append("\nNo arrows in the cave");
         return false;
       } else {
+        StringBuilder arrowString = new StringBuilder();
+        arrowString.append("There are arrows in the room! ").append(String.valueOf(caveWeapons.size()))
+            .append(" arrow(s)");
         out.append("\nThere are arrows in the room! ")
             .append(String.valueOf(caveWeapons.size()))
             .append(" arrow(s)");
+        view.displayUserMessage(arrowString.toString());
         return true;
       }
 
@@ -271,8 +313,10 @@ public class ControllerGUI {
       d.resetSmell();
 
       if (d.isMajorSmell(inputPoint)) {
+        view.displayUserMessage("There is a super bad smell nearby!");
         out.append("\nThere is a super bad smell nearby!");
       } else if (d.isMinorSmell(inputPoint)) {
+        view.displayUserMessage("There is a bad smell nearby!");
         out.append("\nThere is a bad smell nearby!");
       }
     } catch (IOException ioe) {
@@ -433,7 +477,8 @@ public class ControllerGUI {
       checkMonsters(d, inputPlayer);
       if (d.gameFinished(inputPlayer.getPlayerLocation()) && inputPlayer.isAlive()) {
         out.append("\nCongrats! You just finished the maze!");
-        view.displayUserMessage("\nCongrats! You just finished the maze!");
+        view.displayUserMessage("\nCongrats! You just finished the maze! Click on the top right " +
+            "to start a new session!");
       } else if (d.gameFinished(inputPlayer.getPlayerLocation()) && !inputPlayer.isAlive()) {
         out.append("\nSo close yet so far. You reached the end, but you are dead!");
         view.displayUserMessage("\nSo close yet so far. You reached the end, but you are dead!");
@@ -511,10 +556,48 @@ public class ControllerGUI {
   }
 
 
+  private void saveGameState(Dungeon d) {
+    try {
+      FileOutputStream fileOut =
+          new FileOutputStream("src/dungeon.ser");
+      ObjectOutputStream out = new ObjectOutputStream(fileOut);
+      out.writeObject(d);
+      out.close();
+      fileOut.close();
+    }
+
+    catch (IOException i) {
+      i.printStackTrace();
+    }
+  }
+
+  private Dungeon restoreGameState() {
+    Dungeon e = null;
+    try {
+      FileInputStream fileIn = new FileInputStream("src/dungeon.ser");
+      ObjectInputStream in = new ObjectInputStream(fileIn);
+      e = (Dungeon) in.readObject();
+      in.close();
+      fileIn.close();
+    }
+
+    catch (IOException i) {
+      i.printStackTrace();
+
+    }
+
+    catch (ClassNotFoundException c) {
+      c.printStackTrace();
+
+    }
+    return e;
+  }
 
   public void playGame(Dungeon d, Player player, ViewInterface view) {
 
-    visited = new HashMap<>();
+    this.saveGameState(d);
+
+    this.visited = new HashMap<>();
 
     if (d == null || player == null) {
       throw new IllegalArgumentException("Dungeon/Player cannot be null!");
@@ -522,13 +605,12 @@ public class ControllerGUI {
 
 //    view.generateHUD(d, rows, cols, new HashMap<>(), (PlayerImpl) player);
 //    Scanner scan = new Scanner(in);
-
+    visited.put(player.getPlayerLocation().toString(), true);
     view.generateHUD(d, rows,
         cols, visited, (PlayerImpl) player);
 
 
     while (player.isAlive() && !d.gameFinished(player.getPlayerLocation())) {
-      visited.put(player.getPlayerLocation(), true);
 
 //      playerStats(player);
 
@@ -571,7 +653,7 @@ public class ControllerGUI {
         try {
           userMotive = view.getUserIntention();
           // Sleep till we get our game move
-          Thread.sleep(200);
+          Thread.sleep(150);
         }
 
         catch (InterruptedException e) {
@@ -588,7 +670,7 @@ public class ControllerGUI {
             userMoveMade = parseMove(player, getUserDirection(view));
             view.resetUserDirection();
             // Sleep till we get our game move
-            Thread.sleep(200);
+            Thread.sleep(150);
           }
 
           catch (InterruptedException e) {
@@ -617,35 +699,88 @@ public class ControllerGUI {
       else if (userMotive.equals("S")) {
         ArrayList<String> shootingParams = (ArrayList<String>) view.getUserShootingParameters();
 
+        try {
+          String userDirection = shootingParams.get(0);
+          int shootingDistance = Integer.parseInt(shootingParams.get(1));
 
-        String userDirection = shootingParams.get(0);
-        int shootingDistance = Integer.parseInt(shootingParams.get(1));
+          if (verifyDirection(userDirection)) {
+            shoot(d, player, shootingDistance, userDirection);
+          }
 
-        if (verifyDirection(userDirection)) {
-          shoot(d, player, shootingDistance, userDirection);
+          else {
+            view.displayUserMessage("Illegal shoot direction!");
+          }
+
+          view.resetUserShoot();
         }
 
-        else {
-          view.displayUserMessage("Illegal shoot direction!");
+        catch (NumberFormatException e) {
+          view.displayUserMessage("Your shot seems off.");
+          view.resetUserShoot();
+          continue;
         }
 
-        view.resetUserShoot();
+
 
       }
-//
-//      } else if (userMotive.equals("Q") || userMotive.equals("q")) {
-//        quitGame();
-//        return;
-//      } else {
-//        invalidInputMessage();
-//      }
-//      view.closeProgram();
+
+      else if (userMotive.equals("Reuse Game")) {
+        this.visited = new HashMap<>();
+        d = this.restoreGameState();
+        player = new PlayerImpl(d.getStartPoint(), d);
+        visited.put(player.getPlayerLocation().toString(), true);
+        view.refreshHUD(d, rows,
+            cols, visited, (PlayerImpl) player);
+
+        view.resetUserChangeGame();
+        continue;
+      }
+
+      else if (userMotive.equals("New Game")) {
+//        view.closeProgram();
+
+//        view = new ViewImpl();
+        ArrayList<String> userParams = (ArrayList<String>) view.startNewGame();
+        boolean wrapped = Boolean.parseBoolean(userParams.get(5));
+        rows = Integer.parseInt(userParams.get(0));
+        cols = Integer.parseInt(userParams.get(1));
+        degree = Integer.parseInt(userParams.get(2));
+        numberOfMonsters =  Integer.parseInt(userParams.get(3));
+        treasurePercentage =  Integer.parseInt(userParams.get(4));
+
+        d = this.buildDungeon(wrapped, rows, cols, degree,
+            treasurePercentage, numberOfMonsters);
+
+        player = new PlayerImpl(d.getStartPoint(), d);
+        visited = new HashMap<>();
+        visited.put(player.getPlayerLocation().toString(), true);
+        this.saveGameState(d);
+        view.resetUserChangeGame();
+      }
+
+      else if (userMotive.equals("Restart Game")) {
+
+
+        d = this.buildDungeon(wrapped, rows, cols, degree,
+            treasurePercentage, numberOfMonsters);
+
+        player = new PlayerImpl(d.getStartPoint(), d);
+        visited = new HashMap<>();
+        visited.put(player.getPlayerLocation().toString(), true);
+        this.saveGameState(d);
+        view.resetUserChangeGame();
+
+      }
+
+
+      visited.put(player.getPlayerLocation().toString(), true);
+
       view.refreshHUD(d, rows,
           cols, visited, (PlayerImpl) player);
+
     }
 
     endgame(d, player);
-//    scan.close();
 
   }
 

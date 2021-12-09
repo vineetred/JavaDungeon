@@ -1,12 +1,14 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * Represent a 2d point with the given coordinates that are the row and column of the cave. It
  * implements the interface Point2D to allow easy expansion down the line without it having to
  * require any refactoring in the dependent code classes.
  *
  */
-public class Point2DImpl implements Point2D {
+public class Point2DImpl implements Point2D, Serializable {
   private final int row;
   private final int column;
 

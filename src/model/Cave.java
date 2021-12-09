@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-class Cave {
+class Cave implements Serializable {
   private final Point2D location;
   private int index;
   private int set;

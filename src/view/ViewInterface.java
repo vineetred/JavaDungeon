@@ -13,10 +13,10 @@ import java.util.Map;
 public interface ViewInterface {
 
   void generateHUD(Dungeon inputDungeon, int inputRows, int inputCols,
-                   Map<Point2D, Boolean> visited,
+                   Map<String, Boolean> visited,
                    PlayerImpl inputPlayer);
 
-  void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols, Map<Point2D, Boolean> visited,
+  void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols, Map<String, Boolean> visited,
                   PlayerImpl inputPlayer);
 
   List<String> startNewGame();
@@ -40,5 +40,9 @@ public interface ViewInterface {
   void displayUserMessage(String inputString);
 
   void setListeners(KeyListener keys);
+
+  String getUserChangeGame();
+
+  void resetUserChangeGame();
 
 }

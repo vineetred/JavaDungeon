@@ -1,6 +1,8 @@
 package model;
 
-class Otyugh implements Monster {
+import java.io.Serializable;
+
+class Otyugh implements Monster, Serializable {
 
   // TODO: Make sure a cave can hold this object
   private int hits;

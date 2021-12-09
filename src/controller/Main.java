@@ -30,7 +30,7 @@ public class Main {
     int treasurePercentage =  Integer.parseInt(userParams.get(4));
 
     ControllerGUI ctrl = new ControllerGUI(input, output, view, rows, cols, degree,
-        numberOfMonsters, treasurePercentage, new HashMap<>());
+        numberOfMonsters, treasurePercentage, new HashMap<>(), wrapped);
 
 
     Dungeon d = ctrl.buildDungeon(wrapped, rows, cols, degree,

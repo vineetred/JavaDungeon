@@ -1,15 +1,17 @@
 package model;
 
+import java.io.Serializable;
+
 /** An implementation of the treasure class
  * along with an enum class that is used throughout
  * the model and the driver.
  */
-public class TreasureImpl {
+public class TreasureImpl implements Serializable {
   enum TreasureType {
     RUBY, DIAMOND, SAPPHIRE
   }
 
-  static class Sapphire implements Treasure {
+  static class Sapphire implements Treasure, Serializable {
 
     @Override
     public String toString() {
@@ -17,7 +19,7 @@ public class TreasureImpl {
     }
   }
 
-  static class Diamond implements Treasure {
+  static class Diamond implements Treasure, Serializable {
 
     @Override
     public String toString() {
@@ -25,7 +27,7 @@ public class TreasureImpl {
     }
   }
 
-  static class Ruby implements Treasure {
+  static class Ruby implements Treasure, Serializable {
 
     @Override
     public String toString() {

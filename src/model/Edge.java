@@ -1,6 +1,8 @@
 package model;
 
-class Edge {
+import java.io.Serializable;
+
+class Edge implements Serializable {
   private final Cave cave1;
   private final Cave cave2;
 
