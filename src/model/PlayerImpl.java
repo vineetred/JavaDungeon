@@ -129,6 +129,7 @@ public class PlayerImpl implements Player {
   @Override
   public void fightMonster(Monster monster) {
 
+
     if (monster == null) {
       throw new IllegalArgumentException("Null input monster object given.");
     }
@@ -137,22 +138,32 @@ public class PlayerImpl implements Player {
       this.alive = true;
     }
 
-    // Check if monster is injured
-    else if (monster.getHits() == 1) {
-      // If so, we take a chance
-      if (this.getFiftyFiftyChance()) {
-        monster.takeHit();
-      }
-      // Dead player
-      else {
-        this.alive = false;
-      }
+    else if (monster.monsterType() == 0) {
+      // Check if monster is injured
+      if (monster.getHits() == 1) {
+          // If so, we take a chance
+          if (this.getFiftyFiftyChance()) {
+            monster.takeHit();
+          }
+          // Dead player
+          else {
+            this.alive = false;
+          }
+        }
+
+        // Dead player
+        else {
+          this.alive = false;
+        }
     }
 
-    // Dead player
-    else {
-      this.alive = false;
+    else if (monster.monsterType() == 1) {
+      this.playerTreasure = new ArrayList<>();
     }
+
+
+
+
   }
 
 }

@@ -18,4 +18,8 @@ public interface Monster {
    * a dead monster? Exactly.
    */
   void takeHit();
+
+  /** Returns the integer value that represents the monster type.
+   */
+  int monsterType();
 }

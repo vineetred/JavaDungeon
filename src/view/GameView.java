@@ -538,13 +538,27 @@ class GameView extends JFrame {
               if (cavePossibleMonsters.size() > 0) {
                 // Only alive monsters
                 if (cavePossibleMonsters.get(0).getHits() < 2) {
-                  ImageIcon monster = new ImageIcon(Constants.MONSTER_IMAGE_FILEPATH);
-                  JLabel monsterLabel = new JLabel();
-                  monsterLabel.setIcon(monster);
-                  monsterLabel.setBounds(Constants.OFFSET * (col + 1) + 20,
-                      Constants.OFFSET * (row + 1),
-                      45, 45);
-                  mazePanel.add(monsterLabel);
+
+                  if (cavePossibleMonsters.get(0).monsterType() == 0) {
+                    ImageIcon monster = new ImageIcon(Constants.MONSTER_IMAGE_FILEPATH);
+                    JLabel monsterLabel = new JLabel();
+                    monsterLabel.setIcon(monster);
+                    monsterLabel.setBounds(Constants.OFFSET * (col + 1) + 20,
+                        Constants.OFFSET * (row + 1),
+                        45, 45);
+                    mazePanel.add(monsterLabel);
+                  }
+
+                  else if (cavePossibleMonsters.get(0).monsterType() == 1) {
+                    ImageIcon monster = new ImageIcon(Constants.THIEF_IMAGE_FILEPATH);
+                    JLabel monsterLabel = new JLabel();
+                    monsterLabel.setIcon(monster);
+                    monsterLabel.setBounds(Constants.OFFSET * (col + 1) + 20,
+                        Constants.OFFSET * (row + 1),
+                        45, 45);
+                    mazePanel.add(monsterLabel);
+                  }
+
                 }
               }
             }

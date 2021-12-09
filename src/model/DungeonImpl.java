@@ -251,7 +251,7 @@ public class DungeonImpl implements Dungeon, Serializable {
     }
 
     if (numberOfMonsters <= 0) {
-      throw new IllegalArgumentException("You must have at least one Otyugh!");
+      throw new IllegalArgumentException("You must have at least one Otyugh/Thief!");
     }
 
     if (interconnect < 0) {
@@ -535,9 +535,19 @@ public class DungeonImpl implements Dungeon, Serializable {
         int randomCaveIndex = caves.get(rand.getRandomNumber());
         Cave temporaryCave = findCaveByIndex(randomCaveIndex);
         if (randomCaveIndex != this.startPoint && randomCaveIndex != this.endPoint) {
-          temporaryCave.addMonster(new Otyugh());
-          numberOfCavesWithMonsters--;
+
+          if (numberOfCavesWithMonsters % 2 == 0) {
+            temporaryCave.addMonster(new Otyugh());
+            numberOfCavesWithMonsters--;
+          }
+
+          else {
+            temporaryCave.addMonster(new Thief());
+            numberOfCavesWithMonsters--;
+          }
+
         }
+
       }
     }
 

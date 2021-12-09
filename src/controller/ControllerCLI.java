@@ -239,6 +239,18 @@ public class ControllerCLI implements Controller {
       Monster monster = monsterList.get(0);
       // We fight the monster!
       inputPlayer.fightMonster(monster);
+
+      if (monsterList.get(0).monsterType() == 1) {
+
+        try {
+          out.append("Oops, all your treasure just got stolen by the " +
+              "thief :(.");
+          }
+        catch (IOException ioe) {
+      throw new IllegalStateException("Append failed", ioe);
+    }
+
+      }
     }
 
   }

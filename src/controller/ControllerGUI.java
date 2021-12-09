@@ -333,6 +333,11 @@ public class ControllerGUI implements Controller {
       Monster monster = monsterList.get(0);
       // We fight the monster!
       inputPlayer.fightMonster(monster);
+
+      if (monsterList.get(0).monsterType() == 1) {
+        view.displayUserMessage("Oops, all your treasure just got stolen by the " +
+            "thief :(.");
+      }
     }
 
   }

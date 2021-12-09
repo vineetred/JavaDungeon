@@ -2,12 +2,12 @@ package model;
 
 import java.io.Serializable;
 
-class Otyugh implements Monster, Serializable {
+public class Thief implements Monster, Serializable {
 
   private int hits;
 
 
-  public Otyugh() {
+  public Thief() {
     this.hits = 0;
   }
 
@@ -28,6 +28,6 @@ class Otyugh implements Monster, Serializable {
 
   @Override
   public int monsterType() {
-    return 0;
+    return 1;
   }
 }
