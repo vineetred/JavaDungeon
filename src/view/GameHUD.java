@@ -161,6 +161,8 @@ class GameHUD extends JFrame {
             directionTextField.setText("E");
           }
 
+//          userShootPrompt = false;
+
         }
       }
 

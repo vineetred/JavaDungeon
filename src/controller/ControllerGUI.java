@@ -145,6 +145,7 @@ public class ControllerGUI {
         return false;
       }
 
+
       if (Objects.equals(inputDirection, "N")) {
         try {
           inputPlayer.moveNorth();
@@ -640,20 +641,18 @@ public class ControllerGUI {
         break;
       }
 
-//      getPossibleMoves(d, player);
-
-//      String userMotive = getUserMotive(scan);
 
       // TODO: Change userMotive to get shit from the view
-//      String userMotive = "M";
 
       String userMotive = view.getUserIntention();
+      System.out.println(userMotive + "wasdasdasdas");
+
 
       while (Objects.equals(userMotive, "")) {
         try {
           userMotive = view.getUserIntention();
           // Sleep till we get our game move
-          Thread.sleep(150);
+          Thread.sleep(200);
         }
 
         catch (InterruptedException e) {
@@ -663,6 +662,7 @@ public class ControllerGUI {
 
 
       if (userMotive.equals("M")) {
+
         boolean userMoveMade = false;
 
         while (!userMoveMade) {
@@ -670,7 +670,7 @@ public class ControllerGUI {
             userMoveMade = parseMove(player, getUserDirection(view));
             view.resetUserDirection();
             // Sleep till we get our game move
-            Thread.sleep(150);
+            Thread.sleep(200);
           }
 
           catch (InterruptedException e) {
