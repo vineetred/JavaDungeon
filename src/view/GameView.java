@@ -543,7 +543,7 @@ class GameView extends JFrame {
                   monsterLabel.setIcon(monster);
                   monsterLabel.setBounds(Constants.OFFSET * (col + 1) + 20,
                       Constants.OFFSET * (row + 1),
-                      25, 25);
+                      45, 45);
                   mazePanel.add(monsterLabel);
                 }
               }
