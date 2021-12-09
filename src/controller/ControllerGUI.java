@@ -548,7 +548,7 @@ public class ControllerGUI implements Controller {
   private void saveGameState(Dungeon d) {
     try {
       FileOutputStream fileOut =
-          new FileOutputStream("src/dungeon.ser");
+          new FileOutputStream("dungeon.ser");
       ObjectOutputStream out = new ObjectOutputStream(fileOut);
       out.writeObject(d);
       out.close();
@@ -563,7 +563,7 @@ public class ControllerGUI implements Controller {
   private Dungeon restoreGameState() {
     Dungeon e = null;
     try {
-      FileInputStream fileIn = new FileInputStream("src/dungeon.ser");
+      FileInputStream fileIn = new FileInputStream("dungeon.ser");
       ObjectInputStream in = new ObjectInputStream(fileIn);
       e = (Dungeon) in.readObject();
       in.close();

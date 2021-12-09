@@ -437,7 +437,8 @@ class GameView extends JFrame {
       for (int col = 0; col < inputCols; col++) {
 
         if (row == playerLocation.getRow() && col == playerLocation.getColumn()) {
-          ImageIcon playerImageIcon = new ImageIcon(Constants.PLAYER_IMAGE_FILEPATH);
+          ImageIcon playerImageIcon =
+              new ImageIcon(ClassLoader.getSystemResource(Constants.PLAYER_IMAGE_FILEPATH));
           JLabel playerLocationLabel = new JLabel();
           playerLocationLabel.setIcon(playerImageIcon);
           playerLocationLabel.setBounds(Constants.OFFSET * (col + 1),
@@ -471,13 +472,15 @@ class GameView extends JFrame {
         String flattenedCardinalDirections = String.join("", outputString);
 
         JLabel label = new JLabel();
-        ImageIcon image = new ImageIcon(Constants.FOG_TILE_FILEPATH);
+        ImageIcon image =
+            new ImageIcon(ClassLoader.getSystemResource(Constants.FOG_TILE_FILEPATH));
 
         if (visited.containsKey(new Point2DImpl(row, col).toString())) {
           if (visited.get(new Point2DImpl(row, col).toString())) {
             // Adding Bad smell
             if (dungeonModel.isMinorSmell(new Point2DImpl(row, col))) {
-              ImageIcon badSmell = new ImageIcon(Constants.BAD_SMELL_FILEPATH);
+              ImageIcon badSmell =
+                  new ImageIcon(ClassLoader.getSystemResource(Constants.BAD_SMELL_FILEPATH));
               JLabel badSmellLabel = new JLabel();
               badSmellLabel.setIcon(badSmell);
               badSmellLabel.setBounds(Constants.OFFSET * (col + 1),
@@ -489,7 +492,8 @@ class GameView extends JFrame {
             // Adding Major bad smell
             else if (dungeonModel.isMajorSmell(new Point2DImpl(row, col))) {
 
-              ImageIcon superBadSmell = new ImageIcon(Constants.SUPER_BAD_SMELL_FILEPATH);
+              ImageIcon superBadSmell =
+                  new ImageIcon(ClassLoader.getSystemResource(Constants.SUPER_BAD_SMELL_FILEPATH));
               JLabel superBadSmellLabel = new JLabel();
               superBadSmellLabel.setIcon(superBadSmell);
               superBadSmellLabel.setBounds(Constants.OFFSET * (col + 1),
@@ -497,14 +501,17 @@ class GameView extends JFrame {
               mazePanel.add(superBadSmellLabel);
             }
 
-            image = new ImageIcon(Constants.DIRECTION_IMAGE_FILEPATH.get(flattenedCardinalDirections));
+            image =
+                new ImageIcon(ClassLoader.getSystemResource(
+                    Constants.DIRECTION_IMAGE_FILEPATH.get(flattenedCardinalDirections)));
             // Adding treasure
             cavePossibleTreasure = (ArrayList<Treasure>)
                 dungeonModel.peekCaveTreasure(new Point2DImpl(row, col));
 
             if (cavePossibleTreasure != null) {
               if (cavePossibleTreasure.size() > 0) {
-                ImageIcon diamond = new ImageIcon(Constants.DIAMOND_IMAGE_FILEPATH);
+                ImageIcon diamond =
+                    new ImageIcon(ClassLoader.getSystemResource(Constants.DIAMOND_IMAGE_FILEPATH));
                 JLabel treasureLabel = new JLabel();
                 treasureLabel.setIcon(diamond);
                 treasureLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
@@ -519,7 +526,8 @@ class GameView extends JFrame {
 
             if (cavePossibleArrows != null) {
               if (cavePossibleArrows.size() > 0) {
-                ImageIcon arrow = new ImageIcon(Constants.ARROW_IMAGE_FILEPATH);
+                ImageIcon arrow =
+                    new ImageIcon(ClassLoader.getSystemResource(Constants.ARROW_IMAGE_FILEPATH));
                 JLabel arrowLabel = new JLabel();
                 arrowLabel.setIcon(arrow);
                 arrowLabel.setBounds(Constants.OFFSET * (col + 1) + 10,
@@ -540,7 +548,8 @@ class GameView extends JFrame {
                 if (cavePossibleMonsters.get(0).getHits() < 2) {
 
                   if (cavePossibleMonsters.get(0).monsterType() == 0) {
-                    ImageIcon monster = new ImageIcon(Constants.MONSTER_IMAGE_FILEPATH);
+                    ImageIcon monster =
+                        new ImageIcon(ClassLoader.getSystemResource(Constants.MONSTER_IMAGE_FILEPATH));
                     JLabel monsterLabel = new JLabel();
                     monsterLabel.setIcon(monster);
                     monsterLabel.setBounds(Constants.OFFSET * (col + 1) + 20,
@@ -550,7 +559,8 @@ class GameView extends JFrame {
                   }
 
                   else if (cavePossibleMonsters.get(0).monsterType() == 1) {
-                    ImageIcon monster = new ImageIcon(Constants.THIEF_IMAGE_FILEPATH);
+                    ImageIcon monster =
+                        new ImageIcon(ClassLoader.getSystemResource(Constants.THIEF_IMAGE_FILEPATH));
                     JLabel monsterLabel = new JLabel();
                     monsterLabel.setIcon(monster);
                     monsterLabel.setBounds(Constants.OFFSET * (col + 1) + 20,
@@ -616,15 +626,18 @@ class GameView extends JFrame {
       }
     }
 
-    ImageIcon rubyImage = new ImageIcon(Constants.RUBY_IMAGE_FILEPATH);
+    ImageIcon rubyImage =
+        new ImageIcon(ClassLoader.getSystemResource(Constants.RUBY_IMAGE_FILEPATH));
     JLabel rubyLabel = new JLabel();
     rubyLabel.setIcon(rubyImage);
 
-    ImageIcon diamondImage = new ImageIcon(Constants.DIAMOND_IMAGE_FILEPATH);
+    ImageIcon diamondImage =
+        new ImageIcon(ClassLoader.getSystemResource(Constants.DIAMOND_IMAGE_FILEPATH));
     JLabel diamondLabel = new JLabel();
     diamondLabel.setIcon(diamondImage);
 
-    ImageIcon sapphireImage = new ImageIcon(Constants.EMERALD_IMAGE_FILEPATH);
+    ImageIcon sapphireImage =
+        new ImageIcon(ClassLoader.getSystemResource(Constants.EMERALD_IMAGE_FILEPATH));
     JLabel sapphireLabel = new JLabel();
     sapphireLabel.setIcon(sapphireImage);
 
