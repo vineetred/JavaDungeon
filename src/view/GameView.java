@@ -2,36 +2,45 @@ package view;
 
 import model.Dungeon;
 import model.Monster;
-import model.Player;
+
 import model.PlayerImpl;
-import model.Point2D;
+
 import model.Point2DImpl;
 
 import model.Treasure;
 import model.Weapon;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.security.Key;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
-class GameHUD extends JFrame {
+class GameView extends JFrame {
 
   JMenu menu;
   JFrame mainFrame;
@@ -46,22 +55,22 @@ class GameHUD extends JFrame {
   private boolean userShoot;
   private boolean userShootPrompt;
 
-  JTextField directionTextField = new JTextField(2);
+  JTextField directionTextField;
 
   public static JLabel userTreasure;
   public static JLabel userArrows;
   public static JLabel userAlive;
-  JLabel directionLabel = new JLabel("Direction (N/S/E/W): ");
+  JLabel directionLabel;
 
   JPanel mainPanel;
 
-  JButton movePanelButton = new JButton("Move");
-  JButton vitalsPanelButton = new JButton("Vitals");
-  JButton mazePanelButton = new JButton("Maze");
-  JButton shootPanelButton = new JButton("Shoot");
-  JButton fireTriggerButton = new JButton("Fire!");
-  JButton pickUpButton = new JButton("Pick");
-  JButton anotherMazePanelButton = new JButton("Maze");
+  JButton movePanelButton;
+  JButton vitalsPanelButton;
+  JButton mazePanelButton;
+  JButton shootPanelButton;
+  JButton fireTriggerButton;
+  JButton pickUpButton;
+  JButton anotherMazePanelButton;
 
   ArrayList<String> shootingParameters;
 
@@ -69,11 +78,21 @@ class GameHUD extends JFrame {
 
 
 
-  protected GameHUD(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
-                    Point2DImpl playerLocation, PlayerImpl inputPlayer,
-                    Map<String, Boolean> visited) {
-    mazePanel = new JPanel(null);
+  protected GameView(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
+                     Point2DImpl playerLocation, PlayerImpl inputPlayer,
+                     Map<String, Boolean> visited) {
 
+    mazePanel = new JPanel(null);
+    userChoice = "New Game";
+    directionTextField  = new JTextField(2);
+    directionLabel = new JLabel("Direction (N/S/E/W): ");
+    movePanelButton = new JButton("Move");
+    vitalsPanelButton = new JButton("Vitals");
+    mazePanelButton = new JButton("Maze");
+    shootPanelButton = new JButton("Shoot");
+    fireTriggerButton = new JButton("Fire!");
+    pickUpButton = new JButton("Pick");
+    anotherMazePanelButton = new JButton("Maze");
     playerStatsCard = new JPanel();
 
     initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation, inputPlayer, visited);
@@ -86,7 +105,7 @@ class GameHUD extends JFrame {
 
 
     if (mainFrame != null) {
-      mainFrame.setVisible(false); //you can't see me!
+      mainFrame.setVisible(false);
       mainFrame.dispose();
       mainFrame.revalidate();
     }
@@ -102,8 +121,6 @@ class GameHUD extends JFrame {
 
       @Override
       public synchronized void keyPressed(KeyEvent e) {
-
-
 
         if (e.getKeyCode() == KeyEvent.VK_LEFT) left = true;
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) right = true;
@@ -121,7 +138,6 @@ class GameHUD extends JFrame {
         if (letterS) {
           shootPanelButton.doClick();
           userShootPrompt = true;
-//          userShoot = true;
         }
 
         if (letterM) {
@@ -145,7 +161,6 @@ class GameHUD extends JFrame {
             userMove = true;
           }
 
-
         }
 
         if (userShootPrompt) {
@@ -165,11 +180,8 @@ class GameHUD extends JFrame {
             directionTextField.setText("E");
           }
 
-//          userShootPrompt = false;
-
         }
       }
-
 
       @Override
       public synchronized void keyReleased(KeyEvent e) {
@@ -181,14 +193,9 @@ class GameHUD extends JFrame {
         if (e.getKeyCode() == KeyEvent.VK_P) letterP = false;
         if (e.getKeyCode() == KeyEvent.VK_S) letterS = false;
       }
-
     });
-
-
     mainFrame.setFocusable(true);
     mainFrame.setVisible(true);
-
-
 
   }
 
@@ -223,17 +230,11 @@ class GameHUD extends JFrame {
     exit.addActionListener(new exitMenu());
     menu.add(exit);
 
-    reuseButton.addActionListener(e -> {
-      this.userChoice = "Reuse Game";
-    });
+    reuseButton.addActionListener(e -> this.userChoice = "Reuse Game");
 
-    newGameButton.addActionListener(e -> {
-      this.userChoice = "New Game";
-    });
+    newGameButton.addActionListener(e -> this.userChoice = "New Game");
 
-    restartButton.addActionListener(e -> {
-      this.userChoice = "Restart Game";
-    });
+    restartButton.addActionListener(e -> this.userChoice = "Restart Game");
 
 
 
@@ -242,19 +243,17 @@ class GameHUD extends JFrame {
   private JFrame initializeGameHUD(Dungeon inputDungeon, int inputRows, int inputCols,
                                    String inputMessage, Point2DImpl playerLocation,
                                    PlayerImpl inputPlayer, Map<String, Boolean> visited) {
+
     JFrame mainFrameBuff = new JFrame("Dungeon HUD");
     CardLayout cardLayoutBuff = new CardLayout(20, 20);
-
     mainPanel = new JPanel(cardLayoutBuff);
+
     initializePlayerStats(inputMessage, inputPlayer.getPlayerWeapons().size(),
         inputPlayer.getPlayerTreasure().size(), inputPlayer.isAlive(), inputPlayer);
-    JPanel card2 = initializeDPad();
-    // TODO: Visited map
-//    JPanel card3 = generateDungeonGraphics(inputDungeon, inputRows, inputCols,
-//        null, playerLocation);
+    JPanel dPadCard = initializeDPad();
     generateDungeonGraphics(inputDungeon, inputRows, inputCols,
         visited, playerLocation);
-    JPanel card4 = initializePlayerShootingPrompt();
+    JPanel shootingPromptCard = initializePlayerShootingPrompt();
 
     JScrollPane scrollPane = new JScrollPane(mazePanel);
     mazePanel.setPreferredSize(new Dimension(new Dimension(Constants.OFFSET * (inputCols + 4),
@@ -270,10 +269,9 @@ class GameHUD extends JFrame {
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
     mainPanel.add(playerStatsCard, "Player Vitals");
-    mainPanel.add(card2, "DPad");
+    mainPanel.add(dPadCard, "DPad");
     mainPanel.add(scrollPane, "Maze");
-    mainPanel.add(card4, "Shoot");
-
+    mainPanel.add(shootingPromptCard, "Shoot");
 
     movePanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "DPad"));
     vitalsPanelButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Player Vitals"));
@@ -283,16 +281,12 @@ class GameHUD extends JFrame {
     pickUpButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Maze"));
     fireTriggerButton.addActionListener(e -> cardLayoutBuff.show(mainPanel, "Player Vitals"));
 
-
     mainFrameBuff.add(mainPanel);
-
     cardLayoutBuff.show(mainPanel, "Maze");
     mainFrameBuff.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//    mainFrameBuff.setVisible(true);
     mainFrameBuff.pack();
 
     return mainFrameBuff;
-
   }
 
   private JPanel initializeDPad() {
@@ -311,23 +305,14 @@ class GameHUD extends JFrame {
     card.add(westArrowButton);
     card.add(mazePanelButton);
 
-    northArrowButton.addActionListener(e -> {
-      this.userInputDirection = "N";
-
-    });
+    northArrowButton.addActionListener(e -> this.userInputDirection = "N");
 
 
-    southArrowButton.addActionListener(e -> {
-      this.userInputDirection = "S";
-    });
+    southArrowButton.addActionListener(e -> this.userInputDirection = "S");
 
-    eastArrowButton.addActionListener(e -> {
-      this.userInputDirection = "E";
-    });
+    eastArrowButton.addActionListener(e -> this.userInputDirection = "E");
 
-    westArrowButton.addActionListener(e -> {
-      this.userInputDirection = "W";
-    });
+    westArrowButton.addActionListener(e -> this.userInputDirection = "W");
 
     return card;
   }
@@ -338,12 +323,9 @@ class GameHUD extends JFrame {
     playerStatsCard.setVisible(false);
     playerStatsCard.removeAll();
 
-
-
     // userArrows
     userArrows = new JLabel("Arrows: " + numArrows, SwingConstants.CENTER);
     playerStatsCard.add(userArrows);
-
 
     // userTreasure
     userTreasure = new JLabel("Treasure:");
@@ -352,7 +334,6 @@ class GameHUD extends JFrame {
     int rubies = 0;
     int diamonds = 0;
     int sapphires = 0;
-
 
     if (inputPlayer.getPlayerTreasure() != null) {
       for (Treasure treasure : inputPlayer.getPlayerTreasure()) {
@@ -370,7 +351,6 @@ class GameHUD extends JFrame {
       }
     }
 
-
     JLabel rubiesInRoom = new JLabel("Rubies: " + rubies, SwingConstants.CENTER);
     JLabel diamondsInRoom = new JLabel("Diamonds: " + diamonds, SwingConstants.CENTER);
     JLabel sapphiresInRoom = new JLabel("Sapphires: " + sapphires, SwingConstants.CENTER);
@@ -382,8 +362,6 @@ class GameHUD extends JFrame {
     userTreasure = new JLabel("Treasure:");
     userTreasure.setForeground(Color.RED);
 
-//    playerStatsCard.add(userTreasure);
-
     // userAlive
     userAlive = new JLabel("Alive: " + playerAlive);
     playerStatsCard.add(userAlive);
@@ -393,8 +371,7 @@ class GameHUD extends JFrame {
     playerStatsCard.add(inputMessageLabel);
 
     playerStatsCard.add(anotherMazePanelButton);
-//    playerStatsCard.revalidate();
-//    playerStatsCard.setVisible(true);
+
 
   }
 
@@ -446,7 +423,6 @@ class GameHUD extends JFrame {
   protected void generateDungeonGraphics(Dungeon dungeonModel, int inputRows,
                                          int inputCols,
                                        Map<String, Boolean> visited, Point2DImpl playerLocation) {
-//    JPanel mazePanel = new JPanel(null);
     mazePanel.setVisible(false);
     mazePanel.removeAll();
     ArrayList<String> cavePossibleDirection;
@@ -585,17 +561,6 @@ class GameHUD extends JFrame {
       }
     }
 
-
-
-//    vitalsPanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
-//        Constants.OFFSET * (inputRows + 1), 100, 25);
-//    shootPanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
-//        Constants.OFFSET * (inputRows + 2), 100, 25);
-//    pickUpButton.setBounds(Constants.OFFSET * (inputCols + 1),
-//        Constants.OFFSET * (inputRows + 3), 100, 25);
-//    movePanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
-//        Constants.OFFSET * (inputRows + 4), 100, 25);
-
     vitalsPanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
         Constants.OFFSET * (inputRows) + 30, 100, 25);
     shootPanelButton.setBounds(Constants.OFFSET * (inputCols + 1),
@@ -637,11 +602,24 @@ class GameHUD extends JFrame {
       }
     }
 
+    ImageIcon rubyImage = new ImageIcon(Constants.RUBY_IMAGE_FILEPATH);
+    JLabel rubyLabel = new JLabel();
+    rubyLabel.setIcon(rubyImage);
+
+    ImageIcon diamondImage = new ImageIcon(Constants.DIAMOND_IMAGE_FILEPATH);
+    JLabel diamondLabel = new JLabel();
+    diamondLabel.setIcon(diamondImage);
+
+    ImageIcon sapphireImage = new ImageIcon(Constants.EMERALD_IMAGE_FILEPATH);
+    JLabel sapphireLabel = new JLabel();
+    sapphireLabel.setIcon(sapphireImage);
+
+
 
     JLabel treasureInRoom = new JLabel("In Room: ", SwingConstants.CENTER);
-    JLabel rubiesInRoom = new JLabel("Rubies: " + rubies, SwingConstants.CENTER);
-    JLabel diamondsInRoom = new JLabel("Diamonds: " + diamonds, SwingConstants.CENTER);
-    JLabel sapphiresInRoom = new JLabel("Sapphires: " + sapphires, SwingConstants.CENTER);
+    JLabel rubiesInRoom = new JLabel("" + rubies, SwingConstants.CENTER);
+    JLabel diamondsInRoom = new JLabel("" + diamonds, SwingConstants.CENTER);
+    JLabel sapphiresInRoom = new JLabel("" + sapphires, SwingConstants.CENTER);
 
     JLabel smellInRoom = new JLabel("Smell: None", SwingConstants.CENTER);
 
@@ -662,32 +640,35 @@ class GameHUD extends JFrame {
     arrowsInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
         Constants.OFFSET * (inputRows) + 160, 100, 25);
 
-    rubiesInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
-        Constants.OFFSET * (inputRows) + 180, 100, 25);
+    rubyLabel.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 180, 25, 25);
 
-    diamondsInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
+    rubiesInRoom.setBounds(Constants.OFFSET * (inputCols + 1) + 10,
+    Constants.OFFSET * (inputRows) + 180, 100, 25);
+
+    diamondLabel.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 200, 25, 25);
+
+    diamondsInRoom.setBounds(Constants.OFFSET * (inputCols + 1) + 10,
         Constants.OFFSET * (inputRows) + 200, 100, 25);
 
-    sapphiresInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
+    sapphireLabel.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 220, 25, 25);
+
+    sapphiresInRoom.setBounds(Constants.OFFSET * (inputCols + 1) + 10,
         Constants.OFFSET * (inputRows) + 220, 100, 25);
 
     smellInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
         Constants.OFFSET * (inputRows) + 240, 100, 25);
 
 
-    pickUpButton.addActionListener(e -> {
-      this.userPickUp = true;
-    });
+    pickUpButton.addActionListener(e -> this.userPickUp = true);
 
 
 
-    movePanelButton.addActionListener(e -> {
-      this.userMove = true;
-    });
+    movePanelButton.addActionListener(e -> this.userMove = true);
 
-    shootPanelButton.addActionListener(e -> {
-      this.userShootPrompt = true;
-    });
+    shootPanelButton.addActionListener(e -> this.userShootPrompt = true);
 
 
     mazePanel.add(vitalsPanelButton);
@@ -698,6 +679,9 @@ class GameHUD extends JFrame {
     mazePanel.add(treasureInRoom);
     mazePanel.add(arrowsInRoom);
     mazePanel.add(rubiesInRoom);
+    mazePanel.add(rubyLabel);
+    mazePanel.add(diamondLabel);
+    mazePanel.add(sapphireLabel);
     mazePanel.add(diamondsInRoom);
     mazePanel.add(sapphiresInRoom);
     mazePanel.add(smellInRoom);

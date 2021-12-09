@@ -1,13 +1,8 @@
 package view;
 
 import model.Dungeon;
-import model.Player;
 import model.PlayerImpl;
-import model.Point2D;
 
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +25,6 @@ public interface ViewInterface {
 
   List<String> getUserShootingParameters();
 
-  void closeProgram();
-
   void resetUserPickUp();
 
   void resetUserMove();
@@ -39,10 +32,6 @@ public interface ViewInterface {
   void resetUserShoot();
 
   void displayUserMessage(String inputString);
-
-  void setListeners(KeyListener keys, MouseListener clicks);
-
-  String getUserChangeGame();
 
   void resetUserChangeGame();
 

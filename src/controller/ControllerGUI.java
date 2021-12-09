@@ -31,7 +31,7 @@ import java.util.Scanner;
  * in the controller interface. These methods allow a user to communicate with the game; play
  * as it were. There are some helper methods that also aid in the playing of the game.
  */
-public class ControllerGUI {
+public class ControllerGUI implements Controller {
 
   private final Readable in;
   private final Appendable out;
@@ -72,7 +72,6 @@ public class ControllerGUI {
     this.treasurePercentage = treasurePercentage;
     this.visited = visited;
     this.wrapped = wrapped;
-//    this.dungeon = dungeon;
   }
 
   private void welcomeMessage() {
@@ -541,7 +540,7 @@ public class ControllerGUI {
     }
   }
 
-
+  @Override
   public Dungeon buildDungeon(boolean wraps, int rows, int columns, int interconnect,
                               int treasurePercentage, int numberOfMonsters) {
 
@@ -599,6 +598,7 @@ public class ControllerGUI {
     return e;
   }
 
+  @Override
   public void playGame(Dungeon d, Player player, ViewInterface view) {
 
     this.saveGameState(d);
@@ -609,29 +609,12 @@ public class ControllerGUI {
       throw new IllegalArgumentException("Dungeon/Player cannot be null!");
     }
 
-//    view.generateHUD(d, rows, cols, new HashMap<>(), (PlayerImpl) player);
-//    Scanner scan = new Scanner(in);
     visited.put(player.getPlayerLocation().toString(), true);
     view.generateHUD(d, rows,
         cols, visited, (PlayerImpl) player);
 
 
     while (player.isAlive() && !d.gameFinished(player.getPlayerLocation())) {
-
-//      playerStats(player);
-
-//      ViewInterface view = new ViewImpl();
-//      ArrayList<String> userParams = (ArrayList<String>) view.startNewGame();
-//      boolean wrapped = Boolean.parseBoolean(userParams.get(5));
-//      int rows = Integer.parseInt(userParams.get(0));
-//      int cols = Integer.parseInt(userParams.get(1));
-//      int degree = Integer.parseInt(userParams.get(2));
-//      int numberOfMonsters=  Integer.parseInt(userParams.get(3));
-//      int treasurePercentage =  Integer.parseInt(userParams.get(4));
-//
-//      Dungeon dungeon = new DungeonImpl(wrapped, rows, cols, degree, treasurePercentage,
-//          numberOfMonsters);
-
 
 
       boolean treasureInCave = checkTreasure(d, player.getPlayerLocation());
@@ -645,9 +628,6 @@ public class ControllerGUI {
       if (!player.isAlive()) {
         break;
       }
-
-
-      // TODO: Change userMotive to get shit from the view
 
       String userMotive = view.getUserIntention();
 
@@ -741,9 +721,7 @@ public class ControllerGUI {
       }
 
       else if (userMotive.equals("New Game")) {
-//        view.closeProgram();
 
-//        view = new ViewImpl();
         ArrayList<String> userParams = (ArrayList<String>) view.startNewGame();
         boolean wrapped = Boolean.parseBoolean(userParams.get(5));
         rows = Integer.parseInt(userParams.get(0));

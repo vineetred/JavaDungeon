@@ -7,7 +7,9 @@ import model.Monster;
 import model.Player;
 import model.Point2D;
 import model.Treasure;
+import view.ViewInterface;
 
+import javax.swing.text.View;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +20,7 @@ import java.util.Scanner;
  * in the controller interface. These methods allow a user to communicate with the game; play
  * as it were. There are some helper methods that also aid in the playing of the game.
  */
-public class ControllerImpl implements Controller {
+public class ControllerCLI implements Controller {
 
   private final Readable in;
   private final Appendable out;
@@ -30,7 +32,7 @@ public class ControllerImpl implements Controller {
    * @param in  the source to read from
    * @param out the target to print to
    */
-  public ControllerImpl(Readable in, Appendable out) {
+  public ControllerCLI(Readable in, Appendable out, ViewInterface view) {
 
     if (in == null || out == null) {
       throw new IllegalArgumentException("Readable and Appendable can't be null");
@@ -456,7 +458,7 @@ public class ControllerImpl implements Controller {
 
 
   @Override
-  public void playGame(Dungeon d, Player player) {
+  public void playGame(Dungeon d, Player player, ViewInterface view) {
 
 
     if (d == null || player == null) {

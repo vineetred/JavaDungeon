@@ -1,7 +1,7 @@
 package test;
 
 import controller.Controller;
-import controller.ControllerImpl;
+import controller.ControllerCLI;
 import model.Dungeon;
 import model.DungeonImpl;
 import model.Player;
@@ -27,10 +27,10 @@ public class ControllerTest {
     StringReader input = new StringReader("Q");
     StringBuilder output = new StringBuilder();
 
-    Controller ctrl = new ControllerImpl(input, output);
+    Controller ctrl = new ControllerCLI(input, output, null);
     Dungeon d = new DungeonImpl(false);
     Player player = new PlayerImpl(d.getStartPoint(), d);
-    ctrl.playGame(d, player);
+    ctrl.playGame(d, player, null);
 
     // Will only be invoked if game exits!
     assertEquals("[26<->27, 15<->21, 14<->15, 20<->26, 28<->29, 13<->19, 4<->10, " +
@@ -47,7 +47,7 @@ public class ControllerTest {
     StringReader input = new StringReader("Q");
     StringBuilder output = new StringBuilder();
 
-    Controller ctrl = new ControllerImpl(input, output);
+    Controller ctrl = new ControllerCLI(input, output, null);
     Dungeon d = ctrl.buildDungeon(false, 5, 7, 1, 30, 3);
 
     String gameState = d.toString();
@@ -64,10 +64,10 @@ public class ControllerTest {
     StringReader input = new StringReader("M S M E M S M S M W");
     StringBuilder output = new StringBuilder();
 
-    Controller ctrl = new ControllerImpl(input, output);
+    Controller ctrl = new ControllerCLI(input, output, null);
     Dungeon d = new DungeonImpl(false);
     Player player = new PlayerImpl(d.getStartPoint(), d);
-    ctrl.playGame(d, player);
+    ctrl.playGame(d, player, null);
 
     assertFalse(player.isAlive());
 
@@ -80,10 +80,10 @@ public class ControllerTest {
     StringReader input = new StringReader("M S M E M S M S S W 1 S W 1 M W");
     StringBuilder output = new StringBuilder();
 
-    Controller ctrl = new ControllerImpl(input, output);
+    Controller ctrl = new ControllerCLI(input, output, null);
     Dungeon d = new DungeonImpl(false);
     Player player = new PlayerImpl(d.getStartPoint(), d);
-    ctrl.playGame(d, player);
+    ctrl.playGame(d, player, null);
 
     assertTrue(player.isAlive());
     assertTrue(d.gameFinished(player.getPlayerLocation()));
@@ -96,10 +96,10 @@ public class ControllerTest {
     StringReader input = new StringReader("asdjhkasdjkashd Q");
     StringBuilder output = new StringBuilder();
 
-    Controller ctrl = new ControllerImpl(input, output);
+    Controller ctrl = new ControllerCLI(input, output, null);
     Dungeon d = new DungeonImpl(false);
     Player player = new PlayerImpl(d.getStartPoint(), d);
-    ctrl.playGame(d, player);
+    ctrl.playGame(d, player, null);
 
     // Making sure the state remains same!
     assertFalse(d.gameFinished(player.getPlayerLocation()));
@@ -116,10 +116,10 @@ public class ControllerTest {
     StringReader input = new StringReader("S N -2 Q");
     StringBuilder output = new StringBuilder();
 
-    Controller ctrl = new ControllerImpl(input, output);
+    Controller ctrl = new ControllerCLI(input, output, null);
     Dungeon d = new DungeonImpl(false);
     Player player = new PlayerImpl(d.getStartPoint(), d);
-    ctrl.playGame(d, player);
+    ctrl.playGame(d, player, null);
 
     // We need to get a count of the user's arrows to verify that state remains same!
     // as the controller handles this error correctly.

@@ -2,6 +2,7 @@ package controller;
 
 import model.Dungeon;
 import model.Player;
+import view.ViewInterface;
 
 /**
  * Represents a Controller for the Dungeon Maze game. It handles the input that the user makes
@@ -30,6 +31,6 @@ public interface Controller {
    * @param d the Dungeon object that you want the controller to assume control over.
    * @param player the player object who will join the dungeon.
    */
-  void playGame(Dungeon d, Player player);
+  void playGame(Dungeon d, Player player, ViewInterface view);
 
 }

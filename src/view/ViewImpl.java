@@ -2,11 +2,8 @@ package view;
 
 import model.Dungeon;
 import model.PlayerImpl;
-import model.Point2D;
 import model.Point2DImpl;
 
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -14,7 +11,7 @@ import java.util.Objects;
 public class ViewImpl implements ViewInterface {
 
 
-  private GameHUD gameHUDBuff;
+  private GameView gameViewBuff;
   private NewGamePrompt newGamePrompt;
 
   public ViewImpl() {
@@ -24,19 +21,19 @@ public class ViewImpl implements ViewInterface {
   @Override
   public void generateHUD(Dungeon inputDungeon, int inputRows, int inputCols,
                           Map<String, Boolean> visited, PlayerImpl inputPlayer) {
-    this.gameHUDBuff = new GameHUD(inputDungeon, inputRows, inputCols, "",
+    this.gameViewBuff = new GameView(inputDungeon, inputRows, inputCols, "",
         (Point2DImpl) inputDungeon.getStartPoint(), inputPlayer, visited);
   }
 
   @Override
   public void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols,
                          Map<String, Boolean> visited, PlayerImpl inputPlayer) {
-//    this.gameHUDBuff.initialize(inputDungeon, inputRows, inputCols, "",
+//    this.gameViewBuff.initialize(inputDungeon, inputRows, inputCols, "",
 //        (Point2DImpl) inputPlayer.getPlayerLocation(), inputPlayer);
-    this.gameHUDBuff.generateDungeonGraphics(inputDungeon, inputRows, inputCols,
+    this.gameViewBuff.generateDungeonGraphics(inputDungeon, inputRows, inputCols,
         visited, (Point2DImpl) inputPlayer.getPlayerLocation());
 
-    this.gameHUDBuff.initializePlayerStats("", inputPlayer.getPlayerWeapons().size(),
+    this.gameViewBuff.initializePlayerStats("", inputPlayer.getPlayerWeapons().size(),
         inputPlayer.getPlayerTreasure().size(), inputPlayer.isAlive(), inputPlayer);
   }
 
@@ -50,20 +47,20 @@ public class ViewImpl implements ViewInterface {
   @Override
   public String getUserIntention() {
 
-    if (this.gameHUDBuff.getUserPickUp()) {
+    if (this.gameViewBuff.getUserPickUp()) {
       return "P";
     }
 
-    else if (this.gameHUDBuff.getUserMove()) {
+    else if (this.gameViewBuff.getUserMove()) {
       return "M";
     }
 
-    else if (this.gameHUDBuff.getUserShoot()) {
+    else if (this.gameViewBuff.getUserShoot()) {
       return "S";
     }
 
-    else if (!Objects.equals(this.gameHUDBuff.getUserChangeGame(), "")) {
-      return this.gameHUDBuff.getUserChangeGame();
+    else if (!Objects.equals(this.gameViewBuff.getUserChangeGame(), "")) {
+      return this.gameViewBuff.getUserChangeGame();
     }
 
     return "";
@@ -72,56 +69,41 @@ public class ViewImpl implements ViewInterface {
 
   @Override
   public void resetUserDirection() {
-    this.gameHUDBuff.resetUserDirection();
+    this.gameViewBuff.resetUserDirection();
   }
 
   @Override
   public String getUserDirection() {
-    return new String(gameHUDBuff.getUserInputDirection());
+    return new String(gameViewBuff.getUserInputDirection());
   }
 
   @Override
   public List<String> getUserShootingParameters() {
-    return this.gameHUDBuff.getUserShootingParameters();
+    return this.gameViewBuff.getUserShootingParameters();
   }
 
   @Override
   public void resetUserPickUp() {
-    this.gameHUDBuff.resetUserPickUp();
+    this.gameViewBuff.resetUserPickUp();
   }
 
   @Override
   public void resetUserMove() {
-    this.gameHUDBuff.resetUserMove();
+    this.gameViewBuff.resetUserMove();
   }
 
   @Override
   public void resetUserShoot() {
-    this.gameHUDBuff.resetUserShootingParameters();
-  }
-
-  @Override
-  public void closeProgram() {
-    System.exit(0);
+    this.gameViewBuff.resetUserShootingParameters();
   }
 
   @Override
   public void displayUserMessage(String inputString) {
-    this.gameHUDBuff.displayUserMessage(inputString);
-  }
-
-  @Override
-  public void setListeners(KeyListener keys, MouseListener clicks) {
-    this.gameHUDBuff.setListeners(keys, clicks);
-  }
-
-  @Override
-  public String getUserChangeGame() {
-    return this.gameHUDBuff.getUserChangeGame();
+    this.gameViewBuff.displayUserMessage(inputString);
   }
 
   @Override
   public void resetUserChangeGame() {
-    this.gameHUDBuff.resetUserChangeGame();
+    this.gameViewBuff.resetUserChangeGame();
   }
 }
