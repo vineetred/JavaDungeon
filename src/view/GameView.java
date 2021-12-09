@@ -706,37 +706,37 @@ class GameView extends JFrame {
       public synchronized void mouseClicked(MouseEvent e) {
 
         // Check for North
-        if (e.getY() > ((playerLocation.getRow()) * Constants.OFFSET)
-            && e.getY() <  ((playerLocation.getRow()) * Constants.OFFSET + 100)
-        && e.getX() >  (((playerLocation.getColumn() + 1) % inputCols) * Constants.OFFSET)
-        && e.getX() <  (((playerLocation.getColumn() + 1) % inputCols) * Constants.OFFSET + 100)) {
+        if (e.getY() > ((playerLocation.getRow() % (inputRows + 1)) * Constants.OFFSET)
+            && e.getY() <  ((playerLocation.getRow() % (inputRows + 1)) * Constants.OFFSET + 100)
+        && e.getX() >  (((playerLocation.getColumn() + 1) % (inputCols + 1)) * Constants.OFFSET)
+        && e.getX() <  (((playerLocation.getColumn() + 1) % (inputCols + 1)) * Constants.OFFSET + 100)) {
           userMove = true;
           userInputDirection = "N";
         }
 
         // Check for South
-        else if (e.getY() > (((playerLocation.getRow() + 2) % inputRows) * Constants.OFFSET)
-            && e.getY() <  (((playerLocation.getRow() + 2) % inputRows) * Constants.OFFSET + 100)
-            && e.getX() >  (((playerLocation.getColumn() + 1) % inputCols) * Constants.OFFSET)
-            && e.getX() <  (((playerLocation.getColumn() + 1) % inputCols) * Constants.OFFSET + 100)) {
+        else if (e.getY() > (((playerLocation.getRow() + 2) % (inputRows + 1)) * Constants.OFFSET)
+            && e.getY() <  (((playerLocation.getRow() + 2) % (inputRows + 1)) * Constants.OFFSET + 100)
+            && e.getX() >  (((playerLocation.getColumn() + 1) % (inputCols + 1)) * Constants.OFFSET)
+            && e.getX() <  (((playerLocation.getColumn() + 1) % (inputCols + 1)) * Constants.OFFSET + 100)) {
           userMove = true;
           userInputDirection = "S";
         }
 
         // Check for East
-        else if (e.getY() > (((playerLocation.getRow() + 1) % inputRows) * Constants.OFFSET)
-            && e.getY() <  (((playerLocation.getRow() + 1) % inputRows) * Constants.OFFSET + 100)
-            && e.getX() >  (((playerLocation.getColumn() + 2) % inputCols) * Constants.OFFSET)
-            && e.getX() <  (((playerLocation.getColumn() + 2) % inputCols) * Constants.OFFSET + 100)) {
+        else if (e.getY() > (((playerLocation.getRow() + 1) % (inputRows + 1)) * Constants.OFFSET)
+            && e.getY() <  (((playerLocation.getRow() + 1) % (inputRows + 1)) * Constants.OFFSET + 100)
+            && e.getX() >  (((playerLocation.getColumn() + 2) % (inputCols + 1)) * Constants.OFFSET)
+            && e.getX() <  (((playerLocation.getColumn() + 2) % (inputCols + 1)) * Constants.OFFSET + 100)) {
           userMove = true;
           userInputDirection = "E";
         }
 
         // Check for West
-        else if (e.getY() > (((playerLocation.getRow() + 1) % inputRows) * Constants.OFFSET)
-            && e.getY() <  (((playerLocation.getRow() + 1) % inputRows) * Constants.OFFSET + 100)
-            && e.getX() >  (((playerLocation.getColumn()) % inputCols) * Constants.OFFSET)
-            && e.getX() <  (((playerLocation.getColumn()) % inputCols) * Constants.OFFSET + 100)) {
+        else if (e.getY() > (((playerLocation.getRow() + 1) % (inputRows + 1)) * Constants.OFFSET)
+            && e.getY() <  (((playerLocation.getRow() + 1) % (inputRows + 1)) * Constants.OFFSET + 100)
+            && e.getX() >  (((playerLocation.getColumn()) % (inputCols + 1)) * Constants.OFFSET)
+            && e.getX() <  (((playerLocation.getColumn()) % (inputCols + 1)) * Constants.OFFSET + 100)) {
           userMove = true;
           userInputDirection = "W";
         }
