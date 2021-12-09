@@ -482,11 +482,16 @@ public class ControllerGUI {
             "to start a new session!");
       } else if (d.gameFinished(inputPlayer.getPlayerLocation()) && !inputPlayer.isAlive()) {
         out.append("\nSo close yet so far. You reached the end, but you are dead!");
-        view.displayUserMessage("\nSo close yet so far. You reached the end, but you are dead!");
+        view.displayUserMessage("\nSo close yet so far. You reached the end, " +
+            "but you are dead! Click on the top right \" +\n" +
+            "            \"to start a new session");
       } else if (!inputPlayer.isAlive()) {
         out.append("\n*Chomp, chomp, chomp*, you are eaten by an Otyugh!\n" +
-            "Better luck next time!");
-        view.displayUserMessage("\nChomp, chomp, chomp*, you are eaten by an Otyugh!");
+            "Better luck next time! Click on the top right \" +\n" +
+            "            \"to start a new session");
+        view.displayUserMessage("\nChomp, chomp, chomp*, you are eaten by an Otyugh! " +
+            "Click on the top right \" +\n" +
+            "            \"to start a new session");
       }
     } catch (IOException ioe) {
       throw new IllegalStateException("Append failed", ioe);
@@ -645,7 +650,6 @@ public class ControllerGUI {
       // TODO: Change userMotive to get shit from the view
 
       String userMotive = view.getUserIntention();
-      System.out.println(userMotive + "wasdasdasdas");
 
 
       while (Objects.equals(userMotive, "")) {

@@ -37,7 +37,7 @@ public class ViewImpl implements ViewInterface {
         visited, (Point2DImpl) inputPlayer.getPlayerLocation());
 
     this.gameHUDBuff.initializePlayerStats("", inputPlayer.getPlayerWeapons().size(),
-        inputPlayer.getPlayerTreasure().size(), inputPlayer.isAlive());
+        inputPlayer.getPlayerTreasure().size(), inputPlayer.isAlive(), inputPlayer);
   }
 
   @Override

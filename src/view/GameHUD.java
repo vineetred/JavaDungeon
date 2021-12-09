@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -246,7 +247,7 @@ class GameHUD extends JFrame {
 
     mainPanel = new JPanel(cardLayoutBuff);
     initializePlayerStats(inputMessage, inputPlayer.getPlayerWeapons().size(),
-        inputPlayer.getPlayerTreasure().size(), inputPlayer.isAlive());
+        inputPlayer.getPlayerTreasure().size(), inputPlayer.isAlive(), inputPlayer);
     JPanel card2 = initializeDPad();
     // TODO: Visited map
 //    JPanel card3 = generateDungeonGraphics(inputDungeon, inputRows, inputCols,
@@ -257,7 +258,7 @@ class GameHUD extends JFrame {
 
     JScrollPane scrollPane = new JScrollPane(mazePanel);
     mazePanel.setPreferredSize(new Dimension(new Dimension(Constants.OFFSET * (inputCols + 4),
-        Constants.OFFSET * (inputRows + 5))));
+        Constants.OFFSET * (inputRows + 6))));
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     double width = screenSize.getWidth();
@@ -332,7 +333,7 @@ class GameHUD extends JFrame {
   }
 
   protected void initializePlayerStats(String inputMessage, int numArrows, int numTreasure,
-                                       boolean playerAlive) {
+                                       boolean playerAlive, PlayerImpl inputPlayer) {
 
     playerStatsCard.setVisible(false);
     playerStatsCard.removeAll();
@@ -345,9 +346,43 @@ class GameHUD extends JFrame {
 
 
     // userTreasure
-    userTreasure = new JLabel("Treasure: " + numTreasure);
+    userTreasure = new JLabel("Treasure:");
     userTreasure.setForeground(Color.RED);
-    playerStatsCard.add(userTreasure);
+
+    int rubies = 0;
+    int diamonds = 0;
+    int sapphires = 0;
+
+
+    if (inputPlayer.getPlayerTreasure() != null) {
+      for (Treasure treasure : inputPlayer.getPlayerTreasure()) {
+        if (Objects.equals(treasure.toString(), "Ruby")) {
+          rubies++;
+        }
+
+        if (Objects.equals(treasure.toString(), "Diamond")) {
+          diamonds++;
+        }
+
+        if (Objects.equals(treasure.toString(), "Sapphire")) {
+          sapphires++;
+        }
+      }
+    }
+
+
+    JLabel rubiesInRoom = new JLabel("Rubies: " + rubies, SwingConstants.CENTER);
+    JLabel diamondsInRoom = new JLabel("Diamonds: " + diamonds, SwingConstants.CENTER);
+    JLabel sapphiresInRoom = new JLabel("Sapphires: " + sapphires, SwingConstants.CENTER);
+    playerStatsCard.add(rubiesInRoom);
+    playerStatsCard.add(diamondsInRoom);
+    playerStatsCard.add(sapphiresInRoom);
+
+    // userTreasure
+    userTreasure = new JLabel("Treasure:");
+    userTreasure.setForeground(Color.RED);
+
+//    playerStatsCard.add(userTreasure);
 
     // userAlive
     userAlive = new JLabel("Alive: " + playerAlive);
@@ -511,7 +546,8 @@ class GameHUD extends JFrame {
                 ImageIcon arrow = new ImageIcon(Constants.ARROW_IMAGE_FILEPATH);
                 JLabel arrowLabel = new JLabel();
                 arrowLabel.setIcon(arrow);
-                arrowLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
+                arrowLabel.setBounds(Constants.OFFSET * (col + 1) + 10,
+                    Constants.OFFSET * (row + 1),
                     25, 8);
                 mazePanel.add(arrowLabel);
               }
@@ -529,7 +565,8 @@ class GameHUD extends JFrame {
                   ImageIcon monster = new ImageIcon(Constants.MONSTER_IMAGE_FILEPATH);
                   JLabel monsterLabel = new JLabel();
                   monsterLabel.setIcon(monster);
-                  monsterLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
+                  monsterLabel.setBounds(Constants.OFFSET * (col + 1) + 20,
+                      Constants.OFFSET * (row + 1),
                       25, 25);
                   mazePanel.add(monsterLabel);
                 }
@@ -569,6 +606,75 @@ class GameHUD extends JFrame {
         Constants.OFFSET * (inputRows) + 120, 100, 25);
 
 
+    int numArrow = 0;
+
+    if (dungeonModel.peekCaveWeapons(playerLocation) != null) {
+      numArrow = dungeonModel.peekCaveWeapons(playerLocation).size();
+    }
+    String caveArrowSize = "Arrows: " + numArrow;
+    JLabel arrowsInRoom = new JLabel(caveArrowSize, SwingConstants.CENTER);
+
+    int rubies = 0;
+    int diamonds = 0;
+    int sapphires = 0;
+
+    cavePossibleTreasure = (ArrayList<Treasure>)
+        dungeonModel.peekCaveTreasure(playerLocation);
+
+    if (cavePossibleTreasure != null) {
+      for (Treasure treasure : cavePossibleTreasure) {
+        if (Objects.equals(treasure.toString(), "Ruby")) {
+          rubies++;
+        }
+
+        if (Objects.equals(treasure.toString(), "Diamond")) {
+          diamonds++;
+        }
+
+        if (Objects.equals(treasure.toString(), "Sapphire")) {
+          sapphires++;
+        }
+      }
+    }
+
+
+    JLabel treasureInRoom = new JLabel("In Room: ", SwingConstants.CENTER);
+    JLabel rubiesInRoom = new JLabel("Rubies: " + rubies, SwingConstants.CENTER);
+    JLabel diamondsInRoom = new JLabel("Diamonds: " + diamonds, SwingConstants.CENTER);
+    JLabel sapphiresInRoom = new JLabel("Sapphires: " + sapphires, SwingConstants.CENTER);
+
+    JLabel smellInRoom = new JLabel("Smell: None", SwingConstants.CENTER);
+
+   if (dungeonModel.isMajorSmell(playerLocation)) {
+     smellInRoom = new JLabel("Smell: Super bad", SwingConstants.CENTER);
+    }
+
+    if (dungeonModel.isMinorSmell(playerLocation)) {
+      smellInRoom = new JLabel("Smell: Bad", SwingConstants.CENTER);
+
+    }
+
+
+
+    treasureInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 140, 100, 25);
+
+    arrowsInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 160, 100, 25);
+
+    rubiesInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 180, 100, 25);
+
+    diamondsInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 200, 100, 25);
+
+    sapphiresInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 220, 100, 25);
+
+    smellInRoom.setBounds(Constants.OFFSET * (inputCols + 1),
+        Constants.OFFSET * (inputRows) + 240, 100, 25);
+
+
     pickUpButton.addActionListener(e -> {
       this.userPickUp = true;
     });
@@ -589,11 +695,19 @@ class GameHUD extends JFrame {
     mazePanel.add(pickUpButton);
     mazePanel.add(movePanelButton);
 
+    mazePanel.add(treasureInRoom);
+    mazePanel.add(arrowsInRoom);
+    mazePanel.add(rubiesInRoom);
+    mazePanel.add(diamondsInRoom);
+    mazePanel.add(sapphiresInRoom);
+    mazePanel.add(smellInRoom);
+
+
     mazePanel.addMouseListener(new MouseListener() {
       @Override
       public synchronized void mouseClicked(MouseEvent e) {
 
-        // Check for north
+        // Check for North
         if (e.getY() > ((playerLocation.getRow()) * Constants.OFFSET)
             && e.getY() <  ((playerLocation.getRow()) * Constants.OFFSET + 100)
         && e.getX() >  (((playerLocation.getColumn() + 1) % inputCols) * Constants.OFFSET)
@@ -602,7 +716,7 @@ class GameHUD extends JFrame {
           userInputDirection = "N";
         }
 
-        // Check for south
+        // Check for South
         else if (e.getY() > (((playerLocation.getRow() + 2) % inputRows) * Constants.OFFSET)
             && e.getY() <  (((playerLocation.getRow() + 2) % inputRows) * Constants.OFFSET + 100)
             && e.getX() >  (((playerLocation.getColumn() + 1) % inputCols) * Constants.OFFSET)
@@ -628,18 +742,6 @@ class GameHUD extends JFrame {
           userMove = true;
           userInputDirection = "W";
         }
-
-//        else if (e.getY() > (playerLocation.getColumn()) * Constants.OFFSET + 100)  {
-//          userMove = true;
-//          userInputDirection = "S";
-//        }
-//
-//        else if (e.getX() > (playerLocation.getColumn()) * Constants.OFFSET + 100)  {
-//          userMove = true;
-//          userInputDirection = "S";
-//        }
-
-
 
       }
 
@@ -668,7 +770,7 @@ class GameHUD extends JFrame {
 
     mazePanel.revalidate();
     mazePanel.setVisible(true);
-//    mazePanel.setFocusable(true);
+    mazePanel.setFocusable(true);
 
 //    return mazePanel;
 

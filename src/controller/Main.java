@@ -28,15 +28,29 @@ public class Main {
     int degree = Integer.parseInt(userParams.get(2));
     int numberOfMonsters =  Integer.parseInt(userParams.get(3));
     int treasurePercentage =  Integer.parseInt(userParams.get(4));
+    boolean CLI =  Boolean.parseBoolean(userParams.get(6));
 
-    ControllerGUI ctrl = new ControllerGUI(input, output, view, rows, cols, degree,
-        numberOfMonsters, treasurePercentage, new HashMap<>(), wrapped);
+    if (!CLI) {
+      ControllerGUI ctrl = new ControllerGUI(input, output, view, rows, cols, degree,
+          numberOfMonsters, treasurePercentage, new HashMap<>(), wrapped);
 
 
-    Dungeon d = ctrl.buildDungeon(wrapped, rows, cols, degree,
-        treasurePercentage, numberOfMonsters);
-    PlayerImpl player = new PlayerImpl(d.getStartPoint(), d);
-    ctrl.playGame(d, player, view);
+      Dungeon d = ctrl.buildDungeon(wrapped, rows, cols, degree,
+          treasurePercentage, numberOfMonsters);
+      PlayerImpl player = new PlayerImpl(d.getStartPoint(), d);
+      ctrl.playGame(d, player, view);
+    }
+
+    else {
+
+      Controller ctrl = new ControllerImpl(input, output);
+      Dungeon d = ctrl.buildDungeon(wrapped, rows, cols, degree,
+          treasurePercentage, numberOfMonsters);
+      Player player = new PlayerImpl(d.getStartPoint(), d);
+      ctrl.playGame(d, player);
+
+    }
+
 
   }
 }

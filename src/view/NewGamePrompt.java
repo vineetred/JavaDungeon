@@ -19,6 +19,7 @@ class NewGamePrompt extends JFrame {
   public static JTextField inputRows;
   public static JTextField inputCols;
   public static JTextField inputWrapped;
+  public static JTextField inputCLI;
 
   private String myString;
   private final ArrayList<String> gameParameters;
@@ -83,6 +84,14 @@ class NewGamePrompt extends JFrame {
     inputTreasure = new JTextField(2);
     container.add(inputTreasure);
 
+    // CLI/GUI
+    display = new JLabel("CLI(true/false)?: ");
+    container.add(display);
+
+    // the text field
+    inputCLI = new JTextField(2);
+    container.add(inputCLI);
+
     // echo button
     submitButton = new JButton("Submit");
     submitButton.setActionCommand("Submit Button");
@@ -124,13 +133,17 @@ class NewGamePrompt extends JFrame {
       gameParameters.add(myString);
       clearString(inputWrapped);
 
+      myString = inputCLI.getText();
+      gameParameters.add(myString);
+      clearString(inputCLI);
+
       this.dispose();
     });
 
     pack();
     setVisible(true);
 
-    while (gameParameters.size() < 5) {
+    while (gameParameters.size() < 6) {
       try {
         // Sleep till we get our game params
         Thread.sleep(200);
