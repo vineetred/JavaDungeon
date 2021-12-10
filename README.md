@@ -1,8 +1,5 @@
 # JavaDungeon
 
-# TODO
-1. Create a JMenu that starts a game. So probably a wrapper around the params we give in the driver?
-
 # Overview
 JavaDungeon is a game that consists of a maze dungeon and a player who tries to navigate through 
 this maze. There are many obstacles that are thrown the player's way; all of which the player 

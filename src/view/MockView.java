@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/** Represents the ViewInterface but only used for development purposes as this allows the user
+ * to test the controller in isolation and induce a desired state within the view so that actions
+ * of the controller can be tested.
+ */
 public class MockView implements ViewInterface {
 
   private String userIntention;
@@ -17,6 +21,9 @@ public class MockView implements ViewInterface {
   private Player player;
   private Dungeon dungeon;
 
+  /** Represents the empty MockView ViewInterface object that takes in the log argument to store
+   * game state which can be used to compare states.
+   */
   public MockView(Appendable log) {
     this.log = log;
     this.userIntention = "";
@@ -36,14 +43,6 @@ public class MockView implements ViewInterface {
   @Override
   public void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols, Map<String, Boolean> visited, PlayerImpl inputPlayer) {
 
-  }
-
-  public void simulateMovePlayer() {
-    this.player.moveNorth();
-  }
-
-  public void simulatePlayerShoot() {
-    this.player.useWeapon(2, "N");
   }
 
   @Override
@@ -96,4 +95,20 @@ public class MockView implements ViewInterface {
   public void resetUserChangeGame() {
 
   }
+
+
+  /** Simulates the player moving a tile up, that is, North. This is used to induce a desired
+   * state within this mock view.
+   */
+  public void simulateMovePlayer() {
+    this.player.moveNorth();
+  }
+
+  /** Simulates the player shooting two tiles up, that is, North. This is used to induce a desired
+   * state within this mock view.
+   */
+  public void simulatePlayerShoot() {
+    this.player.useWeapon(2, "N");
+  }
+
 }

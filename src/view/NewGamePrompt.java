@@ -9,17 +9,17 @@ import java.util.ArrayList;
 
 class NewGamePrompt extends JFrame {
 
-  public static JLabel display;
-  public static JButton submitButton;
-  public static JButton exitButton;
-  public static JButton toggleButton;
-  public static JTextField inputTreasure;
-  public static JTextField inputMonsters;
-  public static JTextField inputDegree;
-  public static JTextField inputRows;
-  public static JTextField inputCols;
-  public static JTextField inputWrapped;
-  public static JTextField inputCLI;
+  private static JLabel display;
+  private static JButton submitButton;
+  private static JButton exitButton;
+  private static JButton toggleButton;
+  private static JTextField inputTreasure;
+  private static JTextField inputMonsters;
+  private static JTextField inputDegree;
+  private static JTextField inputRows;
+  private static JTextField inputCols;
+  private static JTextField inputWrapped;
+  private static JTextField inputCLI;
 
   private String myString;
   private final ArrayList<String> gameParameters;

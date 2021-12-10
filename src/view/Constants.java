@@ -3,6 +3,10 @@ package view;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Represents the constants that are used through the view component of our MVC program. THese
+ * are anything from pixel offsets to filepath(s). We simply use the placeholder to update assets
+ * without having to change the underlying code to reflect changes.
+ */
 public final class Constants {
 
   public static final int OFFSET = 100;

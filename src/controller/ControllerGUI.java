@@ -29,7 +29,8 @@ import java.util.Scanner;
 /**
  * This class represent a controller for a Dungeon maze game. It implements the methods described
  * in the controller interface. These methods allow a user to communicate with the game; play
- * as it were. There are some helper methods that also aid in the playing of the game.
+ * as it were. There are some helper methods that also aid in the playing of the game. It also
+ * displays the maze using a GUI and ViewInterface.
  */
 public class ControllerGUI implements Controller {
 
@@ -48,10 +49,19 @@ public class ControllerGUI implements Controller {
 
 
   /**
-   * Constructor for the controller.
+   * Constructor for the controller GUI edition. This takes in a lot of parameters that are
+   * needed to make the dungeon visualization happen.
    *
    * @param in  the source to read from
    * @param out the target to print to
+   * @param view the ViewInterface that is responsible to display the Java swing frames.
+   * @param rows the number of rows
+   * @param cols the number of cols
+   * @param degree the interconnectivity
+   * @param numberOfMonsters the number of monsters
+   * @param treasurePercentage the treasure percentage
+   * @param visited the visited hash map
+   * @param wrapped the boolean that wraps/not wraps
    */
   public ControllerGUI(Readable in, Appendable out, ViewInterface view, int rows, int cols,
                        int degree, int numberOfMonsters, int treasurePercentage, Map<String,

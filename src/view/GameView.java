@@ -57,9 +57,6 @@ class GameView extends JFrame {
 
   JTextField directionTextField;
 
-  public static JLabel userTreasure;
-  public static JLabel userArrows;
-  public static JLabel userAlive;
   JLabel directionLabel;
 
   JPanel mainPanel;
@@ -324,11 +321,11 @@ class GameView extends JFrame {
     playerStatsCard.removeAll();
 
     // userArrows
-    userArrows = new JLabel("Arrows: " + numArrows, SwingConstants.CENTER);
+    JLabel userArrows = new JLabel("Arrows: " + numArrows, SwingConstants.CENTER);
     playerStatsCard.add(userArrows);
 
     // userTreasure
-    userTreasure = new JLabel("Treasure:");
+    JLabel userTreasure = new JLabel("Treasure:");
     userTreasure.setForeground(Color.RED);
 
     int rubies = 0;
@@ -363,7 +360,7 @@ class GameView extends JFrame {
     userTreasure.setForeground(Color.RED);
 
     // userAlive
-    userAlive = new JLabel("Alive: " + playerAlive);
+    JLabel userAlive = new JLabel("Alive: " + playerAlive);
     playerStatsCard.add(userAlive);
 
     // inputMessageLabel

@@ -8,12 +8,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * The implementation of the View interface. This interface has some private methods that help
+ * it achieve the tasks outlined in the View interface. This implementation also does not talk
+ * to the player class objects at any point; this job is that of the controller class objects.
+ * The views also have methods to allow easy refreshing. At no point does the view have any
+ * ability to modify the state of the player or the dungeon.
+ */
 public class ViewImpl implements ViewInterface {
 
 
   private GameView gameViewBuff;
   private NewGamePrompt newGamePrompt;
 
+  /**
+   * The implementation of the View interface. This interface has some private methods that help
+   * it achieve the tasks outlined in the View interface. This implementation also does not talk
+   * to the player class objects at any point; this job is that of the controller class objects.
+   * The views also have methods to allow easy refreshing. At no point does the view have any
+   * ability to modify the state of the player or the dungeon.
+   */
   public ViewImpl() {
 
   }
@@ -28,8 +42,7 @@ public class ViewImpl implements ViewInterface {
   @Override
   public void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols,
                          Map<String, Boolean> visited, PlayerImpl inputPlayer) {
-//    this.gameViewBuff.initialize(inputDungeon, inputRows, inputCols, "",
-//        (Point2DImpl) inputPlayer.getPlayerLocation(), inputPlayer);
+
     this.gameViewBuff.generateDungeonGraphics(inputDungeon, inputRows, inputCols,
         visited, (Point2DImpl) inputPlayer.getPlayerLocation());
 

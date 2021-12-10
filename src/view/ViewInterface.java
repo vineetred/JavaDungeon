@@ -6,6 +6,14 @@ import model.PlayerImpl;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The View interface which is the high level component responsible for visualizing the dungeon
+ * maze game. This interface has some private methods that help
+ * it achieve the tasks outlined in the project description. This implementation also does not talk
+ * to the player class objects at any point; this job is that of the controller class objects.
+ * The views also have methods to allow easy refreshing. At no point does the view have any
+ * ability to modify the state of the player or the dungeon.
+ */
 public interface ViewInterface {
 
   /** Build a dungeon HUD with the given parameters, dungeon and player.

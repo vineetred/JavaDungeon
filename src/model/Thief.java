@@ -2,7 +2,12 @@ package model;
 
 import java.io.Serializable;
 
-public class Thief implements Monster, Serializable {
+/** Represents the interface that all types of monsters will
+ * always implement. This allows us to easily add monsters in the future without having to
+ * refactor any of the controller or model code. This was, we always have room to add new
+ * features down the line.
+ */
+class Thief implements Monster, Serializable {
 
   private int hits;
 
