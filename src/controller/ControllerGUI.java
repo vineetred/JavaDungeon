@@ -8,17 +8,15 @@ import model.Monster;
 import model.Player;
 import model.Point2D;
 import model.Treasure;
-import view.ViewImpl;
+
 import view.ViewInterface;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +32,6 @@ import java.util.Scanner;
  */
 public class ControllerGUI implements Controller {
 
-  private final Readable in;
   private final Appendable out;
   private int rows;
   private int cols;
@@ -44,7 +41,6 @@ public class ControllerGUI implements Controller {
   private boolean wrapped;
   private Map<String, Boolean> visited;
   private ViewInterface view;
-  private Dungeon dungeon;
   private Dungeon savePointDungeon;
 
 
@@ -73,7 +69,6 @@ public class ControllerGUI implements Controller {
 
 
     this.out = out;
-    this.in = in;
     this.view = view;
     this.rows = rows;
     this.cols = cols;
@@ -262,7 +257,8 @@ public class ControllerGUI implements Controller {
         return false;
       } else {
         StringBuilder arrowString = new StringBuilder();
-        arrowString.append("There are arrows in the room! ").append(String.valueOf(caveWeapons.size()))
+        arrowString.append("There are arrows in the room! ")
+            .append(String.valueOf(caveWeapons.size()))
             .append(" arrow(s)");
         out.append("\nThere are arrows in the room! ")
             .append(String.valueOf(caveWeapons.size()))
@@ -304,8 +300,10 @@ public class ControllerGUI implements Controller {
       out.append("\nPlayer picks up arrows!");
 
       if (crookedArrowsList.size() > 0) {
-        view.displayUserMessage("Player currently has arrows (number): " + inputPlayer.getPlayerWeapons().size());
-        out.append("\nPlayer currently has arrows (number): " + inputPlayer.getPlayerWeapons().size());
+        view.displayUserMessage("Player currently has arrows (number): "
+            + inputPlayer.getPlayerWeapons().size());
+        out.append("\nPlayer currently has arrows (number): "
+            + inputPlayer.getPlayerWeapons().size());
       } else {
         view.displayUserMessage("Current player arrows: 0");
         out.append("\nCurrent player arrows: 0");
@@ -605,10 +603,10 @@ public class ControllerGUI implements Controller {
     dungeonStats(wraps, rows, columns, interconnect, treasurePercentage,
         numberOfMonsters);
 
-    this.dungeon = new DungeonImpl(wraps, rows, columns, interconnect, treasurePercentage,
+    Dungeon dungeon = new DungeonImpl(wraps, rows, columns, interconnect, treasurePercentage,
         numberOfMonsters);
 
-    return this.dungeon;
+    return dungeon;
 
   }
 

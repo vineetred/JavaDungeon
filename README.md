@@ -42,6 +42,7 @@ kill them before you can win!
   treasure collected so far from the player. Beware!
 * We also have a fully functional GUI that can visualize the CLI game. The rules and other 
   invariants stay the same.
+* The ghost like white icon is the current player.
 
 
 # Execution
@@ -138,7 +139,9 @@ Run 5 -- ExampleRun5.txt
 
 
 # Model Changes
-* Most major changes were essentially abstracting the functionality away from the user. A lot of
+* The biggest change is the addition of a new monster variant - thief. They touch the player and 
+  steal all their treasure in one go.
+* Other major changes were essentially abstracting the functionality away from the user. A lot of
   the original plan revolved around classes communicating directly with other classes. Adding a
   layer of abstraction allows easier understand of the underlying code. This is exactly what I do.
 * A lot of refactoring was around adding functionality; mainly the paradigm of shooting arrows and slaying monsters. 

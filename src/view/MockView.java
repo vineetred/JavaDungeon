@@ -17,32 +17,31 @@ public class MockView implements ViewInterface {
   private String userIntention;
   private String userDirection;
   private ArrayList<String> shootingParams;
-  private Appendable log;
   private Player player;
-  private Dungeon dungeon;
+  private boolean flagger;
 
   /** Represents the empty MockView ViewInterface object that takes in the log argument to store
    * game state which can be used to compare states.
    */
   public MockView(Appendable log) {
-    this.log = log;
     this.userIntention = "";
     this.userDirection = "";
     this.shootingParams = new ArrayList<>();
   }
 
   @Override
-  public void generateHUD(Dungeon inputDungeon, int inputRows, int inputCols, Map<String, Boolean> visited, PlayerImpl inputPlayer) {
+  public void generateHUD(Dungeon inputDungeon, int inputRows,
+                          int inputCols, Map<String, Boolean> visited, PlayerImpl inputPlayer) {
 
     this.player = inputPlayer;
-    this.dungeon = inputDungeon;
 
   }
 
 
   @Override
-  public void refreshHUD(Dungeon inputDungeon, int inputRows, int inputCols, Map<String, Boolean> visited, PlayerImpl inputPlayer) {
-
+  public void refreshHUD(Dungeon inputDungeon, int inputRows,
+                         int inputCols, Map<String, Boolean> visited, PlayerImpl inputPlayer) {
+    flagger = true;
   }
 
   @Override
@@ -57,7 +56,7 @@ public class MockView implements ViewInterface {
 
   @Override
   public void resetUserDirection() {
-
+    flagger = false;
   }
 
   @Override
@@ -73,27 +72,27 @@ public class MockView implements ViewInterface {
 
   @Override
   public void resetUserPickUp() {
-
+    flagger = true;
   }
 
   @Override
   public void resetUserMove() {
-
+    flagger = false;
   }
 
   @Override
   public void resetUserShoot() {
-
+    flagger = true;
   }
 
   @Override
   public void displayUserMessage(String inputString) {
-
+    flagger = false;
   }
 
   @Override
   public void resetUserChangeGame() {
-
+    flagger = false;
   }
 
 

@@ -1,10 +1,11 @@
 package view;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.lang.reflect.Array;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import java.awt.Container;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 
 class NewGamePrompt extends JFrame {
@@ -96,16 +97,6 @@ class NewGamePrompt extends JFrame {
     submitButton = new JButton("Submit");
     submitButton.setActionCommand("Submit Button");
     container.add(submitButton);
-
-//    // toggle button
-//    toggleButton = new JButton("Toggle color");
-//    toggleButton.setActionCommand("Toggle color button");
-//    container.add(toggleButton);
-//
-//    // exit button
-//    exitButton = new JButton("Exit");
-//    exitButton.setActionCommand("Exit Button");
-//    container.add(exitButton);
 
     NewGamePrompt.submitButton.addActionListener(e -> {
 

@@ -71,9 +71,14 @@ class GameView extends JFrame {
 
   ArrayList<String> shootingParameters;
 
-  private boolean left, right, up, down, letterM, letterP, letterS;
-
-
+  private boolean left;
+  private boolean right;
+  private boolean up;
+  private boolean down;
+  private boolean letterM;
+  private boolean letterP;
+  private boolean letterS;
+  private boolean flagger;
 
   protected GameView(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
                      Point2DImpl playerLocation, PlayerImpl inputPlayer,
@@ -92,13 +97,15 @@ class GameView extends JFrame {
     anotherMazePanelButton = new JButton("Maze");
     playerStatsCard = new JPanel();
 
-    initialize(inputDungeon, inputRows, inputCols, inputMessage, playerLocation, inputPlayer, visited);
+    initialize(inputDungeon, inputRows, inputCols,
+        inputMessage, playerLocation, inputPlayer, visited);
 
 
   }
 
-  protected void initialize(Dungeon inputDungeon, int inputRows, int inputCols, String inputMessage,
-                            Point2DImpl playerLocation, PlayerImpl inputPlayer, Map<String, Boolean> visited) {
+  protected void initialize(Dungeon inputDungeon, int inputRows, int inputCols,
+                            String inputMessage, Point2DImpl playerLocation,
+                            PlayerImpl inputPlayer, Map<String, Boolean> visited) {
 
 
     if (mainFrame != null) {
@@ -114,18 +121,33 @@ class GameView extends JFrame {
     mainFrame.addKeyListener(new KeyListener() {
       @Override
       public void keyTyped(KeyEvent e) {
+        flagger = true;
       }
 
       @Override
       public synchronized void keyPressed(KeyEvent e) {
 
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) left = true;
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) right = true;
-        if (e.getKeyCode() == KeyEvent.VK_UP) up = true;
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) down = true;
-        if (e.getKeyCode() == KeyEvent.VK_M) letterM = true;
-        if (e.getKeyCode() == KeyEvent.VK_P) letterP = true;
-        if (e.getKeyCode() == KeyEvent.VK_S) letterS = true;
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+          left = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+          right = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+          up = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+          down = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_M) {
+          letterM = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+          letterP = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+          letterS = true;
+        }
 
 
         if (letterP) {
@@ -182,13 +204,27 @@ class GameView extends JFrame {
 
       @Override
       public synchronized void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) left = false;
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) right = false;
-        if (e.getKeyCode() == KeyEvent.VK_UP) up = false;
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) down = false;
-        if (e.getKeyCode() == KeyEvent.VK_M) letterM = false;
-        if (e.getKeyCode() == KeyEvent.VK_P) letterP = false;
-        if (e.getKeyCode() == KeyEvent.VK_S) letterS = false;
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+          left = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+          right = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+          up = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+          down = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_M) {
+          letterM = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+          letterP = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_S) {
+          letterS = false;
+        }
       }
     });
     mainFrame.setFocusable(true);
@@ -197,10 +233,8 @@ class GameView extends JFrame {
   }
 
 
-  static class exitMenu implements ActionListener
-  {
-    public void actionPerformed(ActionEvent e)
-    {
+  static class ExitMenu implements ActionListener {
+    public void actionPerformed(ActionEvent e) {
       System.exit(0);
     }
   }
@@ -208,7 +242,9 @@ class GameView extends JFrame {
   private void initializeGameMenu(JFrame inputJFrame, JMenuBar inputJMenuBar) {
 
     this.userChoice = "";
-    JMenuItem reuseButton, newGameButton, restartButton;
+    JMenuItem reuseButton;
+    JMenuItem newGameButton;
+    JMenuItem restartButton;
 
     menu = new JMenu("Options");
 
@@ -224,7 +260,7 @@ class GameView extends JFrame {
     inputJFrame.setJMenuBar(inputJMenuBar);
 
     JMenuItem exit = new JMenuItem("Exit");
-    exit.addActionListener(new exitMenu());
+    exit.addActionListener(new ExitMenu());
     menu.add(exit);
 
     reuseButton.addActionListener(e -> this.userChoice = "Reuse Game");
@@ -511,7 +547,8 @@ class GameView extends JFrame {
                     new ImageIcon(ClassLoader.getSystemResource(Constants.DIAMOND_IMAGE_FILEPATH));
                 JLabel treasureLabel = new JLabel();
                 treasureLabel.setIcon(diamond);
-                treasureLabel.setBounds(Constants.OFFSET * (col + 1), Constants.OFFSET * (row + 1),
+                treasureLabel.setBounds(Constants.OFFSET * (col + 1),
+                    Constants.OFFSET * (row + 1),
                     30, 30);
                 mazePanel.add(treasureLabel);
               }
@@ -546,7 +583,8 @@ class GameView extends JFrame {
 
                   if (cavePossibleMonsters.get(0).monsterType() == 0) {
                     ImageIcon monster =
-                        new ImageIcon(ClassLoader.getSystemResource(Constants.MONSTER_IMAGE_FILEPATH));
+                        new ImageIcon(
+                            ClassLoader.getSystemResource(Constants.MONSTER_IMAGE_FILEPATH));
                     JLabel monsterLabel = new JLabel();
                     monsterLabel.setIcon(monster);
                     monsterLabel.setBounds(Constants.OFFSET * (col + 1) + 20,
@@ -557,7 +595,8 @@ class GameView extends JFrame {
 
                   else if (cavePossibleMonsters.get(0).monsterType() == 1) {
                     ImageIcon monster =
-                        new ImageIcon(ClassLoader.getSystemResource(Constants.THIEF_IMAGE_FILEPATH));
+                        new ImageIcon(ClassLoader.getSystemResource(
+                            Constants.THIEF_IMAGE_FILEPATH));
                     JLabel monsterLabel = new JLabel();
                     monsterLabel.setIcon(monster);
                     monsterLabel.setBounds(Constants.OFFSET * (col + 1) + 20,
@@ -647,13 +686,13 @@ class GameView extends JFrame {
 
     JLabel smellInRoom = new JLabel("Smell: None", SwingConstants.CENTER);
 
-   if (dungeonModel.isMajorSmell(playerLocation)) {
-     smellInRoom = new JLabel("Smell: Super bad", SwingConstants.CENTER);
+
+    if (dungeonModel.isMajorSmell(playerLocation)) {
+      smellInRoom = new JLabel("Smell: Super bad", SwingConstants.CENTER);
     }
 
     if (dungeonModel.isMinorSmell(playerLocation)) {
       smellInRoom = new JLabel("Smell: Bad", SwingConstants.CENTER);
-
     }
 
 
@@ -668,7 +707,7 @@ class GameView extends JFrame {
         Constants.OFFSET * (inputRows) + 180, 25, 25);
 
     rubiesInRoom.setBounds(Constants.OFFSET * (inputCols + 1) + 10,
-    Constants.OFFSET * (inputRows) + 180, 100, 25);
+        Constants.OFFSET * (inputRows) + 180, 100, 25);
 
     diamondLabel.setBounds(Constants.OFFSET * (inputCols + 1),
         Constants.OFFSET * (inputRows) + 200, 25, 25);
@@ -718,35 +757,46 @@ class GameView extends JFrame {
         // Check for North
         if (e.getY() > ((playerLocation.getRow() % (inputRows + 1)) * Constants.OFFSET)
             && e.getY() <  ((playerLocation.getRow() % (inputRows + 1)) * Constants.OFFSET + 100)
-        && e.getX() >  (((playerLocation.getColumn() + 1) % (inputCols + 1)) * Constants.OFFSET)
-        && e.getX() <  (((playerLocation.getColumn() + 1) % (inputCols + 1)) * Constants.OFFSET + 100)) {
+            && e.getX() >  (((playerLocation.getColumn() + 1) % (inputCols + 1)) *
+            Constants.OFFSET)
+            && e.getX() <  (((playerLocation.getColumn() + 1) % (inputCols + 1)) *
+            Constants.OFFSET + 100)) {
           userMove = true;
           userInputDirection = "N";
         }
 
         // Check for South
         else if (e.getY() > (((playerLocation.getRow() + 2) % (inputRows + 1)) * Constants.OFFSET)
-            && e.getY() <  (((playerLocation.getRow() + 2) % (inputRows + 1)) * Constants.OFFSET + 100)
-            && e.getX() >  (((playerLocation.getColumn() + 1) % (inputCols + 1)) * Constants.OFFSET)
-            && e.getX() <  (((playerLocation.getColumn() + 1) % (inputCols + 1)) * Constants.OFFSET + 100)) {
+                && e.getY() <  (((playerLocation.getRow() + 2) % (inputRows + 1)) *
+            Constants.OFFSET + 100)
+                && e.getX() >  (((playerLocation.getColumn() + 1) % (inputCols + 1)) *
+            Constants.OFFSET)
+                && e.getX() <  (((playerLocation.getColumn() + 1) % (inputCols + 1)) *
+            Constants.OFFSET + 100)) {
           userMove = true;
           userInputDirection = "S";
         }
 
         // Check for East
         else if (e.getY() > (((playerLocation.getRow() + 1) % (inputRows + 1)) * Constants.OFFSET)
-            && e.getY() <  (((playerLocation.getRow() + 1) % (inputRows + 1)) * Constants.OFFSET + 100)
-            && e.getX() >  (((playerLocation.getColumn() + 2) % (inputCols + 1)) * Constants.OFFSET)
-            && e.getX() <  (((playerLocation.getColumn() + 2) % (inputCols + 1)) * Constants.OFFSET + 100)) {
+            && e.getY() <  (((playerLocation.getRow() + 1) % (inputRows + 1)) *
+            Constants.OFFSET + 100)
+            && e.getX() >  (((playerLocation.getColumn() + 2) % (inputCols + 1)) *
+            Constants.OFFSET)
+            && e.getX() <  (((playerLocation.getColumn() + 2) % (inputCols + 1)) *
+            Constants.OFFSET + 100)) {
           userMove = true;
           userInputDirection = "E";
         }
 
         // Check for West
         else if (e.getY() > (((playerLocation.getRow() + 1) % (inputRows + 1)) * Constants.OFFSET)
-            && e.getY() <  (((playerLocation.getRow() + 1) % (inputRows + 1)) * Constants.OFFSET + 100)
-            && e.getX() >  (((playerLocation.getColumn()) % (inputCols + 1)) * Constants.OFFSET)
-            && e.getX() <  (((playerLocation.getColumn()) % (inputCols + 1)) * Constants.OFFSET + 100)) {
+            && e.getY() <  (((playerLocation.getRow() + 1) % (inputRows + 1)) *
+            Constants.OFFSET + 100)
+            && e.getX() >  (((playerLocation.getColumn()) % (inputCols + 1)) *
+            Constants.OFFSET)
+            && e.getX() <  (((playerLocation.getColumn()) % (inputCols + 1)) *
+            Constants.OFFSET + 100)) {
           userMove = true;
           userInputDirection = "W";
         }
@@ -755,22 +805,22 @@ class GameView extends JFrame {
 
       @Override
       public void mousePressed(MouseEvent e) {
-
+        flagger = true;
       }
 
       @Override
       public void mouseReleased(MouseEvent e) {
-
+        flagger = false;
       }
 
       @Override
       public void mouseEntered(MouseEvent e) {
-
+        flagger = true;
       }
 
       @Override
       public void mouseExited(MouseEvent e) {
-
+        flagger = false;
       }
     });
 
@@ -801,7 +851,7 @@ class GameView extends JFrame {
   }
 
   protected boolean getUserPickUp() {
-   return this.userPickUp;
+    return this.userPickUp;
   }
 
   protected void resetUserPickUp() {

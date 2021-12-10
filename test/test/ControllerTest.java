@@ -8,7 +8,6 @@ import model.DungeonImpl;
 
 import model.Player;
 import model.PlayerImpl;
-import model.Point2D;
 import model.Point2DImpl;
 import org.junit.Test;
 import view.MockView;

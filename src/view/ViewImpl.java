@@ -19,7 +19,6 @@ public class ViewImpl implements ViewInterface {
 
 
   private GameView gameViewBuff;
-  private NewGamePrompt newGamePrompt;
 
   /**
    * The implementation of the View interface. This interface has some private methods that help
@@ -29,7 +28,7 @@ public class ViewImpl implements ViewInterface {
    * ability to modify the state of the player or the dungeon.
    */
   public ViewImpl() {
-
+    boolean flagger = false;
   }
 
   @Override
@@ -52,7 +51,7 @@ public class ViewImpl implements ViewInterface {
 
   @Override
   public List<String> startNewGame() {
-    newGamePrompt = new NewGamePrompt();
+    NewGamePrompt newGamePrompt = new NewGamePrompt();
     return newGamePrompt.getUserParameters();
   }
 

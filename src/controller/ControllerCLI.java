@@ -9,7 +9,6 @@ import model.Point2D;
 import model.Treasure;
 import view.ViewInterface;
 
-import javax.swing.text.View;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -243,12 +242,13 @@ public class ControllerCLI implements Controller {
       if (monsterList.get(0).monsterType() == 1) {
 
         try {
-          out.append("Oops, all your treasure just got stolen by the " +
-              "thief :(.");
-          }
+          out.append("Oops, all your treasure just got stolen by the thief :(.");
+        }
+
         catch (IOException ioe) {
-      throw new IllegalStateException("Append failed", ioe);
-    }
+          throw new IllegalStateException("Append failed", ioe);
+
+        }
 
       }
     }

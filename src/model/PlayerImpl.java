@@ -141,20 +141,20 @@ public class PlayerImpl implements Player {
     else if (monster.monsterType() == 0) {
       // Check if monster is injured
       if (monster.getHits() == 1) {
-          // If so, we take a chance
-          if (this.getFiftyFiftyChance()) {
-            monster.takeHit();
-          }
-          // Dead player
-          else {
-            this.alive = false;
-          }
+        // If so, we take a chance
+        if (this.getFiftyFiftyChance()) {
+          monster.takeHit();
         }
-
         // Dead player
         else {
           this.alive = false;
         }
+      }
+
+      // Dead player
+      else {
+        this.alive = false;
+      }
     }
 
     else if (monster.monsterType() == 1) {

@@ -91,9 +91,9 @@ public class Driver {
       int degree = Integer.parseInt(userParams.get(2));
       int numberOfMonsters =  Integer.parseInt(userParams.get(3));
       int treasurePercentage =  Integer.parseInt(userParams.get(4));
-      boolean CLI =  Boolean.parseBoolean(userParams.get(6));
+      boolean commandLineBool =  Boolean.parseBoolean(userParams.get(6));
 
-      if (!CLI) {
+      if (!commandLineBool) {
         ControllerGUI ctrl = new ControllerGUI(input, output, view, rows, cols, degree,
             numberOfMonsters, treasurePercentage, new HashMap<>(), wrapped);
 

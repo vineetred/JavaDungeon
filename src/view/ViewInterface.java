@@ -46,13 +46,13 @@ public interface ViewInterface {
 
   /** Get a new java swing window that takes parameters from the user. This is returned to the
    * form of a List that the calling program can manipulate.
-   * @return List<String> of the game parameters.
+   * @return List of the game parameters.
    */
   List<String> startNewGame();
 
   /** Get the stringed form of the user intention that tells the controller what the user wants
    *  to based on the actions performed on the view. An empty string indicates a pending state.
-   * @return List<String> of the game parameters.
+   * @return List of the game parameters.
    */
   String getUserIntention();
 
@@ -72,7 +72,7 @@ public interface ViewInterface {
    *  the controller in form of a List that the calling program can manipulate. It contains the
    *  distance and the cardinal direction's symbol that is used to perform the shoot action on
    *  the player's weapon.
-   * @return List<String> of the shooting parameters.
+   * @return List of the shooting parameters.
    */
   List<String> getUserShootingParameters();
 

@@ -1,6 +1,5 @@
 package model;
 
-import java.io.Serializable;
 import java.util.List;
 
 /** This represents a dungeon which is where the player navigates from a
