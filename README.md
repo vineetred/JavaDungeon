@@ -63,6 +63,8 @@ kill them before you can win!
 * Keep in mind that the direction input is _always_ one of four symbols of the cardinal
   direction, namely, N S E W.
 * Can be safely exit-ed if the user wins, dies, or quits the GUI.
+* The wrapping field in the GUI new game prompt must the either ```true``` or ```false```. Same 
+  goes with the CLI command as it can also trigger the CLI mode.
 
 # Usage
 ## Model
