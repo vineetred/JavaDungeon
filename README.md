@@ -12,6 +12,10 @@ that connect them.
 The player must also fight Otyughs - a type of monster that is native to the maze dungeon! You must
 kill them before you can win!
 
+The player must also fight Thieves - a type of monster that is native to the maze dungeon and 
+only steals! You must
+kill them before you can win!
+
 
 # Features
 
@@ -34,10 +38,14 @@ kill them before you can win!
 * Monsters such as Otyughs lurk the maze. A player will get killed if they meet a healthy Otyugh. 50% chance of survival
   if they meet an injured Otyugh.
 * Arrows can be found throughout the maze, a tool used to slay Otyugh's.
+* We also have another type of disgusting monster lurking the dungeon; thiefs will steal all the 
+  treasure collected so far from the player. Beware!
+* We also have a fully functional GUI that can visualize the CLI game. The rules and other 
+  invariants stay the same.
 
 
 # Execution
-## JAR
+## Jar - CLI Mode
 * Just run the JAR file like so ```java -jar Dungeon.jar <WRAP STRING PARSED AS BOOL> <ROWS INT> 
   <COLS INT> 
   <INTERCONNECTIVITY INT> <TREASURE THRESHOLD INT> <NUMBER OF MONSTERS INT>``` and the program 
@@ -46,6 +54,15 @@ kill them before you can win!
 * Keep in mind that the direction input is _always_ one of four symbols of the cardinal 
   direction, namely, N S E W.
 * Can be safely exit-ed if the user wins, dies, or quits.
+* 
+## Jar - GUI Mode
+* Just run the JAR file like so ```java -jar Dungeon.jar ``` and the program
+  should launch with a new Java Swing prompt asking the user to input the parameters so that the 
+  program can generate a random maze.
+* Example - ```java -jar Dungeon.jar```.
+* Keep in mind that the direction input is _always_ one of four symbols of the cardinal
+  direction, namely, N S E W.
+* Can be safely exit-ed if the user wins, dies, or quits the GUI.
 
 # Usage
 ## Model
@@ -74,9 +91,11 @@ kill them before you can win!
 * ```moveEast``` - Move one cave over to the east.
 * ```moveWest``` - Move one cave over to the west.
 
-## Controller
+## Controller - GUI/CLI
 * ```buildDungeon``` - Builds a dungeon with the given parameters
 * ```playGame``` - Plays a game with a given Dungeon object and player object
+* To move in the GUI mode, one can use the mouse or press the arrow keys whilst keeping the 
+  letter M pressed.
 
 # Example
 
@@ -135,8 +154,10 @@ Run 5 -- ExampleRun5.txt
 * While there is a threshold for the number of caves that can get treasure, we don't enforce any 
   such invariants when dealing with the type of treasure itself. It is possible that a certain 
   dungeon is populated with the same type of treasure through its caves.
+* One can only move by clicking on the maze that is adjacent to the current position only. All
+    other mouse clicks are disregarded.
 * There is no upper limit on the amount of loot a player can carry.
-* We assume that once dead, an Otyugh _cannot_ contribute to the smell within the caves.
+* We assume that once dead, an Otyughs/Thieves _cannot_ contribute to the smell within the caves.
 * Testing is done using a deterministic seed. We assume that it would work as expected when the 
   seed is not specified anymore. However, this is not true for the example runs as they are done fully random.
 * We assume only one player can exist in a dungeon at any given time.
@@ -146,6 +167,9 @@ Run 5 -- ExampleRun5.txt
 * Game must be restarted in order to be played once it is finished.
 * As of now, we only accept the symbols of the four cardinal directions as the input for the 
   direction.
+* To move, one needs to keep the button M pressed followed by an arrow key.
+* One can only move by clicking on the maze that is adjacent to the current position only. All 
+  other mouse clicks are disregarded.
 
 
 # Citations
@@ -156,3 +180,10 @@ Run 5 -- ExampleRun5.txt
 * Baeldung. (2021, Nov 2). *Java Command Line Arguments*. Baeldung. Retrieved November 2, 2021, from
   https://www.baeldung.com/java-command-line-arguments.
 * CS5010 Class GitHub Repository.
+* How to Use Actions (The Java™ Tutorials > Creating a GUI With Swing > Using Other Swing Features). (2021). Retrieved 10 December 2021, from https://docs.oracle.com/javase/tutorial/uiswing/misc/action.html
+* Java Swing Key Binding Example. (2021). Retrieved 10 December 2021, from https://examples.javacodegeeks.com/desktop-java/swing/java-swing-key-binding-example/
+* Creating Frames using Swings in Java - GeeksforGeeks. (2021). Retrieved 10 December 2021, from https://www.geeksforgeeks.org/creating-frames-using-swings-java/
+* Stackoverflow. (2021). How to use KeyListener with JFrame?. Retrieved 10 December 2021, from 
+  https://stackoverflow.com/questions/21997130/how-to-use-keylistener-with-jframe
+* Stackoverflow. (2021). How to add multiple ActionListeners for multiple buttons in Java Swing. Retrieved 10 December 2021, from https://stackoverflow.com/questions/5911565/how-to-add-multiple-actionlisteners-for-multiple-buttons-in-java-swing
+* Java Swing Tutorial - javatpoint. (2021). Retrieved 10 December 2021, from https://www.javatpoint.com/java-swing
